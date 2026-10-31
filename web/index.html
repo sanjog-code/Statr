@@ -3,42 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statr — Music Telemetry & Playlist Intelligence</title>
+    <title>Statr — Spotify Intelligence & Ambient Telemetry</title>
+    <!-- Premium Typography: SF Pro Display / Inter + JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --bg-black: #000000;
-            --bg-deep: #0a0a0c;
-            --bg-sidebar: rgba(18, 18, 22, 0.82);
-            --bg-acrylic: rgba(26, 26, 30, 0.65);
-            --bg-acrylic-hover: rgba(38, 38, 44, 0.85);
-            --bg-card: rgba(24, 24, 28, 0.7);
-            --border-hairline: rgba(255, 255, 255, 0.08);
-            --border-active: rgba(255, 255, 255, 0.22);
+            --bg-base: #030407;
+            --bg-elevated: #080a0f;
+            --glass-surface: rgba(14, 17, 24, 0.65);
+            --glass-surface-hover: rgba(22, 26, 36, 0.8);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-specular: rgba(255, 255, 255, 0.22);
             
-            /* Apple Music Primary Accents */
-            --apple-red: #FA2D48;
-            --apple-pink: #FC3C44;
-            --apple-magenta: #D62464;
-            --apple-purple: #9055FF;
-            --ag-emerald: #30D158;
-            --ag-amber: #FF9F0A;
-            --ag-blue: #0A84FF;
-            --ag-crimson: #FF453A;
+            /* Antigravity Signature Luminous Palette */
+            --ag-cyan: #00F0FF;
+            --ag-violet: #8B5CF6;
+            --ag-magenta: #EC4899;
+            --ag-emerald: #10B981;
+            --ag-amber: #F59E0B;
+            --ag-crimson: #EF4444;
 
-            --text-primary: #FFFFFF;
-            --text-secondary: #A1A1A6;
-            --text-tertiary: #6E6E73;
+            --text-heading: #FFFFFF;
+            --text-body: #94A3B8;
+            --text-muted: #64748B;
 
-            --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Inter", sans-serif;
+            --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
         ::selection {
-            background: rgba(250, 45, 72, 0.35);
+            background: rgba(0, 240, 255, 0.25);
             color: #FFFFFF;
         }
 
@@ -52,70 +49,60 @@
         }
 
         body {
-            background-color: var(--bg-black);
-            color: var(--text-primary);
-            font-family: var(--font-display);
+            background-color: var(--bg-base);
+            color: var(--text-heading);
+            font-family: var(--font-main);
             height: 100vh;
             overflow: hidden;
             display: flex;
+            position: relative;
         }
 
-        /* Precision Scrollbar */
-        main.main-stage::-webkit-scrollbar {
-            width: 8px;
-        }
-        main.main-stage::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        main.main-stage::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 4px;
-        }
-        main.main-stage::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        /* Ambient Dynamic Color Bleed */
-        .ambient-aurora {
+        /* Interactive Living Canvas Background (Reacts to pointer) */
+        #ambient-canvas {
             position: fixed;
             inset: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: 0;
-            overflow: hidden;
         }
 
-        .aurora-glow {
-            position: absolute;
+        /* Cursor Glow Halo */
+        .cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
             border-radius: 50%;
-            filter: blur(160px);
-            opacity: 0.22;
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, rgba(139, 92, 246, 0.04) 40%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+            mix-blend-mode: screen;
         }
 
-        .aurora-1 {
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, var(--apple-red) 0%, transparent 70%);
-            top: -200px;
-            left: 15%;
+        /* Fine Technical Grid Overlay */
+        .grid-mask {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 1;
+            mask-image: radial-gradient(circle at var(--cursor-x, 50%) var(--cursor-y, 50%), black 30%, transparent 80%);
         }
 
-        .aurora-2 {
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, var(--apple-purple) 0%, transparent 70%);
-            bottom: -200px;
-            right: 10%;
-        }
-
-        /* Apple Music Sidebar */
+        /* Antigravity Frosted Acrylic Sidebar */
         aside.sidebar {
-            width: 260px;
+            width: 270px;
             height: 100vh;
-            background: var(--bg-sidebar);
-            backdrop-filter: blur(50px) saturate(210%);
-            border-right: 1px solid var(--border-hairline);
-            padding: 28px 18px 120px;
+            background: rgba(10, 12, 18, 0.75);
+            backdrop-filter: blur(40px) saturate(200%);
+            border-right: 1px solid var(--border-subtle);
+            padding: 32px 20px 120px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -123,461 +110,530 @@
             flex-shrink: 0;
         }
 
-        .brand-container {
+        .brand-block {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 0 10px 24px;
+            gap: 14px;
+            padding: 0 10px 28px;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .brand-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--apple-red) 0%, var(--apple-purple) 100%);
-            border-radius: 8px;
+        .brand-monogram {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--ag-cyan) 0%, var(--ag-violet) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 16px rgba(250, 45, 72, 0.4);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.45);
         }
 
-        .brand-logo-icon svg {
-            width: 18px;
-            height: 18px;
-            fill: #fff;
+        .brand-monogram svg {
+            width: 20px;
+            height: 20px;
+            fill: #000;
         }
 
-        .brand-title {
-            font-size: 19px;
+        .brand-text {
+            font-size: 20px;
             font-weight: 800;
             letter-spacing: -0.03em;
-            color: #fff;
+            background: linear-gradient(90deg, #FFFFFF, #94A3B8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .nav-category {
+        .nav-label {
+            font-family: var(--font-mono);
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-tertiary);
-            padding: 16px 12px 8px;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            padding: 24px 12px 10px;
         }
 
-        .nav-list {
+        .nav-items {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
         }
 
-        .nav-item button {
+        .nav-btn {
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 9px 12px;
+            gap: 14px;
+            padding: 10px 14px;
             background: transparent;
-            border: none;
-            border-radius: 9px;
-            color: var(--text-secondary);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            color: var(--text-body);
             font-size: 14px;
             font-weight: 500;
             font-family: inherit;
             cursor: pointer;
-            transition: all 0.15s ease;
-            text-align: left;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .nav-item button:hover {
-            color: var(--text-primary);
+        .nav-btn:hover {
+            color: #FFFFFF;
             background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(3px);
         }
 
-        .nav-item button.active {
-            color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.12);
-            font-weight: 600;
+        .nav-btn.active {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.09);
+            border-color: var(--border-specular);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .nav-icon {
             width: 18px;
             height: 18px;
-            opacity: 0.85;
+            opacity: 0.8;
             flex-shrink: 0;
         }
 
-        .sidebar-bottom {
-            padding: 16px 10px;
-            border-top: 1px solid var(--border-hairline);
-        }
-
-        .connect-cta-box {
-            background: linear-gradient(135deg, rgba(250, 45, 72, 0.15) 0%, rgba(144, 85, 255, 0.15) 100%);
-            border: 1px solid rgba(250, 45, 72, 0.3);
-            border-radius: 12px;
-            padding: 14px;
+        /* Sidebar Connect Widget */
+        .sidebar-bottom-box {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .connect-cta-box h4 {
+        .sidebar-bottom-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--ag-cyan), transparent);
+        }
+
+        .sidebar-bottom-box h4 {
             font-size: 13px;
             font-weight: 700;
             color: #fff;
             margin-bottom: 4px;
         }
 
-        .connect-cta-box p {
+        .sidebar-bottom-box p {
             font-size: 11px;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
+            color: var(--text-body);
+            margin-bottom: 12px;
             line-height: 1.4;
         }
 
-        .btn-connect-spotify {
+        .btn-glow-connect {
             width: 100%;
-            background: var(--apple-red);
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #00F0FF 0%, #0088FF 100%);
+            color: #000;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 800;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.15s ease, background 0.15s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
         }
 
-        .btn-connect-spotify:hover {
-            background: var(--apple-pink);
-            transform: scale(1.02);
+        .btn-glow-connect:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
         }
 
-        /* Main Stage Layout */
-        main.main-stage {
+        /* Main Workspace Stage */
+        main.stage {
             flex: 1;
             height: 100vh;
             overflow-y: auto;
             position: relative;
             z-index: 10;
-            padding: 32px 50px 140px;
+            padding: 36px 56px 140px;
             scroll-behavior: smooth;
         }
 
-        /* Top Header Control Strip */
-        .stage-header {
+        /* Sleek Slim Scrollbars */
+        main.stage::-webkit-scrollbar { width: 6px; }
+        main.stage::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+        }
+        main.stage::-webkit-scrollbar-thumb:hover { background: rgba(0, 240, 255, 0.3); }
+
+        /* Top HUD Bar */
+        .hud-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
         }
 
-        .account-pill {
+        .hud-status-pill {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-hairline);
+            gap: 10px;
+            background: rgba(14, 18, 26, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
             border-radius: 20px;
-            padding: 6px 14px;
+            padding: 7px 16px;
             font-size: 12px;
             font-weight: 500;
+            font-family: var(--font-mono);
+            color: #FFFFFF;
         }
 
-        .status-dot-pulse {
-            width: 7px;
-            height: 7px;
+        .radar-pulse {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: var(--ag-emerald);
-            box-shadow: 0 0 10px var(--ag-emerald);
+            background: var(--ag-cyan);
+            box-shadow: 0 0 12px var(--ag-cyan);
+            animation: radarPulse 2s infinite ease-out;
         }
 
-        .timeframe-segment {
+        @keyframes radarPulse {
+            0% { transform: scale(0.9); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.6; }
+            100% { transform: scale(0.9); opacity: 1; }
+        }
+
+        .hud-timeframe-dock {
             display: flex;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-hairline);
-            border-radius: 10px;
+            background: rgba(14, 18, 26, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
             padding: 3px;
         }
 
-        .timeframe-btn {
+        .timeframe-pill {
             background: transparent;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-body);
             font-size: 12px;
             font-weight: 600;
             padding: 6px 14px;
-            border-radius: 7px;
+            border-radius: 9px;
             cursor: pointer;
             transition: all 0.15s ease;
         }
 
-        .timeframe-btn.active {
-            background: rgba(255, 255, 255, 0.16);
-            color: #fff;
+        .timeframe-pill.active {
+            background: rgba(255, 255, 255, 0.14);
+            color: #FFFFFF;
         }
 
-        /* Apple Music Big Editorial Hero Banner */
-        .editorial-hero {
-            background: linear-gradient(135deg, rgba(38, 20, 28, 0.8) 0%, rgba(20, 22, 34, 0.85) 100%);
-            border: 1px solid var(--border-hairline);
+        /* Antigravity Interactive Spotlight Glass Card */
+        .spotlight-card {
+            background: var(--glass-surface);
+            backdrop-filter: blur(32px) saturate(190%);
+            border: 1px solid var(--border-subtle);
             border-radius: 24px;
-            padding: 36px 44px;
-            margin-bottom: 40px;
             position: relative;
             overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Specular Border Glow Following Pointer */
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: radial-gradient(400px circle at var(--card-mouse-x, -500px) var(--card-mouse-y, -500px), rgba(0, 240, 255, 0.35), transparent 45%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Hero Editorial Banner (Antigravity Celestial Look) */
+        .hero-luminous-banner {
+            padding: 44px 48px;
+            margin-bottom: 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
         }
 
-        .hero-left {
-            max-width: 620px;
+        .hero-left-content {
+            max-width: 650px;
+            position: relative;
+            z-index: 3;
         }
 
-        .hero-tagline {
-            font-size: 12px;
+        .telemetry-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--apple-red);
-            margin-bottom: 8px;
-        }
-
-        .hero-heading {
-            font-size: 42px;
-            font-weight: 900;
-            letter-spacing: -0.04em;
-            color: #fff;
-            line-height: 1.08;
+            color: var(--ag-cyan);
             margin-bottom: 12px;
         }
 
-        .hero-sub {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: 24px;
+        .hero-title {
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 14px;
+            background: linear-gradient(180deg, #FFFFFF 20%, rgba(255, 255, 255, 0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .hero-actions {
+        .hero-description {
+            font-size: 15px;
+            color: var(--text-body);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .hero-cta-cluster {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
-        .btn-primary-action {
-            background: #fff;
-            color: #000;
+        .btn-ag-primary {
+            background: #FFFFFF;
+            color: #000000;
             font-size: 13px;
             font-weight: 700;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 12px 24px;
+            border-radius: 12px;
             border: none;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25);
         }
 
-        .btn-primary-action:hover {
-            transform: scale(1.03);
-            background: #f0f0f0;
+        .btn-ag-primary:hover {
+            transform: scale(1.03) translateY(-1px);
+            box-shadow: 0 6px 30px rgba(255, 255, 255, 0.4);
         }
 
-        .btn-secondary-action {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--border-hairline);
-            color: #fff;
+        .btn-ag-glass {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            color: #FFFFFF;
             font-size: 13px;
             font-weight: 600;
-            padding: 10px 18px;
-            border-radius: 10px;
+            padding: 12px 20px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
         }
 
-        .btn-secondary-action:hover {
-            background: rgba(255, 255, 255, 0.14);
+        .btn-ag-glass:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--border-specular);
         }
 
-        /* 4 Precision Metric Gauges */
-        .metrics-strip {
+        /* 4 3D Reactive Metric Pods */
+        .metric-quad-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             margin-bottom: 44px;
         }
 
-        .metric-tile {
-            background: var(--bg-card);
-            backdrop-filter: blur(24px);
-            border: 1px solid var(--border-hairline);
-            border-radius: 18px;
-            padding: 22px 24px;
-            transition: all 0.2s ease;
+        .metric-pod-card {
+            padding: 24px 26px;
+            perspective: 1000px;
         }
 
-        .metric-tile:hover {
-            border-color: var(--border-active);
-            transform: translateY(-2px);
+        .pod-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
         }
 
-        .tile-label {
-            font-size: 12px;
+        .pod-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
             font-weight: 600;
-            color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 10px;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
         }
 
-        .tile-value {
-            font-size: 34px;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: #fff;
-            margin-bottom: 6px;
+        .pod-icon-bubble {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ag-cyan);
         }
 
-        .tile-caption {
+        .pod-number {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            color: #FFFFFF;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 8px;
+        }
+
+        .pod-footer-meta {
             font-size: 12px;
-            color: var(--text-tertiary);
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .badge-status {
+        .pill-badge {
+            font-family: var(--font-mono);
             font-size: 10px;
             font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: var(--font-mono);
+            padding: 2px 7px;
+            border-radius: 5px;
         }
 
-        .badge-green { background: rgba(48, 209, 88, 0.15); color: var(--ag-emerald); }
-        .badge-amber { background: rgba(255, 159, 10, 0.15); color: var(--ag-amber); }
-        .badge-red { background: rgba(255, 69, 58, 0.15); color: var(--ag-crimson); }
+        .badge-cyan { background: rgba(0, 240, 255, 0.12); color: var(--ag-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
+        .badge-emerald { background: rgba(16, 185, 129, 0.12); color: var(--ag-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-amber { background: rgba(245, 158, 11, 0.12); color: var(--ag-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-crimson { background: rgba(239, 68, 68, 0.12); color: var(--ag-crimson); border: 1px solid rgba(239, 68, 68, 0.3); }
 
-        /* Section Layouts */
-        .section-header-row {
+        /* Section Headlines */
+        .stage-section-header {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
-        .section-title {
+        .section-h2 {
             font-size: 24px;
             font-weight: 800;
             letter-spacing: -0.03em;
-            color: #fff;
+            color: #FFFFFF;
         }
 
-        .section-desc {
+        .section-meta-desc {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
 
-        /* Apple Music Playlist Doctor Cards */
-        .playlist-shelf-grid {
+        /* Playlist Doctor Grid */
+        .playlist-glass-shelf {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
             gap: 24px;
             margin-bottom: 48px;
         }
 
-        .playlist-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-hairline);
-            border-radius: 20px;
-            padding: 18px;
+        .playlist-interactive-tile {
+            padding: 20px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .playlist-card:hover {
-            background: var(--bg-acrylic-hover);
-            border-color: var(--border-active);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6);
-        }
-
-        .pl-art-wrap {
+        .pl-visual-wrap {
             position: relative;
             width: 100%;
             padding-top: 100%;
-            border-radius: 14px;
+            border-radius: 16px;
             overflow: hidden;
-            background: #18181c;
+            background: #11141c;
         }
 
-        .pl-img {
+        .pl-artwork-img {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .playlist-card:hover .pl-img {
-            transform: scale(1.04);
+        .playlist-interactive-tile:hover .pl-artwork-img {
+            transform: scale(1.05);
         }
 
-        .pl-health-floating-tag {
+        .pl-health-score-floating {
             position: absolute;
             bottom: 12px;
             left: 12px;
-            background: rgba(10, 10, 12, 0.75);
+            background: rgba(8, 10, 16, 0.85);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 8px;
-            padding: 4px 10px;
+            padding: 5px 10px;
             font-family: var(--font-mono);
             font-size: 11px;
             font-weight: 700;
         }
 
-        .pl-info h3 {
+        .pl-tile-details h3 {
             font-size: 16px;
             font-weight: 700;
-            color: #fff;
+            color: #FFFFFF;
             margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .pl-info p {
+        .pl-tile-details p {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--text-body);
         }
 
-        .pl-stats-bar {
+        .pl-stats-footer {
             display: flex;
             justify-content: space-between;
             padding-top: 12px;
-            border-top: 1px solid var(--border-hairline);
+            border-top: 1px solid var(--border-subtle);
             font-size: 12px;
-            color: var(--text-tertiary);
-        }
-
-        .pl-stats-bar span strong {
-            color: #fff;
+            color: var(--text-muted);
             font-family: var(--font-mono);
         }
 
-        /* Two Column Layout (Top Songs & 24h Rhythm) */
-        .split-layout {
+        .pl-stats-footer span strong {
+            color: #FFFFFF;
+        }
+
+        /* Split Workspace: Top Repeat Tracks & Circadian Rhythm */
+        .dual-column-workspace {
             display: grid;
             grid-template-columns: 1.4fr 1fr;
             gap: 32px;
@@ -585,260 +641,253 @@
         }
 
         @media (max-width: 1100px) {
-            .split-layout { grid-template-columns: 1fr; }
+            .dual-column-workspace { grid-template-columns: 1fr; }
         }
 
-        /* Apple Music Song Row Table */
-        .songs-table {
-            background: var(--bg-card);
-            border: 1px solid var(--border-hairline);
-            border-radius: 20px;
+        /* Song List Container */
+        .song-rows-card {
             padding: 16px 20px;
         }
 
-        .song-row {
+        .song-strip-row {
             display: grid;
             grid-template-columns: 32px 50px 1fr 90px;
             align-items: center;
             gap: 16px;
             padding: 10px 12px;
-            border-radius: 10px;
-            transition: background 0.15s ease;
+            border-radius: 12px;
+            transition: all 0.15s ease;
         }
 
-        .song-row:hover {
+        .song-strip-row:hover {
             background: rgba(255, 255, 255, 0.05);
+            transform: translateX(2px);
         }
 
-        .song-index {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            text-align: center;
+        .song-rank-idx {
             font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-align: center;
         }
 
-        .song-thumb {
+        .song-art-thumbnail {
             width: 44px;
             height: 44px;
             border-radius: 8px;
             object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
-        .song-details {
+        .song-info-meta {
             overflow: hidden;
         }
 
-        .song-title {
+        .song-name-h4 {
             font-size: 14px;
             font-weight: 600;
-            color: #fff;
+            color: #FFFFFF;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             margin-bottom: 2px;
         }
 
-        .song-artist {
+        .song-artist-sub {
             font-size: 12px;
-            color: var(--text-secondary);
+            color: var(--text-body);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .song-streams {
+        .song-stats-col {
             text-align: right;
             font-family: var(--font-mono);
             font-size: 12px;
         }
 
-        .song-plays {
-            color: #fff;
+        .song-plays-count {
+            color: #FFFFFF;
             font-weight: 700;
         }
 
-        .song-skips {
+        .song-skips-count {
             color: var(--ag-crimson);
             font-size: 11px;
         }
 
-        /* 24-Hour Circadian Rhythm Chart */
-        .chart-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-hairline);
-            border-radius: 20px;
+        /* Chart Card */
+        .chart-glass-pod {
             padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        /* Floating Apple Music Now Playing Dock (Bottom Player) */
-        .bottom-player-bar {
+        /* Floating Antigravity Bottom Dock Player */
+        .bottom-dock-player {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 88px;
-            background: rgba(18, 18, 22, 0.85);
-            backdrop-filter: blur(50px) saturate(210%);
-            border-top: 1px solid var(--border-hairline);
+            height: 90px;
+            background: rgba(10, 12, 18, 0.85);
+            backdrop-filter: blur(40px) saturate(200%);
+            border-top: 1px solid var(--border-subtle);
             z-index: 100;
             display: grid;
-            grid-template-columns: 320px 1fr 320px;
+            grid-template-columns: 340px 1fr 340px;
             align-items: center;
-            padding: 0 32px;
+            padding: 0 36px;
         }
 
-        .player-track-info {
+        .dock-track-info {
             display: flex;
             align-items: center;
             gap: 14px;
         }
 
-        .player-artwork {
+        .dock-cover-art {
             width: 52px;
             height: 52px;
-            border-radius: 10px;
+            border-radius: 12px;
             object-fit: cover;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .player-meta {
-            overflow: hidden;
-        }
-
-        .player-title {
+        .dock-meta h4 {
             font-size: 14px;
             font-weight: 700;
-            color: #fff;
+            color: #FFFFFF;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .player-sub {
+        .dock-meta p {
             font-size: 12px;
-            color: var(--text-secondary);
+            color: var(--text-body);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* Center Audio Controls */
-        .player-center-controls {
+        .dock-center-controls {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 8px;
-            max-width: 580px;
+            max-width: 600px;
             margin: 0 auto;
             width: 100%;
         }
 
-        .control-buttons {
+        .dock-btn-row {
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 24px;
         }
 
-        .ctrl-btn {
+        .dock-icon-btn {
             background: transparent;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-body);
             cursor: pointer;
-            transition: color 0.15s ease;
+            transition: color 0.15s ease, transform 0.15s ease;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .ctrl-btn:hover {
-            color: #fff;
+        .dock-icon-btn:hover {
+            color: #FFFFFF;
+            transform: scale(1.1);
         }
 
-        .ctrl-btn.play-circle {
+        .dock-play-circle {
             width: 36px;
             height: 36px;
-            background: #fff;
-            color: #000;
+            background: #FFFFFF;
+            color: #000000;
             border-radius: 50%;
-            transition: transform 0.15s ease;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .ctrl-btn.play-circle:hover {
-            transform: scale(1.08);
-            color: #000;
+        .dock-play-circle:hover {
+            transform: scale(1.12);
+            color: #000000;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
 
-        .progress-bar-container {
+        .dock-scrub-bar-wrap {
             width: 100%;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .time-label {
+        .dock-time-stamp {
             font-family: var(--font-mono);
             font-size: 11px;
-            color: var(--text-tertiary);
+            color: var(--text-muted);
             width: 36px;
         }
 
-        .scrub-track {
+        .dock-timeline-track {
             flex: 1;
             height: 4px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
             border-radius: 2px;
-            position: relative;
             cursor: pointer;
-        }
-
-        .scrub-fill {
-            height: 100%;
-            background: #fff;
-            border-radius: 2px;
-            width: 48%;
             position: relative;
         }
 
-        .player-right-telemetry {
+        .dock-timeline-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ag-cyan), #FFFFFF);
+            border-radius: 2px;
+            width: 42%;
+        }
+
+        .dock-right-status {
             display: flex;
             align-items: center;
             justify-content: flex-end;
             gap: 16px;
         }
 
-        .audio-bars {
+        .dock-equalizer-bars {
             display: flex;
             align-items: flex-end;
             gap: 3px;
             height: 16px;
         }
 
-        .audio-bar {
+        .eq-bar {
             width: 3px;
-            background: var(--apple-red);
+            background: var(--ag-cyan);
             border-radius: 3px;
-            animation: bounceBar 1.2s infinite ease-in-out;
+            animation: bounceEqualizer 1.2s infinite ease-in-out;
         }
-        .audio-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
-        .audio-bar:nth-child(2) { height: 95%; animation-delay: 0.3s; }
-        .audio-bar:nth-child(3) { height: 60%; animation-delay: 0.15s; }
-        .audio-bar:nth-child(4) { height: 80%; animation-delay: 0.25s; }
+        .eq-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+        .eq-bar:nth-child(2) { height: 95%; animation-delay: 0.3s; }
+        .eq-bar:nth-child(3) { height: 60%; animation-delay: 0.15s; }
+        .eq-bar:nth-child(4) { height: 80%; animation-delay: 0.25s; }
 
-        @keyframes bounceBar {
+        @keyframes bounceEqualizer {
             0%, 100% { transform: scaleY(0.3); }
             50% { transform: scaleY(1); }
         }
 
-        /* Modal: Connect Spotify (OAuth & Data File Import) */
-        .modal-shade {
+        /* Modal: Connect Spotify */
+        .modal-backdrop-shield {
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(30px);
+            backdrop-filter: blur(35px);
             z-index: 999;
             display: none;
             align-items: center;
@@ -846,58 +895,61 @@
             padding: 24px;
         }
 
-        .connect-dialog {
+        .modal-glass-pod {
             width: 100%;
-            max-width: 580px;
-            background: #16161a;
-            border: 1px solid var(--border-active);
-            border-radius: 24px;
-            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9);
+            max-width: 600px;
+            background: #0c0e14;
+            border: 1px solid var(--border-specular);
+            border-radius: 28px;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.95);
             overflow: hidden;
             position: relative;
         }
 
-        .dialog-top {
+        .modal-top-bar {
             padding: 28px 32px 20px;
-            border-bottom: 1px solid var(--border-hairline);
+            border-bottom: 1px solid var(--border-subtle);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .dialog-title {
-            font-size: 20px;
+        .modal-title-h3 {
+            font-size: 22px;
             font-weight: 800;
             letter-spacing: -0.02em;
-            color: #fff;
+            color: #FFFFFF;
         }
 
-        .btn-close-modal {
-            background: rgba(255, 255, 255, 0.1);
+        .modal-close-x {
+            background: rgba(255, 255, 255, 0.08);
             border: none;
-            color: #fff;
-            width: 30px;
-            height: 30px;
+            color: #FFFFFF;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             font-size: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.15s ease;
         }
 
-        .dialog-tabs {
+        .modal-close-x:hover { background: rgba(255, 255, 255, 0.18); }
+
+        .modal-tabs-strip {
             display: flex;
-            padding: 8px 32px;
-            background: rgba(0, 0, 0, 0.25);
-            gap: 16px;
-            border-bottom: 1px solid var(--border-hairline);
+            padding: 10px 32px;
+            background: rgba(0, 0, 0, 0.3);
+            gap: 20px;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .dialog-tab-btn {
+        .modal-tab-pill {
             background: transparent;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-body);
             font-size: 13px;
             font-weight: 600;
             padding: 8px 0;
@@ -905,183 +957,161 @@
             position: relative;
         }
 
-        .dialog-tab-btn.active {
-            color: #fff;
-        }
-
-        .dialog-tab-btn.active::after {
+        .modal-tab-pill.active { color: #FFFFFF; }
+        .modal-tab-pill.active::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -10px;
             left: 0;
             right: 0;
             height: 2px;
-            background: var(--apple-red);
+            background: var(--ag-cyan);
+            box-shadow: 0 0 10px var(--ag-cyan);
         }
 
-        .dialog-body {
-            padding: 28px 32px 32px;
+        .modal-content-stage {
+            padding: 28px 32px 34px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .form-input {
+        .custom-glass-input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-hairline);
-            border-radius: 10px;
-            padding: 12px 16px;
-            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: #FFFFFF;
             font-size: 14px;
             font-family: inherit;
             outline: none;
-            transition: border-color 0.15s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .form-input:focus {
-            border-color: var(--apple-red);
+        .custom-glass-input:focus {
+            border-color: var(--ag-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
         }
 
-        .upload-dropzone {
+        .dropzone-glass-pod {
             border: 2px dashed rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 36px 24px;
+            border-radius: 18px;
+            padding: 40px 24px;
             text-align: center;
             background: rgba(255, 255, 255, 0.02);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
 
-        .upload-dropzone:hover {
-            border-color: var(--apple-red);
-            background: rgba(250, 45, 72, 0.05);
+        .dropzone-glass-pod:hover {
+            border-color: var(--ag-cyan);
+            background: rgba(0, 240, 255, 0.05);
+            transform: scale(1.01);
         }
 
-        /* Responsive Ergonomics */
+        /* Responsive Breakpoints */
         @media (max-width: 960px) {
             aside.sidebar {
-                width: 72px;
-                padding: 24px 8px 120px;
+                width: 76px;
+                padding: 24px 10px 120px;
             }
-            .brand-title, .nav-category, .connect-cta-box h4, .connect-cta-box p, .nav-item button span.nav-text {
+            .brand-text, .nav-label, .sidebar-bottom-box h4, .sidebar-bottom-box p, .nav-text {
                 display: none;
             }
-            .brand-container {
+            .brand-block {
                 justify-content: center;
                 padding: 0 0 24px;
             }
-            .nav-item button {
+            .nav-btn {
                 justify-content: center;
                 padding: 12px;
             }
-            .btn-connect-spotify span {
-                display: none;
-            }
-            main.main-stage {
+            main.stage {
                 padding: 24px 20px 140px;
             }
-            .editorial-hero {
-                padding: 28px 24px;
+            .hero-luminous-banner {
+                padding: 32px 24px;
             }
-            .hero-heading {
-                font-size: 28px;
+            .hero-title {
+                font-size: 32px;
             }
-            .metrics-strip {
+            .metric-quad-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .bottom-player-bar {
+            .bottom-dock-player {
                 grid-template-columns: 1fr auto;
-                padding: 0 16px;
+                padding: 0 20px;
             }
-            .player-center-controls {
+            .dock-center-controls {
                 display: none;
             }
         }
 
         @media (max-width: 600px) {
-            .metrics-strip {
-                grid-template-columns: 1fr;
-            }
-            .playlist-shelf-grid {
-                grid-template-columns: 1fr;
-            }
+            .metric-quad-grid { grid-template-columns: 1fr; }
+            .playlist-glass-shelf { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Glow Background -->
-    <div class="ambient-aurora">
-        <div class="aurora-glow aurora-1"></div>
-        <div class="aurora-glow aurora-2"></div>
-    </div>
+    <!-- Pointer Reactive Ambient Canvas -->
+    <canvas id="ambient-canvas"></canvas>
+    <div class="cursor-glow" id="cursor-halo"></div>
+    <div class="grid-mask"></div>
 
-    <!-- Apple Music Sidebar -->
+    <!-- Antigravity Sidebar -->
     <aside class="sidebar">
         <div>
-            <div class="brand-container">
-                <div class="brand-logo-icon">
+            <div class="brand-block">
+                <div class="brand-monogram">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
                 </div>
-                <div class="brand-title">Statr</div>
+                <div class="brand-text">Statr</div>
             </div>
 
-            <div class="nav-category">Library</div>
-            <ul class="nav-list">
-                <li class="nav-item">
-                    <button class="active" onclick="switchView('overview')">
+            <div class="nav-label">Telemetry</div>
+            <ul class="nav-items">
+                <li>
+                    <button class="nav-btn active" onclick="switchStageView('overview')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                         <span class="nav-text">Listen Now</span>
                     </button>
                 </li>
-                <li class="nav-item">
-                    <button onclick="switchView('playlists')">
+                <li>
+                    <button class="nav-btn" onclick="switchStageView('playlists')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
                         <span class="nav-text">Playlist Doctor</span>
                     </button>
                 </li>
-                <li class="nav-item">
-                    <button onclick="switchView('songs')">
+                <li>
+                    <button class="nav-btn" onclick="switchStageView('songs')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                         <span class="nav-text">Top Tracks</span>
                     </button>
                 </li>
-                <li class="nav-item">
-                    <button onclick="switchView('rhythms')">
+                <li>
+                    <button class="nav-btn" onclick="switchStageView('rhythms')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         <span class="nav-text">Circadian Rhythm</span>
                     </button>
                 </li>
             </ul>
 
-            <div class="nav-category">Intelligence</div>
-            <ul class="nav-list">
-                <li class="nav-item">
-                    <button onclick="openConnectModal('import')">
+            <div class="nav-label">Data Engine</div>
+            <ul class="nav-items">
+                <li>
+                    <button class="nav-btn" onclick="openConnectModal('import')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        <span class="nav-text">Import Spotify Data</span>
+                        <span class="nav-text">Import Spotify JSON</span>
                     </button>
                 </li>
             </ul>
         </div>
 
-        <div class="sidebar-bottom">
-            <div class="connect-cta-box" id="sidebar-account-box">
-                <h4>Connect Spotify</h4>
-                <p>Sync live playback, playlist skips & lifetime history.</p>
-                <button class="btn-connect-spotify" onclick="openConnectModal('oauth')">
+        <div>
+            <div class="sidebar-bottom-box">
+                <h4>Live Sync</h4>
+                <p>Connect your active Spotify account to track skips & context.</p>
+                <button class="btn-glow-connect" onclick="openConnectModal('oauth')">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
                     Link Account
                 </button>
@@ -1089,100 +1119,122 @@
         </div>
     </aside>
 
-    <!-- Main Content Stage -->
-    <main class="main-stage">
+    <!-- Main Workspace Stage -->
+    <main class="stage">
         
-        <!-- Header Strip -->
-        <div class="stage-header">
-            <div class="account-pill">
-                <span class="status-dot-pulse"></span>
-                <span id="account-status-text">Demonstration Library (Ready to Sync)</span>
+        <!-- Top HUD -->
+        <div class="hud-bar">
+            <div class="hud-status-pill">
+                <span class="radar-pulse"></span>
+                <span id="account-status-label">Demonstration Mode &middot; Ready to Sync</span>
             </div>
 
-            <div class="timeframe-segment">
-                <button class="timeframe-btn" data-days="1">24 Hours</button>
-                <button class="timeframe-btn active" data-days="7">7 Days</button>
-                <button class="timeframe-btn" data-days="30">30 Days</button>
-                <button class="timeframe-btn" data-days="0">All-Time</button>
+            <div class="hud-timeframe-dock">
+                <button class="timeframe-pill" data-days="1">1D</button>
+                <button class="timeframe-pill active" data-days="7">7D</button>
+                <button class="timeframe-pill" data-days="30">30D</button>
+                <button class="timeframe-pill" data-days="0">ALL</button>
             </div>
         </div>
 
-        <!-- Apple Music Editorial Hero -->
-        <div class="editorial-hero">
-            <div class="hero-left">
-                <div class="hero-tagline">Telemetry Intelligence &middot; High Fidelity</div>
-                <h1 class="hero-heading">Listen with total clarity.</h1>
-                <p class="hero-sub">Statr actively isolates track skips from completed listens, audits your playlist engagement, and maps your circadian acoustic focus.</p>
-                <div class="hero-actions">
-                    <button class="btn-primary-action" onclick="openConnectModal('oauth')">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
+        <!-- Antigravity Hero Spotlight Banner -->
+        <div class="spotlight-card hero-luminous-banner" id="hero-banner">
+            <div class="hero-left-content">
+                <div class="telemetry-tag">
+                    <span>AUDIO CONTINUITY &middot; HIGH RESOLUTION</span>
+                </div>
+                <h1 class="hero-title">Listen with total clarity.</h1>
+                <p class="hero-description">Statr actively isolates track skips from completed listens, audits playlist engagement health, and models your circadian focus curve.</p>
+                <div class="hero-cta-cluster">
+                    <button class="btn-ag-primary" onclick="openConnectModal('oauth')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
                         Connect Live Spotify
                     </button>
-                    <button class="btn-secondary-action" onclick="openConnectModal('import')">
+                    <button class="btn-ag-glass" onclick="openConnectModal('import')">
                         Upload History JSON
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- 4 Precision Gauges -->
-        <div class="metrics-strip">
-            <div class="metric-tile">
-                <div class="tile-label">Listening Volume</div>
-                <div class="tile-value" id="kpi-hours">12.2 <span style="font-size: 16px; font-weight: 500; color: var(--text-tertiary);">hrs</span></div>
-                <div class="tile-caption"><span class="badge-status badge-green">FLOW STATE</span> <span id="kpi-mins">732m total</span></div>
+        <!-- 4 3D Reactive Metric Pods -->
+        <div class="metric-quad-grid">
+            <div class="spotlight-card metric-pod-card">
+                <div class="pod-label-row">
+                    <span class="pod-label">Listening Volume</span>
+                    <div class="pod-icon-bubble">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                </div>
+                <div class="pod-number" id="kpi-hours">12.2 <span style="font-size: 18px; font-weight: 500; color: var(--text-muted);">hrs</span></div>
+                <div class="pod-footer-meta"><span class="pill-badge badge-cyan">DEEP FLOW</span> <span id="kpi-mins">732m stream</span></div>
             </div>
 
-            <div class="metric-tile">
-                <div class="tile-label">Completed Scrobbles</div>
-                <div class="tile-value" id="kpi-scrobbles">295</div>
-                <div class="tile-caption">Heard past 30s threshold</div>
+            <div class="spotlight-card metric-pod-card">
+                <div class="pod-label-row">
+                    <span class="pod-label">Completed Scrobbles</span>
+                    <div class="pod-icon-bubble">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                </div>
+                <div class="pod-number" id="kpi-scrobbles">295</div>
+                <div class="pod-footer-meta">Played &ge; 30s threshold</div>
             </div>
 
-            <div class="metric-tile">
-                <div class="tile-label">Skip Friction</div>
-                <div class="tile-value" id="kpi-skip-rate" style="color: var(--ag-emerald);">22.4%</div>
-                <div class="tile-caption" id="kpi-skip-count"><span class="badge-status badge-green">LOW FRICTION</span> 85 skips</div>
+            <div class="spotlight-card metric-pod-card">
+                <div class="pod-label-row">
+                    <span class="pod-label">Skip Friction Index</span>
+                    <div class="pod-icon-bubble">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                    </div>
+                </div>
+                <div class="pod-number" id="kpi-skip-rate" style="color: var(--ag-emerald);">22.4%</div>
+                <div class="pod-footer-meta" id="kpi-skip-details"><span class="pill-badge badge-emerald">OPTIMAL</span> 85 skips</div>
             </div>
 
-            <div class="metric-tile">
-                <div class="tile-label">Catalog Horizon</div>
-                <div class="tile-value" id="kpi-unique-tracks">10</div>
-                <div class="tile-caption"><span class="badge-status badge-green">9 ARTISTS</span> active rotation</div>
+            <div class="spotlight-card metric-pod-card">
+                <div class="pod-label-row">
+                    <span class="pod-label">Catalog Horizon</span>
+                    <div class="pod-icon-bubble">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </div>
+                </div>
+                <div class="pod-number" id="kpi-unique-tracks">10</div>
+                <div class="pod-footer-meta"><span class="pill-badge badge-cyan">9 ARTISTS</span> active rotation</div>
             </div>
         </div>
 
-        <!-- Section: Playlist Health Doctor -->
+        <!-- Playlist Doctor Section -->
         <div style="margin-bottom: 48px;">
-            <div class="section-header-row">
+            <div class="stage-section-header">
                 <div>
-                    <h2 class="section-title">Playlist Doctor</h2>
-                    <p class="section-desc">Audits where skips occur to eliminate dead tracks from your rotation.</p>
+                    <h2 class="section-h2">Playlist Doctor</h2>
+                    <p class="section-meta-desc">Audits where skips cluster to eliminate dead tracks from your rotation.</p>
                 </div>
             </div>
-            <div class="playlist-shelf-grid" id="playlists-shelf"></div>
+            <div class="playlist-glass-shelf" id="playlists-shelf"></div>
         </div>
 
-        <!-- Split Grid: Top Tracks on Repeat & Circadian Chart -->
-        <div class="split-layout">
+        <!-- Split Layout: Top Tracks & 24h Rhythm -->
+        <div class="dual-column-workspace">
             <div>
-                <div class="section-header-row">
+                <div class="stage-section-header">
                     <div>
-                        <h2 class="section-title">Heavy Rotation</h2>
-                        <p class="section-desc">Tracks with highest replay frequency.</p>
+                        <h2 class="section-h2">Heavy Rotation</h2>
+                        <p class="section-meta-desc">Tracks with highest replay frequency.</p>
                     </div>
                 </div>
-                <div class="songs-table" id="songs-container"></div>
+                <div class="spotlight-card song-rows-card" id="songs-container"></div>
             </div>
 
             <div>
-                <div class="section-header-row">
+                <div class="stage-section-header">
                     <div>
-                        <h2 class="section-title">24-Hour Rhythm</h2>
-                        <p class="section-desc">Peak music consumption hours.</p>
+                        <h2 class="section-h2">24-Hour Circadian Rhythm</h2>
+                        <p class="section-meta-desc">Completed listens vs skips across dayparts.</p>
                     </div>
                 </div>
-                <div class="chart-box" style="height: 380px;">
+                <div class="spotlight-card chart-glass-pod" style="height: 380px;">
                     <canvas id="rhythmCanvas"></canvas>
                 </div>
             </div>
@@ -1190,96 +1242,98 @@
 
     </main>
 
-    <!-- Persistent Bottom Apple Music Player Bar -->
-    <footer class="bottom-player-bar">
-        <div class="player-track-info">
-            <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" class="player-artwork" id="player-cover" alt="Art">
-            <div class="player-meta">
-                <div class="player-title" id="player-title">Midnight City</div>
-                <div class="player-sub" id="player-artist">M83 &middot; Deep Focus & Study</div>
+    <!-- Persistent Floating Dock Player -->
+    <footer class="bottom-dock-player">
+        <div class="dock-track-info">
+            <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" class="dock-cover-art" id="player-cover" alt="Art">
+            <div class="dock-meta">
+                <h4 id="player-title">Midnight City</h4>
+                <p id="player-artist">M83 &middot; Deep Focus & Study</p>
             </div>
         </div>
 
-        <div class="player-center-controls">
-            <div class="control-buttons">
-                <button class="ctrl-btn" title="Previous">
+        <div class="dock-center-controls">
+            <div class="dock-btn-row">
+                <button class="dock-icon-btn" title="Previous">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
                 </button>
-                <button class="ctrl-btn play-circle" title="Play / Pause">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <button class="dock-icon-btn dock-play-circle" title="Play / Pause" id="play-pause-btn" onclick="togglePlayState()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" id="play-pause-icon"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-                <button class="ctrl-btn" title="Next / Skip">
+                <button class="dock-icon-btn" title="Next / Skip">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                 </button>
             </div>
 
-            <div class="progress-bar-container">
-                <span class="time-label" id="time-current">1:42</span>
-                <div class="scrub-track">
-                    <div class="scrub-fill" style="width: 42%;"></div>
+            <div class="dock-scrub-bar-wrap">
+                <span class="dock-time-stamp" id="time-current">1:42</span>
+                <div class="dock-timeline-track" id="scrubber-bar" onclick="scrubPosition(event)">
+                    <div class="dock-timeline-fill" id="scrubber-fill" style="width: 42%;"></div>
                 </div>
-                <span class="time-label" id="time-total">4:03</span>
+                <span class="dock-time-stamp" id="time-total">4:03</span>
             </div>
         </div>
 
-        <div class="player-right-telemetry">
-            <div class="audio-bars">
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
+        <div class="dock-right-status">
+            <div class="dock-equalizer-bars">
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
             </div>
-            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--ag-emerald); font-weight: 600;">ACTIVE STREAM</span>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--ag-cyan); font-weight: 700;">STREAMING ACTIVE</span>
         </div>
     </footer>
 
     <!-- Connect Spotify Dialog (OAuth & Data Upload) -->
-    <div class="modal-shade" id="connect-modal" onclick="closeConnectModal(event)">
-        <div class="connect-dialog" onclick="event.stopPropagation()">
-            <div class="dialog-top">
-                <div class="dialog-title">Connect Spotify Library</div>
-                <button class="btn-close-modal" onclick="closeConnectModal()">&times;</button>
+    <div class="modal-backdrop-shield" id="connect-modal" onclick="closeConnectModal(event)">
+        <div class="modal-glass-pod" onclick="event.stopPropagation()">
+            <div class="modal-top-bar">
+                <div class="modal-title-h3">Connect Spotify Library</div>
+                <button class="modal-close-x" onclick="closeConnectModal()">&times;</button>
             </div>
 
-            <div class="dialog-tabs">
-                <button class="dialog-tab-btn active" id="tab-btn-oauth" onclick="switchModalTab('oauth')">Live Sync (OAuth)</button>
-                <button class="dialog-tab-btn" id="tab-btn-import" onclick="switchModalTab('import')">Import History (JSON)</button>
+            <div class="modal-tabs-strip">
+                <button class="modal-tab-pill active" id="tab-btn-oauth" onclick="switchModalTab('oauth')">Live Sync (OAuth)</button>
+                <button class="modal-tab-pill" id="tab-btn-import" onclick="switchModalTab('import')">Import History (JSON)</button>
             </div>
 
             <!-- Tab 1: Live Spotify OAuth Connect -->
-            <div class="dialog-body" id="modal-tab-oauth">
-                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
-                    Connect your real Spotify account directly through Spotify's secure Authorization PKCE flow.
+            <div class="modal-content-stage" id="modal-tab-oauth">
+                <p style="font-size: 13px; color: var(--text-body); margin-bottom: 20px; line-height: 1.5;">
+                    Connect your active Spotify account via Spotify's secure Authorization PKCE flow with zero backend required.
                 </p>
 
-                <div class="form-group">
-                    <label class="form-label">Spotify Client ID</label>
-                    <input type="text" id="spotify-client-id-input" class="form-input" placeholder="e.g. 4a8b1c... (From Spotify Developer Dashboard)">
-                    <p style="font-size: 11px; color: var(--text-tertiary); margin-top: 6px;">
-                        Need one? Create a free app at <a href="https://developer.spotify.com/dashboard" target="_blank" style="color: var(--apple-red); text-decoration: none;">developer.spotify.com</a> and add redirect URI: <code id="current-redirect-uri" style="color: #fff;"></code>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-family: var(--font-mono); font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
+                        Spotify Client ID
+                    </label>
+                    <input type="text" id="spotify-client-id-input" class="custom-glass-input" placeholder="e.g. 4a8b1c... (From Spotify Developer Dashboard)">
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+                        Create a free app at <a href="https://developer.spotify.com/dashboard" target="_blank" style="color: var(--ag-cyan); text-decoration: none;">developer.spotify.com</a> and add redirect URI: <code id="current-redirect-uri" style="color: #fff;"></code>
                     </p>
                 </div>
 
-                <button class="btn-connect-spotify" style="padding: 12px; font-size: 14px;" onclick="startSpotifyPKCE()">
+                <button class="btn-glow-connect" style="padding: 13px; font-size: 14px;" onclick="startSpotifyPKCE()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
                     Authorize with Spotify
                 </button>
             </div>
 
             <!-- Tab 2: JSON File Import -->
-            <div class="dialog-body" id="modal-tab-import" style="display: none;">
-                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
-                    Download your data package from <a href="https://www.spotify.com/account/privacy/" target="_blank" style="color: var(--apple-red); text-decoration: none;">Spotify Privacy Settings</a>, then drag your <code>StreamingHistory*.json</code> or <code>endsong_*.json</code> file here to instantly compute lifetime analytics.
+            <div class="modal-content-stage" id="modal-tab-import" style="display: none;">
+                <p style="font-size: 13px; color: var(--text-body); margin-bottom: 20px; line-height: 1.5;">
+                    Export your lifetime streaming history from <a href="https://www.spotify.com/account/privacy/" target="_blank" style="color: var(--ag-cyan); text-decoration: none;">Spotify Privacy Settings</a>, then drop your <code>StreamingHistory*.json</code> or <code>endsong_*.json</code> file below.
                 </p>
 
-                <div class="upload-dropzone" onclick="document.getElementById('json-file-input').click()">
-                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <div class="dropzone-glass-pod" onclick="document.getElementById('json-file-input').click()">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 12px; color: var(--ag-cyan);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px;">Choose file or drag & drop</div>
-                    <div style="font-size: 12px; color: var(--text-tertiary);">Supports StreamingHistory.json, endsong.json, or Spotify data .zip</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Supports StreamingHistory.json, endsong.json, or Spotify data packages</div>
                     <input type="file" id="json-file-input" style="display: none;" accept=".json" onchange="handleFileUpload(event)">
                 </div>
 
-                <div id="import-status-text" style="font-size: 12px; font-family: var(--font-mono); margin-top: 14px; text-align: center; color: var(--ag-emerald);"></div>
+                <div id="import-status-msg" style="font-size: 12px; font-family: var(--font-mono); margin-top: 14px; text-align: center; color: var(--ag-emerald);"></div>
             </div>
         </div>
     </div>
@@ -1287,8 +1341,9 @@
     <script>
         let selectedDays = 7;
         let chartInstance = null;
+        let isPlaying = true;
 
-        // Realistic Fallback / Demonstration Dataset
+        // Demonstration Dataset
         let appData = {
             summary: {
                 total_played_hours: 12.2,
@@ -1363,63 +1418,175 @@
             ]
         };
 
-        // Render UI
+        // Pointer Physics & Dynamic Living Canvas
+        const canvas = document.getElementById('ambient-canvas');
+        const ctx = canvas.getContext('2d');
+        const cursorHalo = document.getElementById('cursor-halo');
+
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2, targetX: window.innerWidth / 2, targetY: window.innerHeight / 2, vx: 0, vy: 0 };
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(60, Math.floor((canvas.width * canvas.height) / 25000));
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    radius: Math.random() * 2 + 1,
+                    baseAlpha: Math.random() * 0.3 + 0.1
+                });
+            }
+        }
+
+        function renderCanvas() {
+            // Smooth mouse interpolation (lerp)
+            mouse.x += (mouse.targetX - mouse.x) * 0.08;
+            mouse.y += (mouse.targetY - mouse.y) * 0.08;
+
+            cursorHalo.style.left = `${mouse.x}px`;
+            cursorHalo.style.top = `${mouse.y}px`;
+            document.documentElement.style.setProperty('--cursor-x', `${(mouse.x / window.innerWidth) * 100}%`);
+            document.documentElement.style.setProperty('--cursor-y', `${(mouse.y / window.innerHeight) * 100}%`);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Connective particle physics
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                // Subtle gravitational pull toward pointer
+                const dx = mouse.x - p.x;
+                const dy = mouse.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 220) {
+                    p.x += (dx / dist) * 0.4;
+                    p.y += (dy / dist) * 0.4;
+                }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 240, 255, ${p.baseAlpha})`;
+                ctx.fill();
+
+                // Draw luminous connecting lines between near nodes
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const d = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (d < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${0.12 * (1 - d / 120)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(renderCanvas);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('mousemove', (e) => {
+            mouse.targetX = e.clientX;
+            mouse.targetY = e.clientY;
+        });
+
+        // 3D Tilt & Pointer Spotlight on Glass Cards
+        function bindCardSpotlights() {
+            document.querySelectorAll('.spotlight-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--card-mouse-x', `${x}px`);
+                    card.style.setProperty('--card-mouse-y', `${y}px`);
+
+                    // 3D Perspective Tilt Physics
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = -((y - centerY) / centerY) * 4;
+                    const rotateY = ((x - centerX) / centerX) * 4;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.removeProperty('--card-mouse-x');
+                    card.style.removeProperty('--card-mouse-y');
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+                });
+            });
+        }
+
+        // Render Dashboard Metrics, Playlists, Songs, Charts
         function renderDashboard() {
-            const summary = appData.summary;
-            document.getElementById('kpi-hours').innerHTML = `${summary.total_played_hours} <span style="font-size: 16px; font-weight: 500; color: var(--text-tertiary);">hrs</span>`;
-            document.getElementById('kpi-mins').innerText = `${summary.total_played_minutes}m total`;
-            document.getElementById('kpi-scrobbles').innerText = summary.total_listens;
-            document.getElementById('kpi-skip-rate').innerText = `${summary.skip_rate_pct}%`;
-            document.getElementById('kpi-skip-count').innerHTML = `<span class="badge-status ${summary.skip_rate_pct < 25 ? 'badge-green' : 'badge-red'}">${summary.skip_rate_pct < 25 ? 'OPTIMAL' : 'HIGH SKIPS'}</span> ${summary.total_skips} skips`;
-            document.getElementById('kpi-unique-tracks').innerText = summary.unique_tracks;
+            const s = appData.summary;
+            document.getElementById('kpi-hours').innerHTML = `${s.total_played_hours} <span style="font-size: 18px; font-weight: 500; color: var(--text-muted);">hrs</span>`;
+            document.getElementById('kpi-mins').innerText = `${s.total_played_minutes}m stream`;
+            document.getElementById('kpi-scrobbles').innerText = s.total_listens;
+            document.getElementById('kpi-skip-rate').innerText = `${s.skip_rate_pct}%`;
+            document.getElementById('kpi-skip-details').innerHTML = `<span class="pill-badge ${s.skip_rate_pct < 25 ? 'badge-emerald' : 'badge-crimson'}">${s.skip_rate_pct < 25 ? 'OPTIMAL' : 'HIGH SKIPS'}</span> ${s.total_skips} skips`;
+            document.getElementById('kpi-unique-tracks').innerText = s.unique_tracks;
 
             // Render Playlists
-            const plShelf = document.getElementById('playlists-shelf');
-            plShelf.innerHTML = appData.playlists.map(p => {
-                const badgeClass = p.health_score > 75 ? 'badge-green' : (p.health_score > 50 ? 'badge-amber' : 'badge-red');
-                return `
-                    <div class="playlist-card">
-                        <div class="pl-art-wrap">
-                            <img src="${p.image_url}" class="pl-img" alt="${p.playlist_name}">
-                            <div class="pl-health-floating-tag" style="color: ${p.health_score > 75 ? 'var(--ag-emerald)' : 'var(--ag-crimson)'};">
-                                ${p.health_score}/100 HEALTH
-                            </div>
-                        </div>
-                        <div class="pl-info">
-                            <h3>${p.playlist_name}</h3>
-                            <p>${(p.total_minutes / 60).toFixed(1)} hrs streamed &middot; ${p.skip_rate_pct}% skips</p>
-                        </div>
-                        <div class="pl-stats-bar">
-                            <span>Plays: <strong>${p.total_plays}</strong></span>
-                            <span>Skips: <strong style="color: var(--ag-crimson);">${p.total_skips}</strong></span>
+            const shelf = document.getElementById('playlists-shelf');
+            shelf.innerHTML = appData.playlists.map(p => `
+                <div class="spotlight-card playlist-interactive-tile">
+                    <div class="pl-visual-wrap">
+                        <img src="${p.image_url}" class="pl-artwork-img" alt="${p.playlist_name}">
+                        <div class="pl-health-score-floating" style="color: ${p.health_score > 75 ? 'var(--ag-emerald)' : 'var(--ag-crimson)'};">
+                            ${p.health_score}/100 HEALTH
                         </div>
                     </div>
-                `;
-            }).join('');
-
-            // Render Top Songs
-            const songsContainer = document.getElementById('songs-container');
-            songsContainer.innerHTML = appData.tracks.map((t, i) => `
-                <div class="song-row">
-                    <div class="song-index">${i + 1}</div>
-                    <img src="${t.image_url}" class="song-thumb" alt="${t.name}">
-                    <div class="song-details">
-                        <div class="song-title">${t.name}</div>
-                        <div class="song-artist">${t.artists}</div>
+                    <div class="pl-tile-details">
+                        <h3>${p.playlist_name}</h3>
+                        <p>${(p.total_minutes / 60).toFixed(1)} hrs &middot; ${p.skip_rate_pct}% skips</p>
                     </div>
-                    <div class="song-streams">
-                        <div class="song-plays">${t.play_count} plays</div>
-                        <div class="song-skips">${t.skip_count} skips</div>
+                    <div class="pl-stats-footer">
+                        <span>Plays: <strong>${p.total_plays}</strong></span>
+                        <span>Skips: <strong style="color: var(--ag-crimson);">${p.total_skips}</strong></span>
                     </div>
                 </div>
             `).join('');
 
-            // Render Chart
+            // Render Songs
+            const songsContainer = document.getElementById('songs-container');
+            songsContainer.innerHTML = appData.tracks.map((t, i) => `
+                <div class="song-strip-row">
+                    <div class="song-rank-idx">${i + 1}</div>
+                    <img src="${t.image_url}" class="song-art-thumbnail" alt="${t.name}">
+                    <div class="song-info-meta">
+                        <div class="song-name-h4">${t.name}</div>
+                        <div class="song-artist-sub">${t.artists}</div>
+                    </div>
+                    <div class="song-stats-col">
+                        <div class="song-plays-count">${t.play_count} plays</div>
+                        <div class="song-skips-count">${t.skip_count} skips</div>
+                    </div>
+                </div>
+            `).join('');
+
             renderChart();
+            bindCardSpotlights();
         }
 
         function renderChart() {
-            const ctx = document.getElementById('rhythmCanvas').getContext('2d');
+            const canvas = document.getElementById('rhythmCanvas');
+            const ctx = canvas.getContext('2d');
             const completed = Array(24).fill(0);
             const skips = Array(24).fill(0);
 
@@ -1431,9 +1598,7 @@
                 }
             });
 
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
+            if (chartInstance) chartInstance.destroy();
 
             chartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -1443,13 +1608,13 @@
                         {
                             label: 'Listens',
                             data: completed,
-                            backgroundColor: '#FA2D48',
+                            backgroundColor: '#00F0FF',
                             borderRadius: 4
                         },
                         {
                             label: 'Skips',
                             data: skips,
-                            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.65)',
                             borderRadius: 4
                         }
                     ]
@@ -1459,21 +1624,58 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            labels: { color: '#A1A1A6', font: { family: '-apple-system', size: 11 } }
+                            labels: { color: '#94A3B8', font: { family: 'JetBrains Mono', size: 11 } }
                         }
                     },
                     scales: {
                         x: {
-                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-                            ticks: { color: '#6E6E73', font: { size: 10 } }
+                            grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                            ticks: { color: '#64748B', font: { family: 'JetBrains Mono', size: 10 } }
                         },
                         y: {
-                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-                            ticks: { color: '#6E6E73', precision: 0 }
+                            grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                            ticks: { color: '#64748B', precision: 0 }
                         }
                     }
                 }
             });
+        }
+
+        // View Switcher & Smooth Auto-Scroll
+        function switchStageView(viewName) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
+
+            if (viewName === 'overview') {
+                document.querySelector('main.stage').scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (viewName === 'playlists') {
+                document.getElementById('playlists-shelf').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else if (viewName === 'songs') {
+                document.getElementById('songs-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else if (viewName === 'rhythms') {
+                document.getElementById('rhythmCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Play / Pause Audio Control
+        function togglePlayState() {
+            isPlaying = !isPlaying;
+            const icon = document.getElementById('play-pause-icon');
+            const bars = document.querySelectorAll('.eq-bar');
+            if (isPlaying) {
+                icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                bars.forEach(b => b.style.animationPlayState = 'running');
+            } else {
+                icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                bars.forEach(b => b.style.animationPlayState = 'paused');
+            }
+        }
+
+        function scrubPosition(e) {
+            const track = document.getElementById('scrubber-bar');
+            const rect = track.getBoundingClientRect();
+            const pct = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+            document.getElementById('scrubber-fill').style.width = `${pct}%`;
         }
 
         // Modal Controls
@@ -1483,45 +1685,42 @@
             switchModalTab(defaultTab);
         }
 
-        function closeConnectModal(e) {
+        function closeConnectModal() {
             document.getElementById('connect-modal').style.display = 'none';
         }
 
         function switchModalTab(tabId) {
-            document.querySelectorAll('.dialog-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.modal-tab-pill').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-btn-${tabId}`).classList.add('active');
             document.getElementById('modal-tab-oauth').style.display = tabId === 'oauth' ? 'block' : 'none';
             document.getElementById('modal-tab-import').style.display = tabId === 'import' ? 'block' : 'none';
         }
 
-        // Spotify OAuth PKCE Flow Directly in Browser
+        // Spotify OAuth PKCE Flow
         async function startSpotifyPKCE() {
             const clientId = document.getElementById('spotify-client-id-input').value.trim() || localStorage.getItem('statr_spotify_client_id');
             if (!clientId) {
-                alert("Please enter your Spotify Client ID. You can create one for free at developer.spotify.com");
+                alert("Please enter your Spotify Client ID from developer.spotify.com");
                 return;
             }
             localStorage.setItem('statr_spotify_client_id', clientId);
 
-            // Generate PKCE code verifier and challenge
             const verifier = generateRandomString(64);
             const hashed = await sha256(verifier);
             const codeChallenge = base64encode(hashed);
-
             localStorage.setItem('statr_code_verifier', verifier);
 
             const redirectUri = window.location.origin;
             const scopes = 'user-read-playback-state user-read-currently-playing user-read-recently-played user-top-read playlist-read-private';
-
             const authUrl = `https://accounts.spotify.com/authorize?client_id=${encodeURIComponent(clientId)}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}&code_challenge_method=S256&code_challenge=${encodeURIComponent(codeChallenge)}`;
 
             window.location.href = authUrl;
         }
 
         function generateRandomString(length) {
-            const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-            const values = crypto.getRandomValues(new Uint8Array(length));
-            return values.reduce((acc, x) => acc + possible[x % possible.length], "");
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+            const vals = crypto.getRandomValues(new Uint8Array(length));
+            return vals.reduce((acc, x) => acc + chars[x % chars.length], "");
         }
 
         async function sha256(plain) {
@@ -1532,12 +1731,10 @@
 
         function base64encode(input) {
             return btoa(String.fromCharCode(...new Uint8Array(input)))
-                .replace(/=/g, '')
-                .replace(/\+/g, '-')
-                .replace(/\//g, '_');
+                .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
         }
 
-        // Handle OAuth Callback on return
+        // OAuth Token Verification on Return
         async function handleSpotifyCallback() {
             const params = new URLSearchParams(window.location.search);
             const code = params.get('code');
@@ -1562,7 +1759,7 @@
                     if (data.access_token) {
                         localStorage.setItem('statr_access_token', data.access_token);
                         window.history.replaceState({}, document.title, window.location.pathname);
-                        document.getElementById('account-status-text').innerText = "Live Spotify Connected";
+                        document.getElementById('account-status-label').innerText = "Live Spotify Connected";
                         fetchLiveSpotifyStats(data.access_token);
                     }
                 } catch (e) {
@@ -1571,12 +1768,11 @@
             }
         }
 
-        // Fetch Real Live Spotify Analytics
+        // Fetch Live Spotify Data
         async function fetchLiveSpotifyStats(token) {
             try {
-                const [topTracksRes, recentRes, playerRes] = await Promise.all([
+                const [topTracksRes, playerRes] = await Promise.all([
                     fetch('https://api.spotify.com/v1/me/top/tracks?limit=10&time_range=short_term', { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch('https://api.spotify.com/v1/me/player/recently-played?limit=50', { headers: { 'Authorization': `Bearer ${token}` } }),
                     fetch('https://api.spotify.com/v1/me/player', { headers: { 'Authorization': `Bearer ${token}` } })
                 ]);
 
@@ -1601,14 +1797,13 @@
                         }
                     }
                 }
-
                 renderDashboard();
             } catch (err) {
                 console.error("Spotify API error:", err);
             }
         }
 
-        // Handle JSON Data File Upload
+        // Handle JSON Data Upload
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1618,7 +1813,6 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     const history = Array.isArray(data) ? data : (data.items || []);
-                    
                     let totalMs = 0;
                     let skips = 0;
                     const artistCounts = {};
@@ -1628,10 +1822,8 @@
                         const ms = item.msPlayed || item.ms_played || 0;
                         const track = item.trackName || item.master_metadata_track_name || 'Unknown Track';
                         const artist = item.artistName || item.master_metadata_album_artist_name || 'Unknown Artist';
-                        
                         totalMs += ms;
                         if (ms < 30000) skips++;
-
                         trackCounts[track] = (trackCounts[track] || 0) + 1;
                         artistCounts[artist] = (artistCounts[artist] || 0) + 1;
                     });
@@ -1649,9 +1841,8 @@
                         unique_artists: Object.keys(artistCounts).length
                     };
 
-                    document.getElementById('import-status-text').innerText = `✓ Parsed ${history.length} listening events!`;
-                    document.getElementById('account-status-text').innerText = `Imported History (${history.length} streams)`;
-                    
+                    document.getElementById('import-status-msg').innerText = `✓ Processed ${history.length} listening streams!`;
+                    document.getElementById('account-status-label').innerText = `Imported History (${history.length} streams)`;
                     renderDashboard();
                     setTimeout(closeConnectModal, 1500);
                 } catch (err) {
@@ -1661,22 +1852,9 @@
             reader.readAsText(file);
         }
 
-        function switchView(viewName) {
-            document.querySelectorAll('.nav-item button').forEach(btn => btn.classList.remove('active'));
-            if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
-
-            if (viewName === 'overview') {
-                document.querySelector('main.main-stage').scrollTo({ top: 0, behavior: 'smooth' });
-            } else if (viewName === 'playlists') {
-                document.getElementById('playlists-shelf').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else if (viewName === 'songs') {
-                document.getElementById('songs-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else if (viewName === 'rhythms') {
-                document.getElementById('rhythmCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
-
         window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas();
+            renderCanvas();
             renderDashboard();
             handleSpotifyCallback();
         });
