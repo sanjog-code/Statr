@@ -1,7 +1,7 @@
-# PulseBeat 🎧
+# Statr 🎧
 ### Real-Time Spotify Listening & Playlist Health Analytics
 
-PulseBeat is a lightweight, zero-dependency local daemon and analytics dashboard that continuously tracks your Spotify playback, preserves playlist context, detects track skips vs completed scrobbles, and gives you deep playlist health metrics.
+Statr is a lightweight, zero-dependency local daemon and analytics dashboard that continuously tracks your Spotify playback, preserves playlist context, detects track skips vs completed scrobbles, and gives you deep playlist health metrics.
 
 ---
 
