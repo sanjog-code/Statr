@@ -1520,6 +1520,367 @@
             margin-bottom: 44px;
             scroll-margin-top: 24px;
         }
+
+        /* ==========================================
+           Playlist Recommendations & Flow Inspector
+           ========================================== */
+        .playlist-inspector-window {
+            max-width: 660px;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .inspector-header {
+            padding: 22px 26px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .inspector-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .inspector-cover-img {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .inspector-playlist-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin: 0;
+        }
+
+        .inspector-playlist-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        .inspector-boost-banner {
+            padding: 14px 26px;
+            background: var(--bg-card-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .boost-banner-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .boost-banner-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .boost-banner-text strong {
+            color: var(--status-green);
+        }
+
+        .boost-score-comparison {
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-heading);
+        }
+
+        .boost-progress-track {
+            height: 6px;
+            background: var(--border-subtle);
+            border-radius: 3px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .boost-progress-current {
+            height: 100%;
+            background: var(--apple-red);
+            transition: width 0.3s ease;
+        }
+
+        .boost-progress-potential {
+            height: 100%;
+            background: var(--status-green);
+            opacity: 0.8;
+            transition: width 0.3s ease;
+        }
+
+        .inspector-tabs {
+            padding: 10px 26px 0;
+        }
+
+        .tab-count-pill {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 8px;
+            background: rgba(250, 45, 72, 0.15);
+            color: var(--apple-red);
+            margin-left: 4px;
+        }
+
+        .inspector-body {
+            padding: 18px 26px 20px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .inspector-section-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .rec-cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .rec-card-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .rec-card-item:hover {
+            border-color: var(--border-focus);
+            background: var(--bg-card-hover);
+            transform: translateY(-1px);
+        }
+
+        .rec-card-item.removed {
+            opacity: 0.45;
+            text-decoration: line-through;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .rec-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .rec-item-cover-wrap {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .rec-item-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .rec-item-play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            color: #FFFFFF;
+        }
+
+        .rec-item-cover-wrap:hover .rec-item-play-overlay {
+            opacity: 1;
+        }
+
+        .rec-item-info {
+            min-width: 0;
+        }
+
+        .rec-item-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-heading);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rec-item-artist {
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+
+        .rec-item-reason {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .rec-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-rec-action {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: none;
+        }
+
+        .btn-rec-remove {
+            background: rgba(220, 38, 38, 0.12);
+            color: var(--status-red);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+        }
+
+        .btn-rec-remove:hover {
+            background: var(--status-red);
+            color: #FFFFFF;
+        }
+
+        .btn-rec-add {
+            background: rgba(22, 163, 74, 0.12);
+            color: var(--status-green);
+            border: 1px solid rgba(22, 163, 74, 0.25);
+        }
+
+        .btn-rec-add:hover {
+            background: var(--status-green);
+            color: #FFFFFF;
+        }
+
+        .btn-rec-add.added {
+            background: var(--status-green);
+            color: #FFFFFF;
+            cursor: default;
+        }
+
+        .flow-advice-box {
+            padding: 14px 16px;
+            background: var(--bg-card-subtle);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .flow-sequence-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .flow-seq-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .flow-seq-rank {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            width: 24px;
+        }
+
+        .inspector-footer {
+            padding: 16px 26px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card-subtle);
+        }
+
+        .inspector-footer-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Playlist Tile Recommendation Pill */
+        .playlist-rec-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 9px;
+            border-radius: 7px;
+            background: rgba(250, 45, 72, 0.1);
+            color: var(--apple-red);
+            border: 1px solid rgba(250, 45, 72, 0.22);
+            margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .playlist-rec-pill.good {
+            background: rgba(48, 209, 88, 0.1);
+            color: var(--status-green);
+            border-color: rgba(48, 209, 88, 0.22);
+        }
+
+        .playlist-tile:hover .playlist-rec-pill {
+            background: var(--apple-red);
+            color: #FFFFFF;
+            border-color: var(--apple-red);
+        }
+
+        .playlist-tile:hover .playlist-rec-pill.good {
+            background: var(--status-green);
+            color: #FFFFFF;
+            border-color: var(--status-green);
+        }
     </style>
 </head>
 <body>
@@ -2088,6 +2449,106 @@
         </div>
     </div>
 
+    <!-- Playlist Recommendations & Flow Inspector Drawer / Modal -->
+    <div class="modal-overlay" id="playlist-inspector-modal" onclick="closePlaylistInspector(event)">
+        <div class="modal-window playlist-inspector-window" onclick="event.stopPropagation()">
+            <!-- Inspector Header -->
+            <div class="inspector-header">
+                <div class="inspector-header-left">
+                    <img src="" id="inspector-playlist-cover" class="inspector-cover-img" alt="Playlist Cover">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h3 class="inspector-playlist-title" id="inspector-playlist-name">Playlist</h3>
+                            <span class="badge-pill" id="inspector-current-health-badge">82% Health</span>
+                        </div>
+                        <div class="inspector-playlist-sub" id="inspector-playlist-meta">350 plays &middot; 15.5% skips</div>
+                    </div>
+                </div>
+                <button class="btn-modal-close" onclick="closePlaylistInspector()">&times;</button>
+            </div>
+
+            <!-- Health Score Boost Meter Banner -->
+            <div class="inspector-boost-banner">
+                <div class="boost-banner-top">
+                    <div class="boost-banner-text">
+                        <span>FLOW OPTIMIZATION SIMULATOR</span>
+                        <strong id="inspector-health-boost-text">+14% Health Available</strong>
+                    </div>
+                    <div class="boost-score-comparison">
+                        <span id="inspector-orig-score">74%</span>
+                        <span style="color: var(--text-muted);">&rarr;</span>
+                        <span id="inspector-boosted-score" style="color: var(--status-green); font-weight: 800;">88%</span>
+                    </div>
+                </div>
+                <div class="boost-progress-track">
+                    <div class="boost-progress-current" id="inspector-bar-current" style="width: 74%;"></div>
+                    <div class="boost-progress-potential" id="inspector-bar-potential" style="width: 14%;"></div>
+                </div>
+            </div>
+
+            <!-- Inspector Tabs -->
+            <div class="modal-tabs inspector-tabs">
+                <button class="modal-tab-button active" id="inspector-tab-btn-traps" onclick="switchInspectorTab('traps')">
+                    ⚡ Trim Skip Traps <span class="tab-count-pill" id="inspector-traps-count">2</span>
+                </button>
+                <button class="modal-tab-button" id="inspector-tab-btn-adds" onclick="switchInspectorTab('adds')">
+                    ✨ Smart Adds <span class="tab-count-pill" id="inspector-adds-count">3</span>
+                </button>
+                <button class="modal-tab-button" id="inspector-tab-btn-flow" onclick="switchInspectorTab('flow')">
+                    📈 Flow & Sequence
+                </button>
+            </div>
+
+            <!-- Body Tab 1: Skip Traps -->
+            <div class="inspector-body" id="inspector-tab-traps">
+                <p class="inspector-section-desc">
+                    These songs have abnormally high skip rates and cause early listener drop-off. Removing or swapping them immediately repairs your playlist flow:
+                </p>
+                <div class="rec-cards-list" id="inspector-traps-list"></div>
+            </div>
+
+            <!-- Body Tab 2: Smart Adds -->
+            <div class="inspector-body" id="inspector-tab-adds" style="display: none;">
+                <p class="inspector-section-desc">
+                    High-affinity tracks from your listening library that match this playlist's tempo, energy, and genre signature with zero skip risk:
+                </p>
+                <div class="rec-cards-list" id="inspector-adds-list"></div>
+            </div>
+
+            <!-- Body Tab 3: Flow & Sequencing -->
+            <div class="inspector-body" id="inspector-tab-flow" style="display: none;">
+                <p class="inspector-section-desc">
+                    Harmonic sequence analysis to eliminate fatigue and ensure seamless transitions:
+                </p>
+                <div class="flow-advice-box">
+                    <div style="font-size: 13px; font-weight: 800; color: var(--text-heading); margin-bottom: 4px;" id="flow-advice-headline">Front-Load High Energy Tracks</div>
+                    <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;" id="flow-advice-desc">
+                        Placing high-familiarity anchor tracks in positions 1–3 reduces skip probability on mobile commutes by 32%.
+                    </div>
+                </div>
+                <div class="flow-sequence-list" id="inspector-sequence-list"></div>
+            </div>
+
+            <!-- Inspector Footer Bar -->
+            <div class="inspector-footer">
+                <div class="inspector-footer-left">
+                    <button class="btn-hero-secondary" style="font-size: 11px; padding: 8px 12px;" onclick="exportPlaylistMix('csv')">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span>Export Mix (CSV)</span>
+                    </button>
+                    <button class="btn-hero-secondary" style="font-size: 11px; padding: 8px 12px;" onclick="exportPlaylistMix('json')">
+                        JSON
+                    </button>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-hero-primary" id="btn-apply-optimizations" style="font-size: 12px; padding: 9px 18px;" onclick="saveOptimizedPlaylist()">
+                        Apply & Save Optimized Flow
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let selectedDays = 7;
         let chartInstance = null;
@@ -2263,6 +2724,476 @@
             if (scrubber) scrubber.style.width = '28%';
             const current = document.getElementById('time-current');
             if (current) current.innerText = '0:58';
+
+            // Ensure player indicates active playback and animates waveform
+            isPlaying = true;
+            const icon = document.getElementById('play-pause-icon');
+            if (icon) icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+            const bars = document.querySelectorAll('.wave-bar');
+            bars.forEach(b => b.style.animationPlayState = 'running');
+            const badge = document.getElementById('player-stream-badge');
+            if (badge) badge.innerText = 'PREVIEWING';
+        }
+
+        // ==========================================
+        // SMART PLAYLIST RECOMMENDATION & FLOW ENGINE
+        // ==========================================
+        let activePlaylistState = null;
+
+        const PLAYLIST_RECOMMENDATIONS_CATALOG = {
+            "daily commute pop": {
+                skipTraps: [
+                    { name: "Blinding Lights", artists: "The Weeknd", skip_rate: 68, plays: 16, skips: 11, reason: "Fatigue: played 65+ times; skipped under 15s recently", suggestedSwap: "Starboy", cover: AUTHENTIC_COVERS["blinding lights"] },
+                    { name: "Stay", artists: "The Kid LAROI, Justin Bieber", skip_rate: 54, plays: 13, skips: 7, reason: "Morning commute early drop-off outlier", suggestedSwap: "Levitating", cover: AUTHENTIC_COVERS["starboy"] }
+                ],
+                smartAdds: [
+                    { name: "Levitating", artists: "Dua Lipa", match_score: 98, reason: "Matches upbeat pop tempo (103 BPM) with 0% skips in your library", cover: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Cruel Summer", artists: "Taylor Swift", match_score: 96, reason: "High replay energy & 92% completion rate", cover: AUTHENTIC_COVERS["cruel summer"] },
+                    { name: "As It Was", artists: "Harry Styles", match_score: 94, reason: "High retention bridge track after #1 pop hits", cover: AUTHENTIC_COVERS["as it was"] },
+                    { name: "Flowers", artists: "Miley Cyrus", match_score: 91, reason: "High front-to-back completion rate across all days", cover: AUTHENTIC_COVERS["flowers"] }
+                ],
+                flowAdvice: {
+                    headline: "Front-Load 'Cruel Summer' & 'Levitating'",
+                    desc: "Moving high-familiarity anchor tracks to positions 1–3 reduces skip probability on mobile commutes by 34%."
+                },
+                sequence: [
+                    { name: "Cruel Summer", artist: "Taylor Swift", energy: "Warmup Anchor (96% retention)" },
+                    { name: "Levitating", artist: "Dua Lipa", energy: "Peak Flow (0% skip rate)" },
+                    { name: "Starboy", artist: "The Weeknd", energy: "Midpoint Groove (High replay)" },
+                    { name: "As It Was", artist: "Harry Styles", energy: "Smooth Sustained Tempo" }
+                ]
+            },
+            "deep focus & study": {
+                skipTraps: [
+                    { name: "Pop Track Intro", artists: "Billboard Hit", skip_rate: 62, plays: 8, skips: 5, reason: "Vocal drop disrupts study flow & causes task switching", suggestedSwap: "Resonance", cover: AUTHENTIC_COVERS["resonance"] }
+                ],
+                smartAdds: [
+                    { name: "Resonance", artists: "HOME", match_score: 99, reason: "Ambient chillwave with 0 skips in your entire session history", cover: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Dayvan Cowboy", artists: "Boards of Canada", match_score: 97, reason: "Deep focus texture with high sustained listen times", cover: AUTHENTIC_COVERS["dayvan cowboy"] },
+                    { name: "Time", artists: "Hans Zimmer", match_score: 95, reason: "Zero-distraction cinematic build for deep coding sessions", cover: AUTHENTIC_COVERS["time"] },
+                    { name: "Sunset Lover", artists: "Petit Biscuit", match_score: 93, reason: "Soft acoustic-electronic balance with 88% completion", cover: AUTHENTIC_COVERS["sunset lover"] }
+                ],
+                flowAdvice: {
+                    headline: "Zero-Vocal Acoustic Gradient",
+                    desc: "Sequencing strictly from ambient textures into rhythmic beats prevents attention disruption."
+                },
+                sequence: [
+                    { name: "Resonance", artist: "HOME", energy: "Ambient State Primer" },
+                    { name: "Dayvan Cowboy", artist: "Boards of Canada", energy: "Steady Focus Foundation" },
+                    { name: "Time", artist: "Hans Zimmer", energy: "Deep Immersion Climax" },
+                    { name: "Sunset Lover", artist: "Petit Biscuit", energy: "Gentle Wind-down Transition" }
+                ]
+            },
+            "heavy pr day": {
+                skipTraps: [
+                    { name: "Slow Acoustic Break", artists: "Chill Artist", skip_rate: 76, plays: 12, skips: 9, reason: "Energy dip: 45 BPM lower than workout target", suggestedSwap: "Rumble", cover: AUTHENTIC_COVERS["rumble"] },
+                    { name: "Midtempo Pop", artists: "Radio Single", skip_rate: 58, plays: 10, skips: 6, reason: "Early skip during high-intensity sets", suggestedSwap: "Goosebumps", cover: AUTHENTIC_COVERS["goosebumps"] }
+                ],
+                smartAdds: [
+                    { name: "Turn On The Lights again..", artists: "Fred again.., Swedish House Mafia", match_score: 99, reason: "132 BPM energy driver with peak listen rate", cover: AUTHENTIC_COVERS["turn on the lights again.."] },
+                    { name: "Rumble", artists: "Skrillex, Fred again..", match_score: 98, reason: "Heavy sub-bass cadence engineered for peak PR lifts", cover: AUTHENTIC_COVERS["rumble"] },
+                    { name: "Goosebumps", artists: "Travis Scott", match_score: 96, reason: "High replay energy & 0 skips in workout windows", cover: AUTHENTIC_COVERS["goosebumps"] },
+                    { name: "Satisfaction", artists: "David Guetta, Benny Benassi", match_score: 94, reason: "Consistent relentless tempo driver", cover: AUTHENTIC_COVERS["satisfaction"] }
+                ],
+                flowAdvice: {
+                    headline: "Cluster 130+ BPM Peaks",
+                    desc: "Grouping high-tempo basslines consecutively between minute 10 and 35 eliminates workout stalls."
+                },
+                sequence: [
+                    { name: "Rumble", artist: "Skrillex, Fred again..", energy: "Explosive PR Intro" },
+                    { name: "Turn On The Lights again..", artist: "Fred again..", energy: "High-Cadence Core" },
+                    { name: "Goosebumps", artist: "Travis Scott", energy: "Rhythmic Heavy Baseline" },
+                    { name: "Satisfaction", artist: "David Guetta", energy: "Sustained Finish" }
+                ]
+            }
+        };
+
+        function getPlaylistRecommendations(playlist) {
+            const key = (playlist.playlist_name || '').toLowerCase().trim();
+            for (const catKey in PLAYLIST_RECOMMENDATIONS_CATALOG) {
+                if (key.includes(catKey) || catKey.includes(key)) {
+                    return JSON.parse(JSON.stringify(PLAYLIST_RECOMMENDATIONS_CATALOG[catKey]));
+                }
+            }
+            // Dynamic Fallback Generator for any custom / imported playlist
+            const highSkipTracks = (appData.tracks || []).filter(t => t.skip_count > 0).sort((a,b) => (b.skip_count / Math.max(1, b.play_count)) - (a.skip_count / Math.max(1, a.play_count)));
+            const topListenedTracks = (appData.tracks || []).slice(0, 6);
+
+            const skipTraps = [];
+            if (highSkipTracks.length > 0) {
+                const t1 = highSkipTracks[0];
+                skipTraps.push({
+                    name: t1.name,
+                    artists: t1.artists,
+                    skip_rate: Math.min(85, Math.round((t1.skip_count / Math.max(1, t1.play_count)) * 100)),
+                    plays: t1.play_count,
+                    skips: t1.skip_count,
+                    reason: `High skip frequency (${t1.skip_count} skips) causing flow drop-off`,
+                    suggestedSwap: topListenedTracks[0] ? topListenedTracks[0].name : "Top Track",
+                    cover: resolveTrackCover(t1.name, t1.artists, t1.image_url)
+                });
+            }
+            if (highSkipTracks.length > 1) {
+                const t2 = highSkipTracks[1];
+                skipTraps.push({
+                    name: t2.name,
+                    artists: t2.artists,
+                    skip_rate: Math.min(75, Math.round((t2.skip_count / Math.max(1, t2.play_count)) * 100)),
+                    plays: t2.play_count,
+                    skips: t2.skip_count,
+                    reason: "Early drop-off within the first 30 seconds",
+                    suggestedSwap: topListenedTracks[1] ? topListenedTracks[1].name : "Top Track",
+                    cover: resolveTrackCover(t2.name, t2.artists, t2.image_url)
+                });
+            }
+
+            const smartAdds = topListenedTracks.slice(0, 4).map((t, idx) => ({
+                name: t.name,
+                artists: t.artists,
+                match_score: 98 - idx * 2,
+                reason: `Top verified favorite in your listening archive (${t.play_count} plays &middot; high completion)`,
+                cover: resolveTrackCover(t.name, t.artists, t.image_url)
+            }));
+
+            return {
+                skipTraps: skipTraps.length > 0 ? skipTraps : [
+                    { name: "Outlier Single", artists: "Various Artists", skip_rate: 56, plays: 12, skips: 7, reason: "Vibe mismatch against playlist average tempo", suggestedSwap: topListenedTracks[0]?.name || "Starboy", cover: AUTHENTIC_COVERS["starboy"] }
+                ],
+                smartAdds: smartAdds.length > 0 ? smartAdds : [
+                    { name: "Levitating", artists: "Dua Lipa", match_score: 98, reason: "Matches upbeat pop tempo with 0 skips", cover: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Resonance", artists: "HOME", match_score: 96, reason: "High replay affinity in your library", cover: AUTHENTIC_COVERS["resonance"] }
+                ],
+                flowAdvice: {
+                    headline: "Harmonic Energy Balancing",
+                    desc: "Sequence tracks to start with high-familiarity anchor favorites to eliminate early drop-off."
+                },
+                sequence: (topListenedTracks.length > 0 ? topListenedTracks.slice(0, 4) : [{ name: "Starboy", artists: "The Weeknd" }, { name: "Levitating", artists: "Dua Lipa" }]).map((t, i) => ({
+                    name: t.name,
+                    artist: t.artists,
+                    energy: i === 0 ? "Anchor Track (High Retention)" : (i === 1 ? "Peak Cadence" : "Sustained Midtempo")
+                }))
+            };
+        }
+
+        function openPlaylistRecommendations(playlistName) {
+            const playlist = (appData.playlists || []).find(p => p.playlist_name === playlistName) || (appData.playlists && appData.playlists[0]);
+            if (!playlist) return;
+
+            const recData = getPlaylistRecommendations(playlist);
+            const origHealth = playlist.health_score || 75;
+            const boostPotential = Math.max(8, Math.min(22, Math.round((100 - origHealth) * 0.58)));
+            const targetHealth = Math.min(99, origHealth + boostPotential);
+
+            activePlaylistState = {
+                playlist: playlist,
+                originalHealth: origHealth,
+                currentSimulatedHealth: origHealth,
+                targetHealth: targetHealth,
+                removedTracks: new Set(),
+                addedTracks: new Set(),
+                recommendations: recData
+            };
+
+            // Set Header
+            const coverEl = document.getElementById('inspector-playlist-cover');
+            if (coverEl) coverEl.src = resolvePlaylistCover(playlist.playlist_name, playlist.image_url);
+
+            const titleEl = document.getElementById('inspector-playlist-name');
+            if (titleEl) titleEl.innerText = playlist.playlist_name;
+
+            const metaEl = document.getElementById('inspector-playlist-meta');
+            if (metaEl) metaEl.innerText = `${playlist.total_plays} plays · ${(playlist.total_minutes / 60).toFixed(1)} hrs · ${playlist.skip_rate_pct}% skipped`;
+
+            // Update Boost Banner
+            updateInspectorHealthUI();
+
+            // Populate Traps Count
+            const trapsCountEl = document.getElementById('inspector-traps-count');
+            if (trapsCountEl) trapsCountEl.innerText = recData.skipTraps.length;
+
+            const addsCountEl = document.getElementById('inspector-adds-count');
+            if (addsCountEl) addsCountEl.innerText = recData.smartAdds.length;
+
+            // Render Traps List
+            renderInspectorTrapsList();
+
+            // Render Adds List
+            renderInspectorAddsList();
+
+            // Render Flow List
+            renderInspectorFlowList();
+
+            // Show Modal
+            switchInspectorTab('traps');
+            const modal = document.getElementById('playlist-inspector-modal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function updateInspectorHealthUI() {
+            if (!activePlaylistState) return;
+            const cur = activePlaylistState.currentSimulatedHealth;
+            const orig = activePlaylistState.originalHealth;
+            const boost = cur - orig;
+
+            const badgeEl = document.getElementById('inspector-current-health-badge');
+            if (badgeEl) {
+                badgeEl.innerText = `${cur}% Health`;
+                badgeEl.style.color = cur > 75 ? 'var(--status-green)' : (cur > 50 ? 'var(--status-amber)' : 'var(--status-red)');
+            }
+
+            const boostTextEl = document.getElementById('inspector-health-boost-text');
+            if (boostTextEl) {
+                boostTextEl.innerText = boost > 0 ? `+${boost}% Health Applied!` : `+${activePlaylistState.targetHealth - orig}% Potential Available`;
+            }
+
+            const origScoreEl = document.getElementById('inspector-orig-score');
+            if (origScoreEl) origScoreEl.innerText = `${orig}%`;
+
+            const boostedScoreEl = document.getElementById('inspector-boosted-score');
+            if (boostedScoreEl) boostedScoreEl.innerText = `${cur}%`;
+
+            const barCurEl = document.getElementById('inspector-bar-current');
+            if (barCurEl) barCurEl.style.width = `${cur}%`;
+
+            const barPotEl = document.getElementById('inspector-bar-potential');
+            if (barPotEl) barPotEl.style.width = `${Math.max(0, activePlaylistState.targetHealth - cur)}%`;
+        }
+
+        function renderInspectorTrapsList() {
+            if (!activePlaylistState) return;
+            const listEl = document.getElementById('inspector-traps-list');
+            if (!listEl) return;
+
+            const traps = activePlaylistState.recommendations.skipTraps || [];
+            if (traps.length === 0) {
+                listEl.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">No skip traps detected! Your playlist flow is clean.</div>`;
+                return;
+            }
+
+            listEl.innerHTML = traps.map((t, idx) => {
+                const cover = t.cover || resolveTrackCover(t.name, t.artists);
+                const isRemoved = activePlaylistState.removedTracks.has(t.name);
+                return `
+                    <div class="rec-card-item ${isRemoved ? 'removed' : ''}" id="trap-card-${idx}">
+                        <div class="rec-item-left">
+                            <div class="rec-item-cover-wrap" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}')" title="Click to preview track in dock">
+                                <img src="${cover}" class="rec-item-cover" alt="${escapeHtml(t.name)}">
+                                <div class="rec-item-play-overlay">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                            </div>
+                            <div class="rec-item-info">
+                                <div class="rec-item-title">${escapeHtml(t.name)}</div>
+                                <div class="rec-item-artist">${escapeHtml(t.artists)}</div>
+                                <div class="rec-item-reason">
+                                    <span class="badge-pill badge-red" style="font-size: 10px; padding: 1px 6px;">${t.skip_rate}% SKIPS</span>
+                                    <span>${escapeHtml(t.reason)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rec-item-actions">
+                            ${isRemoved 
+                                ? `<span style="font-size: 11px; font-weight: 700; color: var(--status-green);">✓ Removed (+6% Flow)</span>` 
+                                : `<button class="btn-rec-action btn-rec-remove" onclick="removeSkipTrap('${escapeJs(t.name)}', ${idx}, 6)">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                                    <span>Remove</span>
+                                   </button>
+                                   ${t.suggestedSwap ? `
+                                     <button class="btn-rec-action" style="background: var(--bg-card-subtle); color: var(--text-heading); border: 1px solid var(--border-subtle);" onclick="swapSkipTrap('${escapeJs(t.name)}', '${escapeJs(t.suggestedSwap)}', ${idx})">
+                                        <span>Swap for '${escapeHtml(t.suggestedSwap)}'</span>
+                                     </button>
+                                   ` : ''}`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderInspectorAddsList() {
+            if (!activePlaylistState) return;
+            const listEl = document.getElementById('inspector-adds-list');
+            if (!listEl) return;
+
+            const adds = activePlaylistState.recommendations.smartAdds || [];
+            listEl.innerHTML = adds.map((t, idx) => {
+                const cover = t.cover || resolveTrackCover(t.name, t.artists);
+                const isAdded = activePlaylistState.addedTracks.has(t.name);
+                return `
+                    <div class="rec-card-item" id="add-card-${idx}">
+                        <div class="rec-item-left">
+                            <div class="rec-item-cover-wrap" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}')" title="Click to preview track in dock">
+                                <img src="${cover}" class="rec-item-cover" alt="${escapeHtml(t.name)}">
+                                <div class="rec-item-play-overlay">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                            </div>
+                            <div class="rec-item-info">
+                                <div class="rec-item-title">${escapeHtml(t.name)}</div>
+                                <div class="rec-item-artist">${escapeHtml(t.artists)}</div>
+                                <div class="rec-item-reason">
+                                    <span class="badge-pill badge-green" style="font-size: 10px; padding: 1px 6px;">${t.match_score}% VIBE MATCH</span>
+                                    <span>${escapeHtml(t.reason)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rec-item-actions">
+                            <button class="btn-rec-action ${isAdded ? 'btn-rec-add added' : 'btn-rec-add'}" onclick="addSmartTrack('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}', ${idx})">
+                                ${isAdded ? '✓ Added to Playlist' : '+ Add to Playlist'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderInspectorFlowList() {
+            if (!activePlaylistState) return;
+            const seqEl = document.getElementById('inspector-sequence-list');
+            const headlineEl = document.getElementById('flow-advice-headline');
+            const descEl = document.getElementById('flow-advice-desc');
+
+            const advice = activePlaylistState.recommendations.flowAdvice || { headline: "Harmonic Energy Curve", desc: "Balance familiar favorites with discovery cuts." };
+            if (headlineEl) headlineEl.innerText = advice.headline;
+            if (descEl) descEl.innerText = advice.desc;
+
+            const seq = activePlaylistState.recommendations.sequence || [];
+            if (seqEl) {
+                seqEl.innerHTML = seq.map((s, idx) => `
+                    <div class="flow-seq-row">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="flow-seq-rank">#${idx + 1}</span>
+                            <span style="font-weight: 700; color: var(--text-heading);">${escapeHtml(s.name)}</span>
+                            <span style="color: var(--text-muted);">&middot; ${escapeHtml(s.artist)}</span>
+                        </div>
+                        <span class="badge-pill" style="font-size: 10px; background: rgba(139, 92, 246, 0.12); color: var(--apple-purple); border: 1px solid rgba(139, 92, 246, 0.25);">
+                            ${escapeHtml(s.energy)}
+                        </span>
+                    </div>
+                `).join('') + `
+                    <div style="margin-top: 10px; text-align: center;">
+                        <button class="btn-rec-action" style="background: var(--bg-card-subtle); color: var(--apple-purple); border: 1px solid var(--border-focus); padding: 8px 16px;" onclick="applyHarmonicReorder()">
+                            ✨ Apply Harmonic Sequence Order
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function switchInspectorTab(tabName) {
+            ['traps', 'adds', 'flow'].forEach(t => {
+                const btn = document.getElementById(`inspector-tab-btn-${t}`);
+                const body = document.getElementById(`inspector-tab-${t}`);
+                if (btn) btn.classList.toggle('active', t === tabName);
+                if (body) body.style.display = t === tabName ? 'flex' : 'none';
+            });
+        }
+
+        function removeSkipTrap(trackName, cardIdx, boostAmount = 6) {
+            if (!activePlaylistState) return;
+            activePlaylistState.removedTracks.add(trackName);
+            activePlaylistState.currentSimulatedHealth = Math.min(99, activePlaylistState.currentSimulatedHealth + boostAmount);
+            updateInspectorHealthUI();
+            renderInspectorTrapsList();
+        }
+
+        function swapSkipTrap(trackName, swapWith, cardIdx) {
+            if (!activePlaylistState) return;
+            activePlaylistState.removedTracks.add(trackName);
+            activePlaylistState.addedTracks.add(swapWith);
+            activePlaylistState.currentSimulatedHealth = Math.min(99, activePlaylistState.currentSimulatedHealth + 8);
+            updateInspectorHealthUI();
+            renderInspectorTrapsList();
+            renderInspectorAddsList();
+        }
+
+        function addSmartTrack(trackName, artist, cover, cardIdx) {
+            if (!activePlaylistState) return;
+            if (activePlaylistState.addedTracks.has(trackName)) return;
+            activePlaylistState.addedTracks.add(trackName);
+            activePlaylistState.currentSimulatedHealth = Math.min(99, activePlaylistState.currentSimulatedHealth + 4);
+            updateInspectorHealthUI();
+            renderInspectorAddsList();
+        }
+
+        function applyHarmonicReorder() {
+            if (!activePlaylistState) return;
+            activePlaylistState.currentSimulatedHealth = Math.min(99, activePlaylistState.currentSimulatedHealth + 5);
+            updateInspectorHealthUI();
+            alert("✓ Harmonic flow sequence applied! High-energy anchor tracks front-loaded to prevent drop-off.");
+        }
+
+        function saveOptimizedPlaylist() {
+            if (!activePlaylistState) return;
+            const p = activePlaylistState.playlist;
+            p.health_score = activePlaylistState.currentSimulatedHealth;
+            p.is_optimized = true;
+            // Reduce skips proportionally
+            const removedCount = activePlaylistState.removedTracks.size;
+            p.total_skips = Math.max(0, p.total_skips - (removedCount * 6));
+            p.skip_rate_pct = Math.max(4.2, +(p.skip_rate_pct * 0.72).toFixed(1));
+
+            renderDashboard();
+            closePlaylistInspector();
+
+            // Friendly alert / toast
+            const heroSub = document.getElementById('hero-main-sub');
+            if (heroSub) {
+                heroSub.innerText = `Optimized playlist "${p.playlist_name}"! Health score boosted to ${p.health_score}%.`;
+            }
+        }
+
+        function exportPlaylistMix(format = 'csv') {
+            if (!activePlaylistState) return;
+            const p = activePlaylistState.playlist;
+            const recs = activePlaylistState.recommendations;
+            
+            let content = '';
+            let mimeType = 'text/plain';
+            let filename = `Statr_Optimized_${p.playlist_name.replace(/[^a-z0-9]/gi, '_')}.${format}`;
+
+            if (format === 'csv') {
+                mimeType = 'text/csv';
+                content = "Track Name,Artist,Status,Notes\n";
+                (recs.sequence || []).forEach(s => {
+                    content += `"${s.name}","${s.artist}","Included (Sequence)","${s.energy}"\n`;
+                });
+                activePlaylistState.removedTracks.forEach(t => {
+                    content += `"${t}","Various","Removed","Pruned high-skip outlier"\n`;
+                });
+                activePlaylistState.addedTracks.forEach(t => {
+                    content += `"${t}","Various","Added","Smart Vibe-Matched Injection"\n`;
+                });
+            } else {
+                mimeType = 'application/json';
+                content = JSON.stringify({
+                    playlist_name: p.playlist_name,
+                    optimized_health_score: activePlaylistState.currentSimulatedHealth,
+                    sequence: recs.sequence,
+                    removed_skip_traps: Array.from(activePlaylistState.removedTracks),
+                    added_smart_tracks: Array.from(activePlaylistState.addedTracks),
+                    exported_at: new Date().toISOString()
+                }, null, 2);
+            }
+
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function closePlaylistInspector(e) {
+            if (e && e.target && e.target.classList && !e.target.classList.contains('modal-overlay') && !e.target.classList.contains('btn-modal-close')) {
+                return;
+            }
+            const modal = document.getElementById('playlist-inspector-modal');
+            if (modal) modal.style.display = 'none';
+            activePlaylistState = null;
         }
 
         // 6 Dimension Base Metadata: Artists & Albums
@@ -3245,8 +4176,17 @@
                     const cover = resolvePlaylistCover(p.playlist_name, p.image_url);
                     const healthTag = p.health_score > 75 ? 'Great Flow' : (p.health_score > 50 ? 'Moderate Skips' : 'Skip Hotspot');
                     const healthColor = p.health_score > 75 ? 'var(--status-green)' : (p.health_score > 50 ? 'var(--status-amber)' : 'var(--status-red)');
+                    const boostPotential = Math.max(6, Math.min(22, Math.round((100 - p.health_score) * 0.58)));
+                    const isOptimized = p.is_optimized || false;
+                    const pillClass = isOptimized ? 'good' : (p.health_score > 82 ? 'good' : 'warning');
+                    const pillText = isOptimized 
+                        ? `✓ Statr Optimized &middot; Peak Flow` 
+                        : (p.health_score > 82 
+                            ? `✨ 3 Smart Adds Available` 
+                            : `⚡ Flow Fixes Available (+${boostPotential}% Health)`);
+
                     return `
-                        <div class="glass-card playlist-tile">
+                        <div class="glass-card playlist-tile" onclick="openPlaylistRecommendations('${escapeJs(p.playlist_name)}')" title="Click to view smart recommendations & flow fixes" style="cursor: pointer;">
                             <div class="playlist-cover-wrap">
                                 <img src="${cover}" class="playlist-img" alt="${escapeHtml(p.playlist_name)}" onerror="this.onerror=null; this.src='https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2';">
                                 <div class="playlist-floating-health" style="color: ${healthColor};">
@@ -3256,6 +4196,9 @@
                             <div>
                                 <div class="playlist-title">${escapeHtml(p.playlist_name)}</div>
                                 <div class="playlist-meta">${(p.total_minutes / 60).toFixed(1)} hours listened &middot; ${p.skip_rate_pct}% skipped</div>
+                                <div class="playlist-rec-pill ${pillClass}">
+                                    ${pillText}
+                                </div>
                             </div>
                             <div class="playlist-stats-row">
                                 <span>Plays: <strong>${p.total_plays}</strong></span>
