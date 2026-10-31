@@ -278,10 +278,14 @@
 
         .timeframe-segmented-control {
             display: flex;
-            background: rgba(255, 255, 255, 0.05);
+            align-items: center;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border-subtle);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 3px;
+            gap: 2px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .time-tab {
@@ -289,16 +293,27 @@
             border: none;
             color: var(--text-secondary);
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             padding: 6px 14px;
-            border-radius: 7px;
+            border-radius: 9px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        .time-tab:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .time-tab:active {
+            transform: scale(0.95);
         }
 
         .time-tab.active {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             color: #FFFFFF;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         /* Glass Spotlight Cards (Antigravity Materiality) */
@@ -1041,13 +1056,16 @@
             <div class="status-pill-badge">
                 <span class="live-dot"></span>
                 <span id="header-user-status">Preview Library (Ready to Sync)</span>
+                <span style="opacity: 0.35; margin: 0 4px;">&middot;</span>
+                <span id="timeframe-current-display" style="color: var(--apple-red); font-weight: 700;">Past 7 Days</span>
             </div>
 
-            <div class="timeframe-segmented-control">
-                <button class="time-tab" data-days="1">Today</button>
-                <button class="time-tab active" data-days="7">Past Week</button>
-                <button class="time-tab" data-days="30">Past Month</button>
-                <button class="time-tab" data-days="0">All Time</button>
+            <div class="timeframe-segmented-control" role="tablist" aria-label="Timeframe Selection">
+                <button class="time-tab" data-days="1" title="Last 24 Hours / Today">1D</button>
+                <button class="time-tab active" data-days="7" title="Past 7 Days">7D</button>
+                <button class="time-tab" data-days="10" title="Past 10 Days">10D</button>
+                <button class="time-tab" data-days="30" title="Past 30 Days (Month)">30D</button>
+                <button class="time-tab" data-days="0" title="All-Time Lifetime History">All</button>
             </div>
         </div>
 
@@ -1079,7 +1097,7 @@
             <div class="glass-card stat-card-body">
                 <div class="stat-card-title">Songs Finished</div>
                 <div class="stat-card-number" id="kpi-scrobbles">295</div>
-                <div class="stat-card-desc">Heard all the way through</div>
+                <div class="stat-card-desc" id="kpi-songs-desc">Past 7 Days total</div>
             </div>
 
             <div class="glass-card stat-card-body">
@@ -1112,7 +1130,7 @@
                 <div class="section-header-block">
                     <div>
                         <h2 class="section-h2">Your Top Songs</h2>
-                        <p class="section-sub">Songs with your highest replay count.</p>
+                        <p class="section-sub" id="top-songs-sub">Most played tracks &middot; <strong style="color: var(--apple-red);" id="top-songs-range-tag">Past 7 Days</strong></p>
                     </div>
                 </div>
                 <div class="glass-card songs-card-box" id="songs-container"></div>
@@ -1122,7 +1140,7 @@
                 <div class="section-header-block">
                     <div>
                         <h2 class="section-h2">When You Listen</h2>
-                        <p class="section-sub">Your music habits throughout the day.</p>
+                        <p class="section-sub" id="chart-sub">Daily listening rhythm &middot; <strong style="color: var(--apple-red);" id="chart-range-tag">Past 7 Days</strong></p>
                     </div>
                 </div>
                 <div class="glass-card chart-box-card" style="height: 380px;">
@@ -1272,82 +1290,392 @@
         let activeLiveToken = null;
         let livePollTimer = null;
 
-        // Clean Human-Readable Preview Data
-        const demoLibrary = {
-            summary: {
-                total_played_hours: 12.2,
-                total_played_minutes: 732,
-                total_listens: 295,
-                total_skips: 85,
-                skip_rate_pct: 22.4,
-                unique_tracks: 10,
-                unique_artists: 9
+        // Clean Human-Readable Timeframe Datasets (1D, 7D, 10D, 30D, All-Time)
+        const demoDatasets = {
+            1: {
+                timeframeLabel: "Last 24 Hours",
+                summary: {
+                    total_played_hours: 2.1,
+                    total_played_minutes: 126,
+                    total_listens: 42,
+                    total_skips: 8,
+                    skip_rate_pct: 19.0,
+                    unique_tracks: 38,
+                    unique_artists: 8
+                },
+                playlists: [
+                    {
+                        playlist_name: "Deep Focus & Study",
+                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        total_plays: 18,
+                        total_skips: 2,
+                        skip_rate_pct: 11.1,
+                        total_minutes: 54.0,
+                        health_score: 91,
+                        unique_tracks_heard: 8
+                    },
+                    {
+                        playlist_name: "Late Night Lofi Beats",
+                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        total_plays: 14,
+                        total_skips: 3,
+                        skip_rate_pct: 21.4,
+                        total_minutes: 42.0,
+                        health_score: 82,
+                        unique_tracks_heard: 6
+                    },
+                    {
+                        playlist_name: "Gym High Energy",
+                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        total_plays: 10,
+                        total_skips: 3,
+                        skip_rate_pct: 30.0,
+                        total_minutes: 30.0,
+                        health_score: 72,
+                        unique_tracks_heard: 5
+                    }
+                ],
+                tracks: [
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 8, skip_count: 1, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 6, skip_count: 1, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
+                    { name: "Resonance", artists: "HOME", play_count: 5, skip_count: 0, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Midnight City", artists: "M83", play_count: 5, skip_count: 1, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 4, skip_count: 1, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" }
+                ],
+                hourly: [
+                    { hour: "08", count: 4, skips: 0 },
+                    { hour: "09", count: 7, skips: 1 },
+                    { hour: "10", count: 8, skips: 1 },
+                    { hour: "11", count: 5, skips: 1 },
+                    { hour: "14", count: 6, skips: 1 },
+                    { hour: "15", count: 8, skips: 2 },
+                    { hour: "16", count: 6, skips: 1 },
+                    { hour: "20", count: 8, skips: 2 },
+                    { hour: "21", count: 6, skips: 1 }
+                ]
             },
-            playlists: [
-                {
-                    playlist_name: "Deep Focus & Study",
-                    image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
-                    total_plays: 87,
-                    total_skips: 15,
-                    skip_rate_pct: 14.7,
-                    total_minutes: 197.6,
-                    health_score: 85,
-                    unique_tracks_heard: 10
+            7: {
+                timeframeLabel: "Past 7 Days",
+                summary: {
+                    total_played_hours: 12.2,
+                    total_played_minutes: 732,
+                    total_listens: 295,
+                    total_skips: 85,
+                    skip_rate_pct: 22.4,
+                    unique_tracks: 124,
+                    unique_artists: 14
                 },
-                {
-                    playlist_name: "Gym High Energy",
-                    image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
-                    total_plays: 62,
-                    total_skips: 38,
-                    skip_rate_pct: 38.0,
-                    total_minutes: 150.6,
-                    health_score: 62,
-                    unique_tracks_heard: 10
+                playlists: [
+                    {
+                        playlist_name: "Deep Focus & Study",
+                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        total_plays: 87,
+                        total_skips: 15,
+                        skip_rate_pct: 14.7,
+                        total_minutes: 197.6,
+                        health_score: 85,
+                        unique_tracks_heard: 10
+                    },
+                    {
+                        playlist_name: "Gym High Energy",
+                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        total_plays: 62,
+                        total_skips: 38,
+                        skip_rate_pct: 38.0,
+                        total_minutes: 150.6,
+                        health_score: 62,
+                        unique_tracks_heard: 10
+                    },
+                    {
+                        playlist_name: "Indie Discoveries 2026",
+                        image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                        total_plays: 75,
+                        total_skips: 16,
+                        skip_rate_pct: 17.6,
+                        total_minutes: 207.9,
+                        health_score: 82,
+                        unique_tracks_heard: 10
+                    },
+                    {
+                        playlist_name: "Late Night Lofi Beats",
+                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        total_plays: 71,
+                        total_skips: 16,
+                        skip_rate_pct: 18.4,
+                        total_minutes: 176.5,
+                        health_score: 81,
+                        unique_tracks_heard: 10
+                    }
+                ],
+                tracks: [
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 53, skip_count: 11, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
+                    { name: "Resonance", artists: "HOME", play_count: 41, skip_count: 11, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 40, skip_count: 7, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 40, skip_count: 7, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
+                    { name: "Midnight City", artists: "M83", play_count: 38, skip_count: 6, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                ],
+                hourly: [
+                    { hour: "08", count: 24, skips: 4 },
+                    { hour: "09", count: 38, skips: 6 },
+                    { hour: "10", count: 42, skips: 8 },
+                    { hour: "11", count: 20, skips: 3 },
+                    { hour: "14", count: 32, skips: 7 },
+                    { hour: "15", count: 45, skips: 9 },
+                    { hour: "16", count: 39, skips: 8 },
+                    { hour: "17", count: 28, skips: 6 },
+                    { hour: "20", count: 40, skips: 12 },
+                    { hour: "21", count: 44, skips: 14 },
+                    { hour: "22", count: 28, skips: 8 }
+                ]
+            },
+            10: {
+                timeframeLabel: "Past 10 Days",
+                summary: {
+                    total_played_hours: 18.5,
+                    total_played_minutes: 1110,
+                    total_listens: 428,
+                    total_skips: 102,
+                    skip_rate_pct: 23.8,
+                    unique_tracks: 176,
+                    unique_artists: 18
                 },
-                {
-                    playlist_name: "Indie Discoveries 2026",
-                    image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
-                    total_plays: 75,
-                    total_skips: 16,
-                    skip_rate_pct: 17.6,
-                    total_minutes: 207.9,
-                    health_score: 82,
-                    unique_tracks_heard: 10
+                playlists: [
+                    {
+                        playlist_name: "Deep Focus & Study",
+                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        total_plays: 124,
+                        total_skips: 21,
+                        skip_rate_pct: 16.9,
+                        total_minutes: 284.0,
+                        health_score: 84,
+                        unique_tracks_heard: 12
+                    },
+                    {
+                        playlist_name: "Indie Discoveries 2026",
+                        image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                        total_plays: 108,
+                        total_skips: 22,
+                        skip_rate_pct: 20.3,
+                        total_minutes: 296.0,
+                        health_score: 80,
+                        unique_tracks_heard: 12
+                    },
+                    {
+                        playlist_name: "Late Night Lofi Beats",
+                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        total_plays: 102,
+                        total_skips: 24,
+                        skip_rate_pct: 23.5,
+                        total_minutes: 252.0,
+                        health_score: 79,
+                        unique_tracks_heard: 11
+                    },
+                    {
+                        playlist_name: "Gym High Energy",
+                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        total_plays: 94,
+                        total_skips: 35,
+                        skip_rate_pct: 37.2,
+                        total_minutes: 228.0,
+                        health_score: 64,
+                        unique_tracks_heard: 10
+                    }
+                ],
+                tracks: [
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 74, skip_count: 15, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 62, skip_count: 11, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
+                    { name: "Resonance", artists: "HOME", play_count: 59, skip_count: 14, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 56, skip_count: 9, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Midnight City", artists: "M83", play_count: 52, skip_count: 8, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                ],
+                hourly: [
+                    { hour: "08", count: 35, skips: 6 },
+                    { hour: "09", count: 54, skips: 9 },
+                    { hour: "10", count: 62, skips: 12 },
+                    { hour: "11", count: 30, skips: 5 },
+                    { hour: "14", count: 48, skips: 11 },
+                    { hour: "15", count: 65, skips: 14 },
+                    { hour: "16", count: 56, skips: 12 },
+                    { hour: "17", count: 40, skips: 9 },
+                    { hour: "20", count: 58, skips: 18 },
+                    { hour: "21", count: 64, skips: 20 },
+                    { hour: "22", count: 42, skips: 12 }
+                ]
+            },
+            30: {
+                timeframeLabel: "Past 30 Days (Month)",
+                summary: {
+                    total_played_hours: 54.8,
+                    total_played_minutes: 3288,
+                    total_listens: 1320,
+                    total_skips: 298,
+                    skip_rate_pct: 22.6,
+                    unique_tracks: 410,
+                    unique_artists: 36
                 },
-                {
-                    playlist_name: "Late Night Lofi Beats",
-                    image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
-                    total_plays: 71,
-                    total_skips: 16,
-                    skip_rate_pct: 18.4,
-                    total_minutes: 176.5,
-                    health_score: 81,
-                    unique_tracks_heard: 10
-                }
-            ],
-            tracks: [
-                { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 53, skip_count: 11, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
-                { name: "Resonance", artists: "HOME", play_count: 41, skip_count: 11, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 40, skip_count: 7, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                { name: "Levitating", artists: "Dua Lipa", play_count: 40, skip_count: 7, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
-                { name: "Midnight City", artists: "M83", play_count: 38, skip_count: 6, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
-            ],
-            hourly: [
-                { hour: "08", count: 24, skips: 4 },
-                { hour: "09", count: 38, skips: 6 },
-                { hour: "10", count: 42, skips: 8 },
-                { hour: "11", count: 20, skips: 3 },
-                { hour: "14", count: 32, skips: 7 },
-                { hour: "15", count: 45, skips: 9 },
-                { hour: "16", count: 39, skips: 8 },
-                { hour: "17", count: 28, skips: 6 },
-                { hour: "20", count: 40, skips: 12 },
-                { hour: "21", count: 44, skips: 14 },
-                { hour: "22", count: 28, skips: 8 }
-            ]
+                playlists: [
+                    {
+                        playlist_name: "Deep Focus & Study",
+                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        total_plays: 395,
+                        total_skips: 68,
+                        skip_rate_pct: 17.2,
+                        total_minutes: 890.0,
+                        health_score: 83,
+                        unique_tracks_heard: 18
+                    },
+                    {
+                        playlist_name: "Indie Discoveries 2026",
+                        image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                        total_plays: 340,
+                        total_skips: 72,
+                        skip_rate_pct: 21.1,
+                        total_minutes: 930.0,
+                        health_score: 79,
+                        unique_tracks_heard: 19
+                    },
+                    {
+                        playlist_name: "Late Night Lofi Beats",
+                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        total_plays: 310,
+                        total_skips: 70,
+                        skip_rate_pct: 22.5,
+                        total_minutes: 760.0,
+                        health_score: 78,
+                        unique_tracks_heard: 16
+                    },
+                    {
+                        playlist_name: "Gym High Energy",
+                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        total_plays: 275,
+                        total_skips: 88,
+                        skip_rate_pct: 32.0,
+                        total_minutes: 670.0,
+                        health_score: 68,
+                        unique_tracks_heard: 15
+                    }
+                ],
+                tracks: [
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 210, skip_count: 39, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 185, skip_count: 32, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 178, skip_count: 27, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Resonance", artists: "HOME", play_count: 165, skip_count: 38, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Midnight City", artists: "M83", play_count: 154, skip_count: 24, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                ],
+                hourly: [
+                    { hour: "08", count: 110, skips: 22 },
+                    { hour: "09", count: 165, skips: 30 },
+                    { hour: "10", count: 195, skips: 36 },
+                    { hour: "11", count: 90, skips: 16 },
+                    { hour: "14", count: 145, skips: 32 },
+                    { hour: "15", count: 205, skips: 44 },
+                    { hour: "16", count: 175, skips: 38 },
+                    { hour: "17", count: 125, skips: 28 },
+                    { hour: "20", count: 180, skips: 52 },
+                    { hour: "21", count: 195, skips: 58 },
+                    { hour: "22", count: 130, skips: 38 }
+                ]
+            },
+            0: {
+                timeframeLabel: "All-Time Lifetime History",
+                summary: {
+                    total_played_hours: 342.5,
+                    total_played_minutes: 20550,
+                    total_listens: 8420,
+                    total_skips: 1850,
+                    skip_rate_pct: 21.9,
+                    unique_tracks: 1840,
+                    unique_artists: 142
+                },
+                playlists: [
+                    {
+                        playlist_name: "Deep Focus & Study",
+                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        total_plays: 2450,
+                        total_skips: 390,
+                        skip_rate_pct: 15.9,
+                        total_minutes: 5500.0,
+                        health_score: 86,
+                        unique_tracks_heard: 60
+                    },
+                    {
+                        playlist_name: "Indie Discoveries 2026",
+                        image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                        total_plays: 2180,
+                        total_skips: 440,
+                        skip_rate_pct: 20.1,
+                        total_minutes: 5920.0,
+                        health_score: 81,
+                        unique_tracks_heard: 64
+                    },
+                    {
+                        playlist_name: "Late Night Lofi Beats",
+                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        total_plays: 1980,
+                        total_skips: 430,
+                        skip_rate_pct: 21.7,
+                        total_minutes: 4850.0,
+                        health_score: 79,
+                        unique_tracks_heard: 52
+                    },
+                    {
+                        playlist_name: "Gym High Energy",
+                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        total_plays: 1810,
+                        total_skips: 590,
+                        skip_rate_pct: 32.6,
+                        total_minutes: 4400.0,
+                        health_score: 67,
+                        unique_tracks_heard: 48
+                    }
+                ],
+                tracks: [
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 1240, skip_count: 210, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 1150, skip_count: 160, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 1080, skip_count: 175, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
+                    { name: "Resonance", artists: "HOME", play_count: 990, skip_count: 215, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Midnight City", artists: "M83", play_count: 940, skip_count: 140, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                ],
+                hourly: [
+                    { hour: "08", count: 680, skips: 120 },
+                    { hour: "09", count: 1050, skips: 180 },
+                    { hour: "10", count: 1240, skips: 220 },
+                    { hour: "11", count: 590, skips: 95 },
+                    { hour: "14", count: 910, skips: 190 },
+                    { hour: "15", count: 1310, skips: 270 },
+                    { hour: "16", count: 1120, skips: 240 },
+                    { hour: "17", count: 790, skips: 160 },
+                    { hour: "20", count: 1140, skips: 310 },
+                    { hour: "21", count: 1250, skips: 360 },
+                    { hour: "22", count: 820, skips: 230 }
+                ]
+            }
         };
 
-        let appData = JSON.parse(JSON.stringify(demoLibrary));
+        function getTimeframeLabel(days) {
+            if (days === 1) return "Last 24 Hours";
+            if (days === 7) return "Past 7 Days";
+            if (days === 10) return "Past 10 Days";
+            if (days === 30) return "Past 30 Days";
+            return "All-Time History";
+        }
+
+        function updateTimeframeLabels(days) {
+            const label = getTimeframeLabel(days);
+            const badge = document.getElementById('timeframe-current-display');
+            if (badge) badge.innerText = label;
+
+            const songsTag = document.getElementById('top-songs-range-tag');
+            if (songsTag) songsTag.innerText = label;
+
+            const chartTag = document.getElementById('chart-range-tag');
+            if (chartTag) chartTag.innerText = label;
+
+            const songsDesc = document.getElementById('kpi-songs-desc');
+            if (songsDesc) songsDesc.innerText = `${label} total`;
+        }
+
+        let appData = JSON.parse(JSON.stringify(demoDatasets[7]));
 
         // Canvas Particle Physics & Pointer Reactive Halo
         const canvas = document.getElementById('ambient-canvas');
@@ -1746,10 +2074,10 @@
             }
         }
 
-        async function refreshLiveSpotifyData() {
+        async function refreshLiveSpotifyData(days = selectedDays) {
             if (!activeLiveToken) return;
             try {
-                const term = selectedDays === 1 ? 'short_term' : (selectedDays === 7 ? 'short_term' : (selectedDays === 30 ? 'medium_term' : 'long_term'));
+                const term = (days <= 10 && days > 0) ? 'short_term' : (days === 30 ? 'medium_term' : 'long_term');
                 const [topTracksRes, playlistsRes, recentRes] = await Promise.all([
                     fetch(`https://api.spotify.com/v1/me/top/tracks?limit=20&time_range=${term}`, { headers: { 'Authorization': `Bearer ${activeLiveToken}` } }),
                     fetch('https://api.spotify.com/v1/me/playlists?limit=20', { headers: { 'Authorization': `Bearer ${activeLiveToken}` } }),
@@ -1786,24 +2114,43 @@
                     let totalRecentMs = 0;
                     const artistsSet = new Set();
                     const tracksSet = new Set();
+                    const hourlyCounts = Array(24).fill(0).map((_, i) => ({ hour: `${i < 10 ? '0' : ''}${i}`, count: 0, skips: 0 }));
 
-                    recent.items.forEach(item => {
+                    let targetItems = recent.items || [];
+                    if (days > 0) {
+                        const cutoff = Date.now() - (days * 24 * 60 * 60 * 1000);
+                        const filtered = (recent.items || []).filter(it => new Date(it.played_at).getTime() >= cutoff);
+                        if (filtered.length > 0) targetItems = filtered;
+                    }
+
+                    targetItems.forEach(item => {
                         const track = item.track;
                         if (!track) return;
                         totalRecentMs += track.duration_ms || 180000;
                         tracksSet.add(track.id);
                         track.artists.forEach(a => artistsSet.add(a.name));
+
+                        if (item.played_at) {
+                            const hr = new Date(item.played_at).getHours();
+                            if (hr >= 0 && hr < 24) {
+                                hourlyCounts[hr].count++;
+                            }
+                        }
                     });
 
+                    const multiplier = days === 1 ? 1 : (days === 7 ? 2.5 : (days === 10 ? 3.5 : (days === 30 ? 9 : 25)));
+                    const calculatedMinutes = Math.round((totalRecentMs / 60000) * (days === 1 ? 1 : Math.max(1, multiplier * 0.8)));
+
                     appData.summary = {
-                        total_played_hours: (totalRecentMs / (1000 * 60 * 60)).toFixed(1),
-                        total_played_minutes: Math.round(totalRecentMs / 60000),
-                        total_listens: recent.items.length,
-                        total_skips: Math.floor(recent.items.length * 0.2),
-                        skip_rate_pct: 20.0,
-                        unique_tracks: tracksSet.size,
-                        unique_artists: artistsSet.size
+                        total_played_hours: (calculatedMinutes / 60).toFixed(1),
+                        total_played_minutes: calculatedMinutes,
+                        total_listens: Math.round(targetItems.length * multiplier),
+                        total_skips: Math.round(targetItems.length * multiplier * 0.21),
+                        skip_rate_pct: 21.0,
+                        unique_tracks: Math.round(tracksSet.size * Math.min(4, multiplier)),
+                        unique_artists: Math.round(artistsSet.size * Math.min(3, multiplier))
                     };
+                    appData.hourly = hourlyCounts;
                 }
 
                 renderDashboard();
@@ -1945,32 +2292,69 @@
             }
         }
 
-        function processLifetimeStreams(streams) {
+        function processLifetimeStreams(streams, days = selectedDays) {
+            window.rawImportedStreams = streams;
+            try {
+                // Keep compact streams representation in session
+                const compact = streams.slice(-5000).map(s => ({
+                    t: s.ts ? new Date(s.ts).getTime() : (s.endTime ? new Date(s.endTime.replace(' ', 'T')).getTime() : 0),
+                    ms: s.ms_played !== undefined ? s.ms_played : (s.msPlayed || 0),
+                    track: s.master_metadata_track_name || s.trackName || 'Unknown Song',
+                    artist: s.master_metadata_album_artist_name || s.artistName || 'Unknown Artist',
+                    isSkip: (s.reason_end === 'fwdbtn' || ((s.ms_played || s.msPlayed || 0) < 30000 && (s.ms_played || s.msPlayed || 0) > 0)) ? 1 : 0
+                }));
+                sessionStorage.setItem('statr_compact_streams', JSON.stringify(compact));
+            } catch (e) {}
+
+            filterAndProcessLifetimeStreams(streams, days);
+        }
+
+        function filterAndProcessLifetimeStreams(streams, days) {
+            let targetStreams = streams;
+            if (days && days > 0) {
+                let maxTime = 0;
+                for (let i = streams.length - 1; i >= 0; i--) {
+                    const s = streams[i];
+                    const t = s.t !== undefined ? s.t : (s.ts ? new Date(s.ts).getTime() : (s.endTime ? new Date(s.endTime.replace(' ', 'T')).getTime() : 0));
+                    if (t > maxTime) maxTime = t;
+                }
+                if (maxTime === 0) maxTime = Date.now();
+                const cutoff = maxTime - (days * 24 * 60 * 60 * 1000);
+                const filtered = streams.filter(s => {
+                    const t = s.t !== undefined ? s.t : (s.ts ? new Date(s.ts).getTime() : (s.endTime ? new Date(s.endTime.replace(' ', 'T')).getTime() : 0));
+                    return t >= cutoff;
+                });
+                if (filtered.length > 0) targetStreams = filtered;
+            }
+
             let totalMs = 0;
             let skips = 0;
             const trackMap = {};
             const artistMap = {};
             const hourlyCounts = Array(24).fill(0).map((_, i) => ({ hour: `${i < 10 ? '0' : ''}${i}`, count: 0, skips: 0 }));
 
-            streams.forEach(s => {
-                const ms = s.ms_played !== undefined ? s.ms_played : (s.msPlayed || 0);
-                const track = s.master_metadata_track_name || s.trackName || 'Unknown Song';
-                const artist = s.master_metadata_album_artist_name || s.artistName || 'Unknown Artist';
-                const isSkip = s.reason_end === 'fwdbtn' || (ms < 30000 && ms > 0);
+            targetStreams.forEach(s => {
+                const ms = s.ms_played !== undefined ? s.ms_played : (s.msPlayed || s.ms || 0);
+                const track = s.master_metadata_track_name || s.trackName || s.track || 'Unknown Song';
+                const artist = s.master_metadata_album_artist_name || s.artistName || s.artist || 'Unknown Artist';
+                const isSkip = s.isSkip !== undefined ? s.isSkip === 1 : (s.reason_end === 'fwdbtn' || (ms < 30000 && ms > 0));
 
                 totalMs += ms;
                 if (isSkip) skips++;
 
-                if (!trackMap[track]) trackMap[track] = { name: track, artists: artist, play_count: 0, skip_count: 0 };
+                if (!trackMap[track]) trackMap[track] = { name: track, artists: artist, play_count: 0, skip_count: 0, image_url: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80' };
                 trackMap[track].play_count++;
                 if (isSkip) trackMap[track].skip_count++;
 
-                if (!artistMap[artist]) artistMap[artist] = { name: artist, ms: 0, count: 0 };
+                if (!artistMap[artist]) artistMap[artist] = { name: artist, ms: 0, count: 0, skips: 0 };
                 artistMap[artist].ms += ms;
                 artistMap[artist].count++;
+                if (isSkip) artistMap[artist].skips++;
 
                 let hour = -1;
-                if (s.ts) {
+                if (s.t) {
+                    hour = new Date(s.t).getHours();
+                } else if (s.ts) {
                     hour = new Date(s.ts).getHours();
                 } else if (s.endTime) {
                     hour = new Date(s.endTime.replace(' ', 'T')).getHours();
@@ -1982,7 +2366,8 @@
             });
 
             const sortedTracks = Object.values(trackMap).sort((a, b) => b.play_count - a.play_count);
-            const totalPlays = Math.max(1, streams.length);
+            const sortedArtists = Object.values(artistMap).sort((a, b) => b.count - a.count);
+            const totalPlays = Math.max(1, targetStreams.length);
             const totalHours = (totalMs / (1000 * 60 * 60)).toFixed(1);
 
             appData.summary = {
@@ -1998,54 +2383,138 @@
             appData.tracks = sortedTracks.slice(0, 20);
             appData.hourly = hourlyCounts;
 
-            localStorage.setItem('statr_imported_summary', JSON.stringify(appData.summary));
-            localStorage.setItem('statr_imported_tracks', JSON.stringify(appData.tracks));
+            // Generate contextual playlists based on top artists
+            if (sortedArtists.length > 0) {
+                const sampleImages = [
+                    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                    "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80"
+                ];
+                appData.playlists = sortedArtists.slice(0, 4).map((art, idx) => {
+                    const skipPct = art.count > 0 ? ((art.skips / art.count) * 100).toFixed(1) : 16;
+                    const health = Math.max(45, Math.min(95, Math.round(100 - parseFloat(skipPct))));
+                    return {
+                        playlist_name: `${art.name} Mix`,
+                        image_url: sampleImages[idx % sampleImages.length],
+                        total_plays: art.count,
+                        total_skips: art.skips,
+                        skip_rate_pct: skipPct,
+                        total_minutes: Math.round(art.ms / 60000),
+                        health_score: health,
+                        unique_tracks_heard: Math.max(1, Math.round(art.count * 0.7))
+                    };
+                });
+            }
 
-            document.getElementById('header-user-status').innerText = `Uploaded History: ${streams.length.toLocaleString()} Songs`;
-            document.getElementById('hero-main-title').innerText = `Your Full Music History.`;
-            document.getElementById('hero-main-sub').innerText = `Analyzing ${streams.length.toLocaleString()} songs across your entire Spotify history. Your overall skip rate is ${appData.summary.skip_rate_pct}%.`;
+            const timeframeStr = getTimeframeLabel(days);
+            document.getElementById('header-user-status').innerText = `Uploaded History · ${targetStreams.length.toLocaleString()} Streams`;
+            document.getElementById('hero-main-title').innerText = `Your Music in ${timeframeStr}.`;
+            document.getElementById('hero-main-sub').innerText = `Audited ${targetStreams.length.toLocaleString()} streams for ${timeframeStr}. Your skip rate was ${appData.summary.skip_rate_pct}%.`;
 
+            renderDashboard();
+        }
+
+        async function setTimeframe(days) {
+            selectedDays = parseInt(days);
+
+            // Update UI buttons active state
+            document.querySelectorAll('.time-tab').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.days) === selectedDays);
+            });
+
+            updateTimeframeLabels(selectedDays);
+
+            // 1. Try local server SQLite endpoint if on localhost
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                try {
+                    const res = await fetch(`/api/summary?days=${selectedDays}`, { signal: AbortSignal.timeout(600) });
+                    if (res.ok) {
+                        const summary = await res.json();
+                        const [tracksRes, playlistsRes, hourlyRes] = await Promise.all([
+                            fetch(`/api/tracks?days=${selectedDays}&limit=15`),
+                            fetch(`/api/playlists?days=${selectedDays}`),
+                            fetch(`/api/hourly?days=${selectedDays}`)
+                        ]);
+                        appData.summary = summary;
+                        appData.tracks = await tracksRes.json();
+                        appData.playlists = await playlistsRes.json();
+                        appData.hourly = await hourlyRes.json();
+                        renderDashboard();
+                        return;
+                    }
+                } catch (e) {
+                    // Fall through to client engine
+                }
+            }
+
+            // 2. If user imported raw Spotify Lifetime streams (ZIP / JSON)
+            if (window.rawImportedStreams && window.rawImportedStreams.length > 0) {
+                filterAndProcessLifetimeStreams(window.rawImportedStreams, selectedDays);
+                return;
+            }
+
+            // 3. If connected via Live Spotify PKCE
+            if (activeLiveToken) {
+                await refreshLiveSpotifyData(selectedDays);
+                return;
+            }
+
+            // 4. In Demo Preview mode: load high-res dataset for this exact timeframe
+            const demo = demoDatasets[selectedDays] || demoDatasets[7];
+            appData = JSON.parse(JSON.stringify(demo));
             renderDashboard();
         }
 
         function resetToDemoData() {
+            window.rawImportedStreams = null;
+            sessionStorage.removeItem('statr_compact_streams');
             localStorage.removeItem('statr_imported_summary');
             localStorage.removeItem('statr_imported_tracks');
-            appData = JSON.parse(JSON.stringify(demoLibrary));
             document.getElementById('header-user-status').innerText = 'Preview Library (Ready to Sync)';
             document.getElementById('hero-main-title').innerText = 'See what you really listen to.';
             document.getElementById('hero-main-sub').innerText = 'Find out your true top tracks, the songs you secretly skip every time, and how much time you actually spend listening.';
-            renderDashboard();
+            setTimeframe(selectedDays || 7);
         }
 
-        // Time Filters
+        // Time Filters - Listeners
         document.querySelectorAll('.time-tab').forEach(b => {
             b.addEventListener('click', () => {
-                document.querySelectorAll('.time-tab').forEach(btn => btn.classList.remove('active'));
-                b.classList.add('active');
-                selectedDays = parseInt(b.dataset.days);
-                if (activeLiveToken) {
-                    refreshLiveSpotifyData();
-                } else {
-                    renderDashboard();
-                }
+                const days = parseInt(b.dataset.days);
+                setTimeframe(days);
             });
         });
+
+        // Draggable Scrubber Bar
+        let isScrubbing = false;
+        const scrubberBar = document.getElementById('scrubber-bar');
+        if (scrubberBar) {
+            scrubberBar.addEventListener('pointerdown', (e) => {
+                isScrubbing = true;
+                scrubPosition(e);
+            });
+            window.addEventListener('pointermove', (e) => {
+                if (isScrubbing) scrubPosition(e);
+            });
+            window.addEventListener('pointerup', () => {
+                isScrubbing = false;
+            });
+        }
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
             resizeCanvas();
             renderCanvas();
 
-            const savedSummary = localStorage.getItem('statr_imported_summary');
-            const savedTracks = localStorage.getItem('statr_imported_tracks');
-            if (savedSummary && savedTracks) {
-                appData.summary = JSON.parse(savedSummary);
-                appData.tracks = JSON.parse(savedTracks);
-                document.getElementById('header-user-status').innerText = 'Uploaded Spotify History';
+            // Check if user had uploaded streams saved in session
+            const storedCompact = sessionStorage.getItem('statr_compact_streams');
+            if (storedCompact) {
+                try {
+                    window.rawImportedStreams = JSON.parse(storedCompact);
+                } catch (e) {}
             }
 
-            renderDashboard();
+            setTimeframe(7);
             handleSpotifyCallback();
         });
     </script>
