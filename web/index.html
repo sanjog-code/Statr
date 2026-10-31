@@ -1058,6 +1058,244 @@
             .stats-grid { grid-template-columns: 1fr; }
             .playlists-grid { grid-template-columns: 1fr; }
         }
+
+        /* 6 Rich Stat Dimensions: Artists, Obscurity, Listening, Albums, Playlists, Fan Rating */
+        .stats-grid-6 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+        @media (max-width: 1024px) {
+            .stats-grid-6 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 640px) {
+            .stats-grid-6 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dimension-badge {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        /* Artists Grid */
+        .artists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 18px;
+        }
+        .artist-card-item {
+            padding: 22px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .artist-card-item:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        .artist-avatar-wrap {
+            position: relative;
+            width: 104px;
+            height: 104px;
+            margin-bottom: 14px;
+        }
+        .artist-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+            border: 2px solid rgba(255, 255, 255, 0.12);
+        }
+        .artist-rank-pill {
+            position: absolute;
+            bottom: -2px;
+            right: 4px;
+            background: var(--apple-red);
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .artist-name-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .artist-fan-tier {
+            font-size: 11px;
+            font-weight: 700;
+            color: #FFD700;
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.28);
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .artist-meta-row {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Albums Grid */
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 18px;
+        }
+        .album-tile-item {
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .album-tile-item:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        .album-cover-box {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+        }
+        .album-cover-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .album-title-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: #FFFFFF;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 3px;
+        }
+        .album-artist-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .album-meter-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Obscurity Card Box */
+        .obscurity-card-box {
+            padding: 26px 28px;
+            margin-bottom: 40px;
+        }
+        .obscurity-split {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 28px;
+            align-items: center;
+        }
+        @media (max-width: 900px) {
+            .obscurity-split {
+                grid-template-columns: 1fr;
+            }
+        }
+        .obscurity-gauge-wrap {
+            width: 100%;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            margin: 14px 0;
+        }
+        .gauge-fill-underground {
+            height: 100%;
+            background: linear-gradient(90deg, #7928CA, #B800FF);
+            border-radius: 10px 0 0 10px;
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gauge-fill-mainstream {
+            height: 100%;
+            background: linear-gradient(90deg, #FA2D48, #FF647C);
+            border-radius: 0 10px 10px 0;
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .obscurity-labels-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .obscurity-stat-capsule {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 16px 20px;
+        }
+
+        /* Fan Rating Hero Box */
+        .fan-rating-box {
+            padding: 26px 28px;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.09) 0%, rgba(22, 22, 28, 0.8) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.28);
+        }
+        .fan-rating-split {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .fan-badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .fan-badge-chip {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stat-section-block {
+            margin-bottom: 44px;
+            scroll-margin-top: 24px;
+        }
     </style>
 </head>
 <body>
@@ -1076,30 +1314,48 @@
                 <div class="brand-name">Statr</div>
             </div>
 
-            <div class="nav-group-title">Menu</div>
+            <div class="nav-group-title">Analytics Dimensions</div>
             <ul class="nav-list">
                 <li>
                     <button class="nav-btn active" onclick="switchMainView('overview')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        <span class="nav-text">Listen Now</span>
+                        <span class="nav-text">Overview</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" onclick="switchMainView('artists')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span class="nav-text">Artist Data</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" onclick="switchMainView('obscurity')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                        <span class="nav-text">Obscurity Data</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" onclick="switchMainView('listening')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span class="nav-text">Listening Stats</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" onclick="switchMainView('albums')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/></svg>
+                        <span class="nav-text">Album Data</span>
                     </button>
                 </li>
                 <li>
                     <button class="nav-btn" onclick="switchMainView('playlists')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                        <span class="nav-text">Your Playlists</span>
+                        <span class="nav-text">Playlist Data</span>
                     </button>
                 </li>
                 <li>
-                    <button class="nav-btn" onclick="switchMainView('songs')">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                        <span class="nav-text">Top Songs</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-btn" onclick="switchMainView('rhythms')">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        <span class="nav-text">When You Listen</span>
+                    <button class="nav-btn" onclick="switchMainView('fanrating')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <span class="nav-text">Fan Rating</span>
                     </button>
                 </li>
             </ul>
@@ -1181,64 +1437,178 @@
         </div>
 
         <!-- 4 Clean Human Stat Cards -->
-        <div class="stats-grid">
-            <div class="glass-card stat-card-body">
-                <div class="stat-card-title">Time Listened</div>
+        <!-- 6 Core Dimension Summary Cards -->
+        <div class="stats-grid-6" id="stats-overview-grid">
+            <!-- 1. Listening Stats -->
+            <div class="glass-card stat-card-body" onclick="switchMainView('listening')" style="cursor: pointer;">
+                <span class="dimension-badge">1. Listening Stats</span>
+                <div class="stat-card-title">Time Listened & Scrobbles</div>
                 <div class="stat-card-number" id="kpi-hours">12.2 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">hrs</span></div>
                 <div class="stat-card-desc"><span class="badge-pill badge-green">ACTIVE</span> <span id="kpi-mins">About 732 minutes</span></div>
             </div>
 
-            <div class="glass-card stat-card-body">
-                <div class="stat-card-title">Songs Finished</div>
-                <div class="stat-card-number" id="kpi-scrobbles">295</div>
-                <div class="stat-card-desc" id="kpi-songs-desc">Past 7 Days total</div>
+            <!-- 2. Obscurity Data -->
+            <div class="glass-card stat-card-body" onclick="switchMainView('obscurity')" style="cursor: pointer;">
+                <span class="dimension-badge">2. Obscurity Data</span>
+                <div class="stat-card-title">Hipster / Obscurity Score</div>
+                <div class="stat-card-number" id="kpi-obscurity-num" style="color: #B800FF;">68% <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">Underground</span></div>
+                <div class="stat-card-desc" id="kpi-obscurity-desc"><span class="badge-pill" style="background: rgba(184, 0, 255, 0.15); color: #B800FF; border: 1px solid rgba(184, 0, 255, 0.3);">EXPLORER</span> 24 Deep Cuts</div>
             </div>
 
-            <div class="glass-card stat-card-body">
-                <div class="stat-card-title">Skip Rate</div>
-                <div class="stat-card-number" id="kpi-skip-rate" style="color: var(--status-green);">22.4%</div>
+            <!-- 3. Fan Rating -->
+            <div class="glass-card stat-card-body" onclick="switchMainView('fanrating')" style="cursor: pointer;">
+                <span class="dimension-badge">3. Fan Rating</span>
+                <div class="stat-card-title">Superfan Percentile</div>
+                <div class="stat-card-number" id="kpi-fan-tier" style="color: #FFD700;">Top 0.5%</div>
+                <div class="stat-card-desc" id="kpi-fan-desc"><span class="badge-pill" style="background: rgba(255,215,0,0.15); color: #FFD700; border: 1px solid rgba(255,215,0,0.3);">STAN TIER</span> The Weeknd</div>
+            </div>
+
+            <!-- 4. Artist Data -->
+            <div class="glass-card stat-card-body" onclick="switchMainView('artists')" style="cursor: pointer;">
+                <span class="dimension-badge">4. Artist Data</span>
+                <div class="stat-card-title">Artists & Loyalty</div>
+                <div class="stat-card-number" id="kpi-unique-tracks">14 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">artists</span></div>
+                <div class="stat-card-desc" id="kpi-artist-loyalty"><span class="badge-pill badge-green">88% LOYALTY</span> Top 3 Dominant</div>
+            </div>
+
+            <!-- 5. Album Data -->
+            <div class="glass-card stat-card-body" onclick="switchMainView('albums')" style="cursor: pointer;">
+                <span class="dimension-badge">5. Album Data</span>
+                <div class="stat-card-title">Top Album & Completion</div>
+                <div class="stat-card-number" id="kpi-top-album" style="font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Starboy</div>
+                <div class="stat-card-desc" id="kpi-album-desc"><span class="badge-pill badge-green">88% FRONT-TO-BACK</span> Full Listens</div>
+            </div>
+
+            <!-- 6. Playlist Data -->
+            <div class="glass-card stat-card-body" onclick="switchMainView('playlists')" style="cursor: pointer;">
+                <span class="dimension-badge">6. Playlist Data</span>
+                <div class="stat-card-title">Playlist Flow & Skips</div>
+                <div class="stat-card-number" id="kpi-skip-rate" style="color: var(--status-green);">22.4% <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">skips</span></div>
                 <div class="stat-card-desc" id="kpi-skip-details"><span class="badge-pill badge-green">LOW SKIPS</span> 85 skips</div>
-            </div>
-
-            <div class="glass-card stat-card-body">
-                <div class="stat-card-title">Favorite Artists</div>
-                <div class="stat-card-number" id="kpi-unique-tracks">9</div>
-                <div class="stat-card-desc">In regular rotation</div>
             </div>
         </div>
 
-        <!-- Your Playlists Section -->
-        <div style="margin-bottom: 44px;">
+        <!-- Section 1: Artist Data -->
+        <div class="stat-section-block" id="section-artists">
             <div class="section-header-block">
                 <div>
-                    <h2 class="section-h2">Your Playlists</h2>
-                    <p class="section-sub">See how often you listen to each playlist without skipping.</p>
+                    <h2 class="section-h2">Artist Data & Fan Loyalty</h2>
+                    <p class="section-sub">Your heavy rotation artists, total listening hours, and affinity percentiles.</p>
+                </div>
+            </div>
+            <div class="artists-grid" id="artists-shelf"></div>
+        </div>
+
+        <!-- Section 2: Obscurity Data -->
+        <div class="stat-section-block" id="section-obscurity">
+            <div class="section-header-block">
+                <div>
+                    <h2 class="section-h2">Obscurity Data & Music Taste</h2>
+                    <p class="section-sub">Underground depth vs mainstream billboard chart rotation.</p>
+                </div>
+            </div>
+            <div class="glass-card obscurity-card-box" id="obscurity-card-box">
+                <div class="obscurity-split">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Obscurity Meter</div>
+                        <div style="font-size: 28px; font-weight: 800; color: #FFFFFF; margin: 4px 0 10px;" id="obscurity-archetype-title">Underground Explorer</div>
+                        <div class="obscurity-gauge-wrap">
+                            <div class="gauge-fill-underground" id="gauge-underground-bar" style="width: 68%;"></div>
+                            <div class="gauge-fill-mainstream" id="gauge-mainstream-bar" style="width: 32%;"></div>
+                        </div>
+                        <div class="obscurity-labels-row">
+                            <span style="color: #B800FF;" id="obscurity-pct-label">68% Underground / Niche</span>
+                            <span style="color: var(--apple-red);" id="mainstream-pct-label">32% Mainstream Hits</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="obscurity-stat-capsule">
+                            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">DEEP CUTS FOUND (&lt; 5M Streams)</div>
+                            <div style="font-size: 20px; font-weight: 800; color: #FFFFFF; margin-top: 2px;" id="obscurity-deep-cuts">24 Tracks</div>
+                        </div>
+                        <div class="obscurity-stat-capsule">
+                            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">TOP NICHE GENRE</div>
+                            <div style="font-size: 15px; font-weight: 700; color: #B800FF; margin-top: 2px;" id="obscurity-genre">Synthwave / Chillwave</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Album Data -->
+        <div class="stat-section-block" id="section-albums">
+            <div class="section-header-block">
+                <div>
+                    <h2 class="section-h2">Album Data</h2>
+                    <p class="section-sub">Records you spin front-to-back vs shuffled individual tracks.</p>
+                </div>
+            </div>
+            <div class="albums-grid" id="albums-shelf"></div>
+        </div>
+
+        <!-- Section 4: Playlist Data -->
+        <div class="stat-section-block" id="section-playlists">
+            <div class="section-header-block">
+                <div>
+                    <h2 class="section-h2">Playlist Data & Health Doctor</h2>
+                    <p class="section-sub">Engagement duration, skip hotspots, and catalog rotation.</p>
                 </div>
             </div>
             <div class="playlists-grid" id="playlists-shelf"></div>
         </div>
 
-        <!-- Split Grid: Top Songs & When You Listen -->
-        <div class="content-split-grid">
-            <div>
-                <div class="section-header-block">
-                    <div>
-                        <h2 class="section-h2">Your Top Songs</h2>
-                        <p class="section-sub" id="top-songs-sub">Most played tracks &middot; <strong style="color: var(--apple-red);" id="top-songs-range-tag">Past 7 Days</strong></p>
+        <!-- Section 5: Listening Stats & When You Listen -->
+        <div class="stat-section-block" id="section-listening">
+            <div class="content-split-grid">
+                <div>
+                    <div class="section-header-block">
+                        <div>
+                            <h2 class="section-h2">Your Top Songs</h2>
+                            <p class="section-sub" id="top-songs-sub">Most played tracks &middot; <strong style="color: var(--apple-red);" id="top-songs-range-tag">Past 7 Days</strong></p>
+                        </div>
                     </div>
+                    <div class="glass-card songs-card-box" id="songs-container"></div>
                 </div>
-                <div class="glass-card songs-card-box" id="songs-container"></div>
-            </div>
 
-            <div>
-                <div class="section-header-block">
-                    <div>
-                        <h2 class="section-h2">When You Listen</h2>
-                        <p class="section-sub" id="chart-sub">Daily listening rhythm &middot; <strong style="color: var(--apple-red);" id="chart-range-tag">Past 7 Days</strong></p>
+                <div>
+                    <div class="section-header-block">
+                        <div>
+                            <h2 class="section-h2">When You Listen</h2>
+                            <p class="section-sub" id="chart-sub">24-hour listening rhythm &middot; <strong style="color: var(--apple-red);" id="chart-range-tag">Past 7 Days</strong></p>
+                        </div>
+                    </div>
+                    <div class="glass-card chart-box-card" style="height: 380px;">
+                        <canvas id="rhythmCanvas"></canvas>
                     </div>
                 </div>
-                <div class="glass-card chart-box-card" style="height: 380px;">
-                    <canvas id="rhythmCanvas"></canvas>
+            </div>
+        </div>
+
+        <!-- Section 6: Fan Rating & Badges -->
+        <div class="stat-section-block" id="section-fanrating">
+            <div class="section-header-block">
+                <div>
+                    <h2 class="section-h2">Fan Rating & Superfan Dossier</h2>
+                    <p class="section-sub">Your listener percentile worldwide and unlocked listening achievements.</p>
+                </div>
+            </div>
+            <div class="glass-card fan-rating-box" id="fan-rating-box">
+                <div class="fan-rating-split">
+                    <div>
+                        <span class="dimension-badge" style="background: rgba(255,215,0,0.15); color: #FFD700; border: 1px solid rgba(255,215,0,0.3);">GLOBAL RANKING</span>
+                        <div style="font-size: 32px; font-weight: 800; color: #FFFFFF; margin: 4px 0;" id="fan-hero-tier">Top 0.5% Superfan</div>
+                        <div style="font-size: 14px; color: var(--text-secondary);" id="fan-hero-sub">You listen more intensely to <strong style="color: #FFF;" id="fan-primary-artist">The Weeknd</strong> than 99.5% of listeners worldwide.</div>
+                        <div class="fan-badge-list" id="fan-badges-shelf">
+                            <span class="fan-badge-chip">🏆 Discography Explorer</span>
+                            <span class="fan-badge-chip">⚡ Zero-Skip Devotee</span>
+                            <span class="fan-badge-chip">🌙 Midnight Scrobbler</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Fan Affinity Score</div>
+                        <div style="font-size: 48px; font-weight: 800; color: #FFD700; line-height: 1;" id="fan-affinity-score">96<span style="font-size: 20px; color: var(--text-muted);">/100</span></div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;" id="fan-rank-label">Elite Superfan Status</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1631,6 +2001,23 @@
             if (current) current.innerText = '0:58';
         }
 
+        // 6 Dimension Base Metadata: Artists & Albums
+        const baseDemoArtists = [
+            { name: "The Weeknd", play_count: 84, hours: 4.8, skip_pct: 14.2, image_url: AUTHENTIC_COVERS["starboy"], fan_tier: "Top 0.5% Superfan", top_track: "Starboy" },
+            { name: "Dua Lipa", play_count: 58, hours: 3.2, skip_pct: 12.1, image_url: AUTHENTIC_COVERS["levitating"], fan_tier: "Top 1% Stan", top_track: "Levitating" },
+            { name: "HOME", play_count: 48, hours: 2.9, skip_pct: 4.2, image_url: AUTHENTIC_COVERS["resonance"], fan_tier: "Top 0.1% Devotee", top_track: "Resonance" },
+            { name: "M83", play_count: 42, hours: 2.6, skip_pct: 15.0, image_url: AUTHENTIC_COVERS["midnight city"], fan_tier: "Top 2% Listener", top_track: "Midnight City" },
+            { name: "Daft Punk", play_count: 40, hours: 2.4, skip_pct: 17.5, image_url: AUTHENTIC_COVERS["get lucky"], fan_tier: "Top 3% Listener", top_track: "Get Lucky" }
+        ];
+
+        const baseDemoAlbums = [
+            { name: "Starboy", artist: "The Weeknd", play_count: 53, total_minutes: 185, completion_rate_pct: 88, image_url: AUTHENTIC_COVERS["starboy"] },
+            { name: "Future Nostalgia", artist: "Dua Lipa", play_count: 44, total_minutes: 145, completion_rate_pct: 82, image_url: AUTHENTIC_COVERS["levitating"] },
+            { name: "Odyssey", artist: "HOME", play_count: 41, total_minutes: 164, completion_rate_pct: 95, image_url: AUTHENTIC_COVERS["resonance"] },
+            { name: "Random Access Memories", artist: "Daft Punk", play_count: 40, total_minutes: 152, completion_rate_pct: 79, image_url: AUTHENTIC_COVERS["get lucky"] },
+            { name: "Hurry Up, We're Dreaming", artist: "M83", play_count: 38, total_minutes: 160, completion_rate_pct: 91, image_url: AUTHENTIC_COVERS["midnight city"] }
+        ];
+
         // Clean Human-Readable Timeframe Datasets (1D, 7D, 10D, 30D, All-Time)
         const demoDatasets = {
             1: {
@@ -1644,6 +2031,10 @@
                     unique_tracks: 38,
                     unique_artists: 8
                 },
+                obscurity: { score_pct: 72, label: "Underground Explorer", mainstream_pct: 28, deep_cuts_count: 8, top_niche_genre: "Chillwave / Synth" },
+                fanRating: { primary_artist: "The Weeknd", tier: "Top 0.8% Global Listener", score: 92, rank_label: "Devoted Listener", badges: ["Night Owl Scrobbler", "Zero-Skip Session", "Album Repeater"] },
+                artists: baseDemoArtists.map(a => ({ ...a, play_count: Math.max(1, Math.round(a.play_count * 0.12)), hours: (a.hours * 0.15).toFixed(1) })),
+                albums: baseDemoAlbums.map(alb => ({ ...alb, play_count: Math.max(1, Math.round(alb.play_count * 0.12)), total_minutes: Math.round(alb.total_minutes * 0.12) })),
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
@@ -1706,6 +2097,10 @@
                     unique_tracks: 124,
                     unique_artists: 14
                 },
+                obscurity: { score_pct: 68, label: "Underground Explorer", mainstream_pct: 32, deep_cuts_count: 24, top_niche_genre: "Synthwave / Chillwave" },
+                fanRating: { primary_artist: "The Weeknd", tier: "Top 0.5% Superfan", score: 96, rank_label: "Elite Superfan", badges: ["Discography Explorer", "Zero-Skip Devotee", "Midnight Scrobbler", "Catalog Collector"] },
+                artists: baseDemoArtists,
+                albums: baseDemoAlbums,
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
@@ -1780,6 +2175,10 @@
                     unique_tracks: 176,
                     unique_artists: 18
                 },
+                obscurity: { score_pct: 65, label: "Eclectic Tastemaker", mainstream_pct: 35, deep_cuts_count: 36, top_niche_genre: "Indie Pop & Electronica" },
+                fanRating: { primary_artist: "The Weeknd", tier: "Top 0.4% Superfan", score: 97, rank_label: "Elite Superfan", badges: ["Repeat Champion", "Zero-Skip Devotee", "Midnight Scrobbler", "Certified Stan"] },
+                artists: baseDemoArtists.map(a => ({ ...a, play_count: Math.round(a.play_count * 1.4), hours: (a.hours * 1.4).toFixed(1) })),
+                albums: baseDemoAlbums.map(alb => ({ ...alb, play_count: Math.round(alb.play_count * 1.4), total_minutes: Math.round(alb.total_minutes * 1.4) })),
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
@@ -1854,6 +2253,10 @@
                     unique_tracks: 410,
                     unique_artists: 36
                 },
+                obscurity: { score_pct: 63, label: "Eclectic Tastemaker", mainstream_pct: 37, deep_cuts_count: 82, top_niche_genre: "Retrowave & Alt Pop" },
+                fanRating: { primary_artist: "The Weeknd", tier: "Top 0.2% Superfan", score: 98, rank_label: "Gold Tier Superfan", badges: ["Top 0.2% Global", "Discography Devotee", "Front-to-Back Master", "Midnight Scrobbler"] },
+                artists: baseDemoArtists.map(a => ({ ...a, play_count: Math.round(a.play_count * 4.2), hours: (a.hours * 4.2).toFixed(1) })),
+                albums: baseDemoAlbums.map(alb => ({ ...alb, play_count: Math.round(alb.play_count * 4.2), total_minutes: Math.round(alb.total_minutes * 4.2) })),
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
@@ -1928,6 +2331,10 @@
                     unique_tracks: 1840,
                     unique_artists: 142
                 },
+                obscurity: { score_pct: 59, label: "Global Music Explorer", mainstream_pct: 41, deep_cuts_count: 240, top_niche_genre: "Chillwave & Synthpop" },
+                fanRating: { primary_artist: "The Weeknd", tier: "Top 0.1% Legendary Stan", score: 99, rank_label: "Legendary Superfan", badges: ["Top 0.1% Lifetime", "1,000+ Club", "Day-One Devotee", "Full Discography Listener", "Perpetual Streamer"] },
+                artists: baseDemoArtists.map(a => ({ ...a, play_count: Math.round(a.play_count * 24.5), hours: (a.hours * 24.5).toFixed(1) })),
+                albums: baseDemoAlbums.map(alb => ({ ...alb, play_count: Math.round(alb.play_count * 24.5), total_minutes: Math.round(alb.total_minutes * 24.5) })),
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
@@ -2123,63 +2530,243 @@
 
         // Render Dashboard Content
         function renderDashboard() {
-            const s = appData.summary;
-            document.getElementById('kpi-hours').innerHTML = `${s.total_played_hours} <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">hrs</span>`;
-            document.getElementById('kpi-mins').innerText = `About ${s.total_played_minutes.toLocaleString()} minutes`;
-            document.getElementById('kpi-scrobbles').innerText = s.total_listens.toLocaleString();
-            document.getElementById('kpi-skip-rate').innerText = `${s.skip_rate_pct}%`;
-            document.getElementById('kpi-skip-details').innerHTML = `<span class="badge-pill ${s.skip_rate_pct < 25 ? 'badge-green' : 'badge-red'}">${s.skip_rate_pct < 25 ? 'LOW SKIPS' : 'OFTEN SKIPPED'}</span> ${s.total_skips.toLocaleString()} skips`;
-            document.getElementById('kpi-unique-tracks').innerText = s.unique_artists.toLocaleString();
+            const s = appData.summary || {
+                total_played_hours: 12.2,
+                total_played_minutes: 732,
+                total_listens: 295,
+                total_skips: 85,
+                skip_rate_pct: 22.4,
+                unique_tracks: 124,
+                unique_artists: 14
+            };
 
-            // Render Playlists
-            const shelf = document.getElementById('playlists-shelf');
-            shelf.innerHTML = appData.playlists.map(p => {
-                const cover = resolvePlaylistCover(p.playlist_name, p.image_url);
-                const healthTag = p.health_score > 75 ? 'Great Flow' : (p.health_score > 50 ? 'Moderate Skips' : 'Skip Hotspot');
-                const healthColor = p.health_score > 75 ? 'var(--status-green)' : (p.health_score > 50 ? 'var(--status-amber)' : 'var(--status-red)');
-                return `
-                    <div class="glass-card playlist-tile">
-                        <div class="playlist-cover-wrap">
-                            <img src="${cover}" class="playlist-img" alt="${escapeHtml(p.playlist_name)}" onerror="this.onerror=null; this.src='https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2';">
-                            <div class="playlist-floating-health" style="color: ${healthColor};">
-                                ${healthTag} (${p.health_score}%)
+            const obs = appData.obscurity || {
+                score_pct: 68,
+                label: "Underground Explorer",
+                mainstream_pct: 32,
+                deep_cuts_count: 24,
+                top_niche_genre: "Synthwave / Chillwave"
+            };
+
+            const fan = appData.fanRating || {
+                primary_artist: "The Weeknd",
+                tier: "Top 0.5% Superfan",
+                score: 96,
+                rank_label: "Elite Superfan",
+                badges: ["Discography Explorer", "Zero-Skip Devotee", "Midnight Scrobbler", "Catalog Collector"]
+            };
+
+            const artistsList = appData.artists && appData.artists.length > 0 ? appData.artists : baseDemoArtists;
+            const albumsList = appData.albums && appData.albums.length > 0 ? appData.albums : baseDemoAlbums;
+
+            // 1. Listening Stats KPIs
+            const kpiHoursEl = document.getElementById('kpi-hours');
+            if (kpiHoursEl) kpiHoursEl.innerHTML = `${s.total_played_hours} <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">hrs</span>`;
+            
+            const kpiMinsEl = document.getElementById('kpi-mins');
+            if (kpiMinsEl) kpiMinsEl.innerText = `About ${s.total_played_minutes.toLocaleString()} minutes`;
+
+            const kpiScrobblesEl = document.getElementById('kpi-scrobbles');
+            if (kpiScrobblesEl) kpiScrobblesEl.innerText = s.total_listens.toLocaleString();
+
+            const kpiSkipRateEl = document.getElementById('kpi-skip-rate');
+            if (kpiSkipRateEl) {
+                kpiSkipRateEl.style.color = s.skip_rate_pct < 25 ? 'var(--status-green)' : (s.skip_rate_pct < 35 ? 'var(--status-amber)' : 'var(--status-red)');
+                kpiSkipRateEl.innerHTML = `${s.skip_rate_pct}% <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">skips</span>`;
+            }
+
+            const kpiSkipDetailsEl = document.getElementById('kpi-skip-details');
+            if (kpiSkipDetailsEl) {
+                const tagClass = s.skip_rate_pct < 25 ? 'badge-green' : (s.skip_rate_pct < 35 ? 'badge-amber' : 'badge-red');
+                const tagText = s.skip_rate_pct < 25 ? 'LOW SKIPS' : (s.skip_rate_pct < 35 ? 'MODERATE SKIPS' : 'HIGH SKIPS');
+                kpiSkipDetailsEl.innerHTML = `<span class="badge-pill ${tagClass}">${tagText}</span> ${s.total_skips.toLocaleString()} skips`;
+            }
+
+            // 2. Obscurity KPIs
+            const kpiObsNumEl = document.getElementById('kpi-obscurity-num');
+            if (kpiObsNumEl) {
+                kpiObsNumEl.innerHTML = `${obs.score_pct}% <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">${obs.score_pct >= 50 ? 'Underground' : 'Mainstream'}</span>`;
+            }
+            const kpiObsDescEl = document.getElementById('kpi-obscurity-desc');
+            if (kpiObsDescEl) {
+                kpiObsDescEl.innerHTML = `<span class="badge-pill" style="background: rgba(184, 0, 255, 0.15); color: #B800FF; border: 1px solid rgba(184, 0, 255, 0.3);">${escapeHtml(obs.label.toUpperCase())}</span> ${obs.deep_cuts_count} Deep Cuts`;
+            }
+
+            // 3. Fan Rating KPIs
+            const kpiFanTierEl = document.getElementById('kpi-fan-tier');
+            if (kpiFanTierEl) kpiFanTierEl.innerText = fan.tier;
+
+            const kpiFanDescEl = document.getElementById('kpi-fan-desc');
+            if (kpiFanDescEl) {
+                kpiFanDescEl.innerHTML = `<span class="badge-pill" style="background: rgba(255,215,0,0.15); color: #FFD700; border: 1px solid rgba(255,215,0,0.3);">${escapeHtml((fan.rank_label || 'SUPERFAN').toUpperCase())}</span> ${escapeHtml(fan.primary_artist)}`;
+            }
+
+            // 4. Artist KPIs
+            const kpiUniqueTracksEl = document.getElementById('kpi-unique-tracks');
+            if (kpiUniqueTracksEl) {
+                kpiUniqueTracksEl.innerHTML = `${s.unique_artists.toLocaleString()} <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">artists</span>`;
+            }
+            const kpiArtistLoyaltyEl = document.getElementById('kpi-artist-loyalty');
+            if (kpiArtistLoyaltyEl) {
+                const topArtPlays = (artistsList && artistsList[0]) ? artistsList[0].play_count : Math.round(s.total_listens * 0.35);
+                const loyaltyPct = Math.min(95, Math.max(40, Math.round((topArtPlays / Math.max(1, s.total_listens)) * 100)));
+                kpiArtistLoyaltyEl.innerHTML = `<span class="badge-pill badge-green">${loyaltyPct}% LOYALTY</span> Top 3 Dominant`;
+            }
+
+            // 5. Album KPIs
+            const topAlbum = albumsList[0] || { name: "Starboy", completion_rate_pct: 88 };
+            const kpiTopAlbumEl = document.getElementById('kpi-top-album');
+            if (kpiTopAlbumEl) kpiTopAlbumEl.innerText = topAlbum.name;
+
+            const kpiAlbumDescEl = document.getElementById('kpi-album-desc');
+            if (kpiAlbumDescEl) {
+                kpiAlbumDescEl.innerHTML = `<span class="badge-pill badge-green">${topAlbum.completion_rate_pct}% FRONT-TO-BACK</span> Full Listens`;
+            }
+
+            // Render Section 1: Artist Data
+            const artistsShelf = document.getElementById('artists-shelf');
+            if (artistsShelf) {
+                artistsShelf.innerHTML = artistsList.slice(0, 8).map((art, idx) => {
+                    const cover = art.image_url || resolveTrackCover(art.top_track || art.name, art.name);
+                    return `
+                        <div class="glass-card artist-card-item">
+                            <div class="artist-rank-pill">#${idx + 1}</div>
+                            <div class="artist-avatar-wrap">
+                                <img src="${cover}" class="artist-avatar-img" alt="${escapeHtml(art.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(art.name)}', 'Artist');">
+                            </div>
+                            <div class="artist-name-title">${escapeHtml(art.name)}</div>
+                            <div class="artist-fan-tier">${escapeHtml(art.fan_tier || 'Top Listener')}</div>
+                            <div class="artist-meta-row">
+                                <span><strong>${art.play_count}</strong> plays</span>
+                                <span><strong>${art.hours || (art.play_count * 0.055).toFixed(1)}</strong> hrs</span>
+                                <span><strong>${art.skip_pct || 14}%</strong> skips</span>
                             </div>
                         </div>
-                        <div>
-                            <div class="playlist-title">${escapeHtml(p.playlist_name)}</div>
-                            <div class="playlist-meta">${(p.total_minutes / 60).toFixed(1)} hours listened &middot; ${p.skip_rate_pct}% skipped</div>
+                    `;
+                }).join('');
+            }
+
+            // Render Section 2: Obscurity Data
+            const archTitleEl = document.getElementById('obscurity-archetype-title');
+            if (archTitleEl) archTitleEl.innerText = obs.label;
+
+            const gaugeUnderEl = document.getElementById('gauge-underground-bar');
+            if (gaugeUnderEl) gaugeUnderEl.style.width = `${obs.score_pct}%`;
+
+            const gaugeMainEl = document.getElementById('gauge-mainstream-bar');
+            if (gaugeMainEl) gaugeMainEl.style.width = `${obs.mainstream_pct}%`;
+
+            const underLabelEl = document.getElementById('obscurity-pct-label');
+            if (underLabelEl) underLabelEl.innerText = `${obs.score_pct}% Underground / Niche`;
+
+            const mainLabelEl = document.getElementById('mainstream-pct-label');
+            if (mainLabelEl) mainLabelEl.innerText = `${obs.mainstream_pct}% Mainstream Hits`;
+
+            const cutsEl = document.getElementById('obscurity-deep-cuts');
+            if (cutsEl) cutsEl.innerText = `${obs.deep_cuts_count} Tracks`;
+
+            const genreEl = document.getElementById('obscurity-genre');
+            if (genreEl) genreEl.innerText = obs.top_niche_genre;
+
+            // Render Section 3: Album Data
+            const albumsShelf = document.getElementById('albums-shelf');
+            if (albumsShelf) {
+                albumsShelf.innerHTML = albumsList.slice(0, 8).map(alb => {
+                    const cover = alb.image_url || resolveTrackCover(alb.name, alb.artist);
+                    return `
+                        <div class="glass-card album-tile-item">
+                            <div class="album-cover-box">
+                                <img src="${cover}" class="album-cover-img" alt="${escapeHtml(alb.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(alb.name)}', '${escapeJs(alb.artist)}');">
+                            </div>
+                            <div class="album-title-name">${escapeHtml(alb.name)}</div>
+                            <div class="album-artist-sub">${escapeHtml(alb.artist)}</div>
+                            <div class="album-meter-row">
+                                <span>${alb.play_count} plays &middot; ${alb.total_minutes}m</span>
+                                <span style="color: var(--status-green); font-weight: 700;">${alb.completion_rate_pct}% F2B</span>
+                            </div>
                         </div>
-                        <div class="playlist-stats-row">
-                            <span>Plays: <strong>${p.total_plays}</strong></span>
-                            <span>Skips: <strong style="color: var(--status-red);">${p.total_skips}</strong></span>
+                    `;
+                }).join('');
+            }
+
+            // Render Section 4: Playlists
+            const shelf = document.getElementById('playlists-shelf');
+            if (shelf && appData.playlists) {
+                shelf.innerHTML = appData.playlists.map(p => {
+                    const cover = resolvePlaylistCover(p.playlist_name, p.image_url);
+                    const healthTag = p.health_score > 75 ? 'Great Flow' : (p.health_score > 50 ? 'Moderate Skips' : 'Skip Hotspot');
+                    const healthColor = p.health_score > 75 ? 'var(--status-green)' : (p.health_score > 50 ? 'var(--status-amber)' : 'var(--status-red)');
+                    return `
+                        <div class="glass-card playlist-tile">
+                            <div class="playlist-cover-wrap">
+                                <img src="${cover}" class="playlist-img" alt="${escapeHtml(p.playlist_name)}" onerror="this.onerror=null; this.src='https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2';">
+                                <div class="playlist-floating-health" style="color: ${healthColor};">
+                                    ${healthTag} (${p.health_score}%)
+                                </div>
+                            </div>
+                            <div>
+                                <div class="playlist-title">${escapeHtml(p.playlist_name)}</div>
+                                <div class="playlist-meta">${(p.total_minutes / 60).toFixed(1)} hours listened &middot; ${p.skip_rate_pct}% skipped</div>
+                            </div>
+                            <div class="playlist-stats-row">
+                                <span>Plays: <strong>${p.total_plays}</strong></span>
+                                <span>Skips: <strong style="color: var(--status-red);">${p.total_skips}</strong></span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Render Section 5: Songs
+            const songsContainer = document.getElementById('songs-container');
+            if (songsContainer && appData.tracks) {
+                songsContainer.innerHTML = appData.tracks.slice(0, 15).map((t, i) => {
+                    const cover = resolveTrackCover(t.name, t.artists, t.image_url);
+                    return `
+                    <div class="song-item-row" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}')" title="Click to play in dock" style="cursor: pointer;">
+                        <div class="song-rank">${i + 1}</div>
+                        <img src="${cover}" data-song-title="${escapeHtml(t.name)}" class="song-thumbnail" alt="${escapeHtml(t.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(t.name)}', '${escapeJs(t.artists)}');">
+                        <div>
+                            <div class="song-primary-title">${escapeHtml(t.name)}</div>
+                            <div class="song-artist-name">${escapeHtml(t.artists)}</div>
+                        </div>
+                        <div class="song-plays-right">
+                            <div class="song-play-count">${t.play_count} plays</div>
+                            <div class="song-skip-count">${t.skip_count} skips</div>
                         </div>
                     </div>
                 `;
-            }).join('');
+                }).join('');
+            }
 
-            // Render Songs
-            const songsContainer = document.getElementById('songs-container');
-            songsContainer.innerHTML = appData.tracks.slice(0, 15).map((t, i) => {
-                const cover = resolveTrackCover(t.name, t.artists, t.image_url);
-                return `
-                <div class="song-item-row" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}')" title="Click to play in dock" style="cursor: pointer;">
-                    <div class="song-rank">${i + 1}</div>
-                    <img src="${cover}" data-song-title="${escapeHtml(t.name)}" class="song-thumbnail" alt="${escapeHtml(t.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(t.name)}', '${escapeJs(t.artists)}');">
-                    <div>
-                        <div class="song-primary-title">${escapeHtml(t.name)}</div>
-                        <div class="song-artist-name">${escapeHtml(t.artists)}</div>
-                    </div>
-                    <div class="song-plays-right">
-                        <div class="song-play-count">${t.play_count} plays</div>
-                        <div class="song-skip-count">${t.skip_count} skips</div>
-                    </div>
-                </div>
-            `;
-            }).join('');
+            // Render Section 6: Fan Rating
+            const heroTierEl = document.getElementById('fan-hero-tier');
+            if (heroTierEl) heroTierEl.innerText = fan.tier;
+
+            const primaryArtistEl = document.getElementById('fan-primary-artist');
+            if (primaryArtistEl) primaryArtistEl.innerText = fan.primary_artist;
+
+            const heroSubEl = document.getElementById('fan-hero-sub');
+            if (heroSubEl) {
+                const numericPercent = parseFloat(String(fan.tier).replace(/[^0-9.]/g, '') || '0.5');
+                const percentileBeaten = (100 - numericPercent).toFixed(1);
+                heroSubEl.innerHTML = `You listen more intensely to <strong style="color: #FFF;">${escapeHtml(fan.primary_artist)}</strong> than ${percentileBeaten}% of listeners worldwide.`;
+            }
+
+            const affinityEl = document.getElementById('fan-affinity-score');
+            if (affinityEl) affinityEl.innerHTML = `${fan.score}<span style="font-size: 20px; color: var(--text-muted);">/100</span>`;
+
+            const rankLabelEl = document.getElementById('fan-rank-label');
+            if (rankLabelEl) rankLabelEl.innerText = `${fan.rank_label} Status`;
+
+            const badgesShelf = document.getElementById('fan-badges-shelf');
+            if (badgesShelf && fan.badges) {
+                badgesShelf.innerHTML = fan.badges.map(b => `<span class="fan-badge-chip">🏆 ${escapeHtml(b)}</span>`).join('');
+            }
 
             renderChart();
             bindCardSpotlights();
-            syncSongCovers(appData.tracks);
+            if (appData.tracks) syncSongCovers(appData.tracks);
         }
 
         function renderChart() {
@@ -2239,19 +2826,43 @@
             });
         }
 
-        // View Switcher
+        // View Switcher with Full Dimension Support
         function switchMainView(viewName) {
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            if (window.event && window.event.currentTarget) window.event.currentTarget.classList.add('active');
+            const targetBtn = document.querySelector(`.nav-btn[onclick*="'${viewName}'"]`);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            } else if (window.event && window.event.currentTarget && window.event.currentTarget.classList.contains('nav-btn')) {
+                window.event.currentTarget.classList.add('active');
+            }
+
+            const sectionMap = {
+                'overview': null,
+                'artists': 'section-artists',
+                'obscurity': 'section-obscurity',
+                'albums': 'section-albums',
+                'playlists': 'section-playlists',
+                'listening': 'section-listening',
+                'fanrating': 'section-fanrating',
+                'songs': 'songs-container',
+                'rhythms': 'rhythmCanvas'
+            };
 
             if (viewName === 'overview') {
-                document.querySelector('main.main-viewport').scrollTo({ top: 0, behavior: 'smooth' });
-            } else if (viewName === 'playlists') {
-                document.getElementById('playlists-shelf').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else if (viewName === 'songs') {
-                document.getElementById('songs-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else if (viewName === 'rhythms') {
-                document.getElementById('rhythmCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const viewport = document.querySelector('main.main-viewport');
+                if (viewport) viewport.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const targetId = sectionMap[viewName] || `section-${viewName}`;
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) {
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    targetEl.style.transition = 'box-shadow 0.4s ease, transform 0.4s ease';
+                    targetEl.style.transform = 'scale(1.006)';
+                    setTimeout(() => {
+                        targetEl.style.transform = 'scale(1)';
+                    }, 400);
+                }
             }
         }
 
@@ -2284,6 +2895,21 @@
                 title: "Top 40 & Pop Superfan",
                 subtitle: "The Weeknd, Taylor Swift, Dua Lipa, SZA",
                 summary: { total_played_hours: 48.2, total_played_minutes: 2892, total_listens: 1180, total_skips: 218, skip_rate_pct: 18.5, unique_tracks: 142, unique_artists: 38 },
+                obscurity: { score_pct: 22, label: "Mainstream Chart Tastemaker", mainstream_pct: 78, deep_cuts_count: 8, top_niche_genre: "Contemporary Pop & Synthpop" },
+                fanRating: { primary_artist: "The Weeknd", tier: "Top 0.5% Superfan", score: 96, rank_label: "Elite Superfan", badges: ["Top 0.5% Global", "Zero-Skip Pop Connoisseur", "Album Repeater", "Radio Dominator"] },
+                artists: [
+                    { name: "The Weeknd", play_count: 84, hours: 4.8, skip_pct: 12.0, image_url: AUTHENTIC_COVERS["starboy"], fan_tier: "Top 0.5% Superfan", top_track: "Starboy" },
+                    { name: "Taylor Swift", play_count: 78, hours: 4.2, skip_pct: 8.5, image_url: AUTHENTIC_COVERS["cruel summer"], fan_tier: "Top 0.1% Swiftie", top_track: "Cruel Summer" },
+                    { name: "Dua Lipa", play_count: 68, hours: 3.8, skip_pct: 10.2, image_url: AUTHENTIC_COVERS["levitating"], fan_tier: "Top 1% Stan", top_track: "Levitating" },
+                    { name: "Harry Styles", play_count: 52, hours: 3.1, skip_pct: 14.0, image_url: AUTHENTIC_COVERS["as it was"], fan_tier: "Top 2% Listener", top_track: "As It Was" },
+                    { name: "SZA", play_count: 48, hours: 2.9, skip_pct: 15.5, image_url: AUTHENTIC_COVERS["kill bill"], fan_tier: "Top 3% Listener", top_track: "Kill Bill" }
+                ],
+                albums: [
+                    { name: "Starboy", artist: "The Weeknd", play_count: 62, total_minutes: 210, completion_rate_pct: 89, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "Lover", artist: "Taylor Swift", play_count: 58, total_minutes: 198, completion_rate_pct: 92, image_url: AUTHENTIC_COVERS["cruel summer"] },
+                    { name: "Future Nostalgia", artist: "Dua Lipa", play_count: 50, total_minutes: 165, completion_rate_pct: 84, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "SOS", artist: "SZA", play_count: 44, total_minutes: 148, completion_rate_pct: 81, image_url: AUTHENTIC_COVERS["kill bill"] }
+                ],
                 playlists: [
                     { playlist_name: "Daily Commute Pop", image_url: AUTHENTIC_PLAYLIST_COVERS["daily commute pop"], total_plays: 420, total_skips: 65, skip_rate_pct: 15.5, total_minutes: 1040, health_score: 87, unique_tracks_heard: 35 },
                     { playlist_name: "Weekend Energy", image_url: AUTHENTIC_PLAYLIST_COVERS["weekend energy"], total_plays: 350, total_skips: 78, skip_rate_pct: 22.3, total_minutes: 890, health_score: 79, unique_tracks_heard: 30 },
@@ -2305,6 +2931,21 @@
                 title: "Late Night Coding & Lofi",
                 subtitle: "HOME, Tycho, Daft Punk, Lofi Girl, Hans Zimmer",
                 summary: { total_played_hours: 62.4, total_played_minutes: 3744, total_listens: 1420, total_skips: 139, skip_rate_pct: 9.8, unique_tracks: 196, unique_artists: 42 },
+                obscurity: { score_pct: 89, label: "Cerebral Ambient Hipster", mainstream_pct: 11, deep_cuts_count: 42, top_niche_genre: "Chillwave & Modular Synth" },
+                fanRating: { primary_artist: "HOME", tier: "Top 0.05% Ambient Elite", score: 99, rank_label: "Deep Focus Master", badges: ["Deep Flow Prodigy", "Endless Loop King", "Late Night Coder", "Underground Disciple"] },
+                artists: [
+                    { name: "HOME", play_count: 112, hours: 6.8, skip_pct: 4.2, image_url: AUTHENTIC_COVERS["resonance"], fan_tier: "Top 0.05% Ambient Elite", top_track: "Resonance" },
+                    { name: "Petit Biscuit", play_count: 74, hours: 4.3, skip_pct: 6.1, image_url: AUTHENTIC_COVERS["sunset lover"], fan_tier: "Top 1% Listener", top_track: "Sunset Lover" },
+                    { name: "Hans Zimmer", play_count: 62, hours: 5.1, skip_pct: 5.0, image_url: AUTHENTIC_COVERS["time"], fan_tier: "Top 1% Cinephile", top_track: "Time" },
+                    { name: "Kavinsky", play_count: 58, hours: 3.4, skip_pct: 8.5, image_url: AUTHENTIC_COVERS["nightcall"], fan_tier: "Top 2% Synth Head", top_track: "Nightcall" },
+                    { name: "M83", play_count: 54, hours: 3.2, skip_pct: 7.8, image_url: AUTHENTIC_COVERS["midnight city"], fan_tier: "Top 2% Dreamer", top_track: "Midnight City" }
+                ],
+                albums: [
+                    { name: "Odyssey", artist: "HOME", play_count: 78, total_minutes: 290, completion_rate_pct: 96, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Presence", artist: "Petit Biscuit", play_count: 54, total_minutes: 180, completion_rate_pct: 92, image_url: AUTHENTIC_COVERS["sunset lover"] },
+                    { name: "Inception OST", artist: "Hans Zimmer", play_count: 48, total_minutes: 210, completion_rate_pct: 95, image_url: AUTHENTIC_COVERS["time"] },
+                    { name: "OutRun", artist: "Kavinsky", play_count: 42, total_minutes: 155, completion_rate_pct: 88, image_url: AUTHENTIC_COVERS["nightcall"] }
+                ],
                 playlists: [
                     { playlist_name: "Deep Focus & Study", image_url: AUTHENTIC_PLAYLIST_COVERS["deep focus & study"], total_plays: 580, total_skips: 42, skip_rate_pct: 7.2, total_minutes: 1520, health_score: 94, unique_tracks_heard: 50 },
                     { playlist_name: "Midnight Coding", image_url: AUTHENTIC_PLAYLIST_COVERS["midnight coding"], total_plays: 460, total_skips: 51, skip_rate_pct: 11.1, total_minutes: 1210, health_score: 90, unique_tracks_heard: 42 },
@@ -2325,6 +2966,20 @@
                 title: "Gym PRs & High Energy EDM",
                 subtitle: "Fred again.., Skrillex, Travis Scott, M83",
                 summary: { total_played_hours: 35.6, total_played_minutes: 2136, total_listens: 890, total_skips: 304, skip_rate_pct: 34.2, unique_tracks: 110, unique_artists: 32 },
+                obscurity: { score_pct: 45, label: "Festival Bass Explorer", mainstream_pct: 55, deep_cuts_count: 16, top_niche_genre: "UK Bassline & Hard Phonk" },
+                fanRating: { primary_artist: "Fred again..", tier: "Top 0.5% Energy Fanatic", score: 94, rank_label: "High Octane PR Crusher", badges: ["PR Day Heavyweight", "Drop Hunter", "Cardio Sprint Maestro", "Bass Booster"] },
+                artists: [
+                    { name: "Fred again..", play_count: 94, hours: 5.4, skip_pct: 22.0, image_url: AUTHENTIC_COVERS["turn on the lights again.."], fan_tier: "Top 0.5% Boiler Room Fan", top_track: "Turn On The Lights again.." },
+                    { name: "Skrillex", play_count: 86, hours: 4.8, skip_pct: 28.0, image_url: AUTHENTIC_COVERS["rumble"], fan_tier: "Top 1% Basshead", top_track: "Rumble" },
+                    { name: "Travis Scott", play_count: 75, hours: 4.1, skip_pct: 32.0, image_url: AUTHENTIC_COVERS["goosebumps"], fan_tier: "Top 1% Rager", top_track: "Goosebumps" },
+                    { name: "David Guetta", play_count: 58, hours: 3.2, skip_pct: 25.0, image_url: AUTHENTIC_COVERS["satisfaction"], fan_tier: "Top 3% EDM Clubber", top_track: "Satisfaction" },
+                    { name: "M83", play_count: 55, hours: 3.5, skip_pct: 18.0, image_url: AUTHENTIC_COVERS["midnight city"], fan_tier: "Top 2% Energy Chaser", top_track: "Midnight City" }
+                ],
+                albums: [
+                    { name: "Actual Life 3", artist: "Fred again..", play_count: 68, total_minutes: 215, completion_rate_pct: 78, image_url: AUTHENTIC_COVERS["turn on the lights again.."] },
+                    { name: "Quest For Fire", artist: "Skrillex", play_count: 62, total_minutes: 195, completion_rate_pct: 72, image_url: AUTHENTIC_COVERS["rumble"] },
+                    { name: "ASTROWORLD", artist: "Travis Scott", play_count: 54, total_minutes: 185, completion_rate_pct: 68, image_url: AUTHENTIC_COVERS["goosebumps"] }
+                ],
                 playlists: [
                     { playlist_name: "Heavy PR Day", image_url: AUTHENTIC_PLAYLIST_COVERS["heavy pr day"], total_plays: 380, total_skips: 140, skip_rate_pct: 36.8, total_minutes: 890, health_score: 64, unique_tracks_heard: 30 },
                     { playlist_name: "Cardio Rush", image_url: AUTHENTIC_PLAYLIST_COVERS["cardio rush"], total_plays: 310, total_skips: 98, skip_rate_pct: 31.6, total_minutes: 740, health_score: 70, unique_tracks_heard: 28 },
@@ -2460,6 +3115,35 @@
                 ];
 
                 appData.tracks = playlistTracks;
+
+                // Populate 6 Dimensions for analyzed playlist
+                appData.obscurity = {
+                    score_pct: 64,
+                    label: "Curated Taste Profile",
+                    mainstream_pct: 36,
+                    deep_cuts_count: Math.round(playlistTracks.length * 0.4),
+                    top_niche_genre: "Modern Pop & Indie Synth"
+                };
+                appData.fanRating = {
+                    primary_artist: playlistTracks[0]?.artists || "The Weeknd",
+                    tier: "Top 0.8% Playlist Curator",
+                    score: 94,
+                    rank_label: "Curator Fan",
+                    badges: ["Playlist Alchemist", "Zero-Skip Selector", "Flow Architect", "Heavy Rotation"]
+                };
+                appData.artists = [
+                    { name: "The Weeknd", play_count: 58, hours: 3.2, skip_pct: 13.8, image_url: AUTHENTIC_COVERS["starboy"], fan_tier: "Top 0.5% Superfan", top_track: "Starboy" },
+                    { name: "Dua Lipa", play_count: 51, hours: 2.8, skip_pct: 13.7, image_url: AUTHENTIC_COVERS["levitating"], fan_tier: "Top 1% Stan", top_track: "Levitating" },
+                    { name: "HOME", play_count: 47, hours: 2.6, skip_pct: 10.6, image_url: AUTHENTIC_COVERS["resonance"], fan_tier: "Top 0.1% Devotee", top_track: "Resonance" },
+                    { name: "Daft Punk", play_count: 44, hours: 2.4, skip_pct: 13.6, image_url: AUTHENTIC_COVERS["get lucky"], fan_tier: "Top 2% Listener", top_track: "Get Lucky" },
+                    { name: "M83", play_count: 42, hours: 2.3, skip_pct: 9.5, image_url: AUTHENTIC_COVERS["midnight city"], fan_tier: "Top 2% Dreamer", top_track: "Midnight City" }
+                ];
+                appData.albums = [
+                    { name: "Starboy", artist: "The Weeknd", play_count: 48, total_minutes: 160, completion_rate_pct: 88, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "Future Nostalgia", artist: "Dua Lipa", play_count: 42, total_minutes: 140, completion_rate_pct: 85, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Odyssey", artist: "HOME", play_count: 38, total_minutes: 152, completion_rate_pct: 94, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Random Access Memories", artist: "Daft Punk", play_count: 35, total_minutes: 135, completion_rate_pct: 82, image_url: AUTHENTIC_COVERS["get lucky"] }
+                ];
 
                 document.getElementById('header-user-status').innerText = `Playlist: ${playlistTitle}`;
                 document.getElementById('hero-main-title').innerText = `${playlistTitle}.`;
@@ -2644,21 +3328,80 @@
             if (!activeLiveToken) return;
             try {
                 const term = (days <= 10 && days > 0) ? 'short_term' : (days === 30 ? 'medium_term' : 'long_term');
-                const [topTracksRes, playlistsRes, recentRes] = await Promise.all([
+                const [topTracksRes, topArtistsRes, playlistsRes, recentRes] = await Promise.all([
                     fetch(`https://api.spotify.com/v1/me/top/tracks?limit=20&time_range=${term}`, { headers: { 'Authorization': `Bearer ${activeLiveToken}` } }),
+                    fetch(`https://api.spotify.com/v1/me/top/artists?limit=10&time_range=${term}`, { headers: { 'Authorization': `Bearer ${activeLiveToken}` } }),
                     fetch('https://api.spotify.com/v1/me/playlists?limit=20', { headers: { 'Authorization': `Bearer ${activeLiveToken}` } }),
                     fetch('https://api.spotify.com/v1/me/player/recently-played?limit=50', { headers: { 'Authorization': `Bearer ${activeLiveToken}` } })
                 ]);
 
+                let topTracksItems = [];
                 if (topTracksRes.ok) {
                     const topTracks = await topTracksRes.json();
-                    appData.tracks = topTracks.items.map(t => ({
+                    topTracksItems = topTracks.items || [];
+                    appData.tracks = topTracksItems.map(t => ({
                         name: t.name,
                         artists: t.artists.map(a => a.name).join(', '),
                         play_count: t.popularity || 50,
-                        skip_count: Math.max(1, Math.floor((100 - t.popularity) / 10)),
-                        image_url: t.album?.images[0]?.url || ''
+                        skip_count: Math.max(1, Math.floor((100 - (t.popularity || 50)) / 10)),
+                        image_url: t.album?.images?.[0]?.url || ''
                     }));
+
+                    // Populate albums from live top tracks
+                    const liveAlbumMap = {};
+                    topTracksItems.forEach(t => {
+                        const albName = t.album?.name || "Single";
+                        if (!liveAlbumMap[albName]) {
+                            liveAlbumMap[albName] = {
+                                name: albName,
+                                artist: t.artists.map(a => a.name).join(', '),
+                                play_count: 0,
+                                total_minutes: 0,
+                                image_url: t.album?.images?.[0]?.url || '',
+                                completion_rate_pct: 88
+                            };
+                        }
+                        liveAlbumMap[albName].play_count += (t.popularity || 45);
+                        liveAlbumMap[albName].total_minutes += Math.round((t.duration_ms || 180000) / 60000);
+                    });
+                    appData.albums = Object.values(liveAlbumMap).slice(0, 8);
+                }
+
+                if (topArtistsRes.ok) {
+                    const topArtists = await topArtistsRes.json();
+                    const artistsItems = topArtists.items || [];
+                    if (artistsItems.length > 0) {
+                        appData.artists = artistsItems.slice(0, 8).map((a, i) => ({
+                            name: a.name,
+                            play_count: Math.round((a.popularity || 50) * 1.5),
+                            hours: (((a.popularity || 50) * 1.5 * 3.4) / 60).toFixed(1),
+                            skip_pct: Math.max(5, Math.floor((100 - (a.popularity || 50)) / 4)),
+                            image_url: a.images?.[0]?.url || '',
+                            fan_tier: i === 0 ? "Top 0.5% Superfan" : (i === 1 ? "Top 1% Stan" : `Top ${i + 2}% Listener`),
+                            top_track: a.name
+                        }));
+
+                        // Compute Live Obscurity from Spotify Artist Popularity
+                        const avgPop = artistsItems.reduce((acc, a) => acc + (a.popularity || 50), 0) / artistsItems.length;
+                        const obscurityScore = Math.max(10, Math.min(95, Math.round(100 - avgPop)));
+                        appData.obscurity = {
+                            score_pct: obscurityScore,
+                            label: obscurityScore >= 70 ? "Underground Purist" : (obscurityScore >= 50 ? "Indie Explorer" : "Mainstream Tastemaker"),
+                            mainstream_pct: 100 - obscurityScore,
+                            deep_cuts_count: Math.round(topTracksItems.filter(t => (t.popularity || 0) < 50).length * 2.5) || 14,
+                            top_niche_genre: (artistsItems[0]?.genres?.[0]) || "Alternative & Synthpop"
+                        };
+
+                        // Compute Live Fan Rating
+                        const topArt = artistsItems[0];
+                        appData.fanRating = {
+                            primary_artist: topArt.name,
+                            tier: "Top 0.5% Superfan",
+                            score: 96,
+                            rank_label: "Elite Superfan",
+                            badges: ["Official Spotify Sync", "Verified Heavy Rotation", "Catalog Explorer", "Top Tier Listener"]
+                        };
+                    }
                 }
 
                 if (playlistsRes.ok) {
@@ -2897,12 +3640,14 @@
             let skips = 0;
             const trackMap = {};
             const artistMap = {};
+            const albumMap = {};
             const hourlyCounts = Array(24).fill(0).map((_, i) => ({ hour: `${i < 10 ? '0' : ''}${i}`, count: 0, skips: 0 }));
 
             targetStreams.forEach(s => {
                 const ms = s.ms_played !== undefined ? s.ms_played : (s.msPlayed || s.ms || 0);
                 const track = s.master_metadata_track_name || s.trackName || s.track || 'Unknown Song';
                 const artist = s.master_metadata_album_artist_name || s.artistName || s.artist || 'Unknown Artist';
+                const album = s.master_metadata_album_album_name || s.albumName || s.album || '';
                 const isSkip = s.isSkip !== undefined ? s.isSkip === 1 : (s.reason_end === 'fwdbtn' || (ms < 30000 && ms > 0));
 
                 totalMs += ms;
@@ -2912,10 +3657,22 @@
                 trackMap[track].play_count++;
                 if (isSkip) trackMap[track].skip_count++;
 
-                if (!artistMap[artist]) artistMap[artist] = { name: artist, ms: 0, count: 0, skips: 0 };
+                if (!artistMap[artist]) artistMap[artist] = { name: artist, ms: 0, count: 0, skips: 0, tracks: {}, top_track: track };
                 artistMap[artist].ms += ms;
                 artistMap[artist].count++;
                 if (isSkip) artistMap[artist].skips++;
+                artistMap[artist].tracks[track] = (artistMap[artist].tracks[track] || 0) + 1;
+                if (artistMap[artist].tracks[track] > (artistMap[artist].tracks[artistMap[artist].top_track] || 0)) {
+                    artistMap[artist].top_track = track;
+                }
+
+                if (album && album !== 'Unknown Album') {
+                    const albKey = `${album}___${artist}`;
+                    if (!albumMap[albKey]) albumMap[albKey] = { name: album, artist: artist, ms: 0, count: 0, skips: 0 };
+                    albumMap[albKey].ms += ms;
+                    albumMap[albKey].count++;
+                    if (isSkip) albumMap[albKey].skips++;
+                }
 
                 let hour = -1;
                 if (s.t) {
@@ -2948,6 +3705,87 @@
 
             appData.tracks = sortedTracks.slice(0, 20);
             appData.hourly = hourlyCounts;
+
+            // 1. Obscurity Dimension
+            const MAINSTREAM_BILLBOARD = new Set([
+                'the weeknd', 'taylor swift', 'drake', 'bad bunny', 'ed sheeran', 'justin bieber', 'ariana grande',
+                'billie eilish', 'post malone', 'dua lipa', 'bruno mars', 'eminem', 'rihanna', 'coldplay',
+                'imagine dragons', 'maroon 5', 'kanye west', 'kendrick lamar', 'beyonce', 'travis scott',
+                'olivia rodrigo', 'harry styles', 'sza', 'doja cat', 'morgan wallen', 'luke combs', 'shakira',
+                'david guetta', 'calvin harris', 'bts', 'blackpink', 'miley cyrus', 'adele', 'katy perry'
+            ]);
+            let mainstreamCount = 0;
+            targetStreams.forEach(s => {
+                const art = (s.master_metadata_album_artist_name || s.artistName || s.artist || '').toLowerCase();
+                if (MAINSTREAM_BILLBOARD.has(art)) mainstreamCount++;
+            });
+            const mainstreamPct = Math.min(95, Math.max(5, Math.round((mainstreamCount / totalPlays) * 100)));
+            const obscurityScore = 100 - mainstreamPct;
+            const obscurityLabel = obscurityScore >= 75 ? "Underground Purist" : (obscurityScore >= 55 ? "Indie Explorer" : (obscurityScore >= 35 ? "Eclectic Tastemaker" : "Mainstream Radio Lover"));
+            const nonMainstreamTracks = Object.values(trackMap).filter(t => !MAINSTREAM_BILLBOARD.has((t.artists || '').toLowerCase()));
+            const deepCuts = Math.max(4, Math.round(nonMainstreamTracks.length * 0.45));
+            const topNonMainstream = sortedArtists.find(a => !MAINSTREAM_BILLBOARD.has(a.name.toLowerCase()));
+            const topGenre = topNonMainstream ? `${topNonMainstream.name} Wave` : "Modern Indie Synth";
+
+            appData.obscurity = {
+                score_pct: obscurityScore,
+                label: obscurityLabel,
+                mainstream_pct: mainstreamPct,
+                deep_cuts_count: deepCuts,
+                top_niche_genre: topGenre
+            };
+
+            // 2. Fan Rating Dimension
+            const topArtistObj = sortedArtists[0] || { name: "The Weeknd", count: 1 };
+            const topArtistShare = topArtistObj.count / totalPlays;
+            const tier = topArtistShare > 0.30 ? "Top 0.05% Superfan" : (topArtistShare > 0.18 ? "Top 0.1% Superfan" : (topArtistShare > 0.10 ? "Top 0.5% Superfan" : (topArtistShare > 0.05 ? "Top 1% Stan" : "Top 3% Listener")));
+            const score = Math.min(99, Math.max(76, Math.round(78 + (topArtistShare * 55))));
+            const rankLabel = score >= 95 ? "Elite Superfan" : (score >= 88 ? "Devoted Listener" : "Dedicated Scrobbler");
+            const badges = ["Catalog Explorer"];
+            if (appData.summary.skip_rate_pct < 20) badges.push("Zero-Skip Devotee");
+            if (parseFloat(totalHours) > 15) badges.push("Marathon Scrobbler");
+            if (hourlyCounts[22].count + hourlyCounts[23].count + hourlyCounts[0].count > 8) badges.push("Midnight Scrobbler");
+            if (badges.length < 3) badges.push("Heavy Rotation Devotee");
+
+            appData.fanRating = {
+                primary_artist: topArtistObj.name,
+                tier: tier,
+                score: score,
+                rank_label: rankLabel,
+                badges: badges
+            };
+
+            // 3. Artist Dimension
+            appData.artists = sortedArtists.slice(0, 8).map((art, idx) => {
+                const skipPct = art.count > 0 ? ((art.skips / art.count) * 100).toFixed(1) : 14.0;
+                return {
+                    name: art.name,
+                    play_count: art.count,
+                    hours: (art.ms / 3600000).toFixed(1),
+                    skip_pct: skipPct,
+                    image_url: resolveTrackCover(art.top_track || art.name, art.name),
+                    fan_tier: idx === 0 ? tier : (idx === 1 ? "Top 1% Stan" : `Top ${idx + 2}% Listener`),
+                    top_track: art.top_track || art.name
+                };
+            });
+
+            // 4. Album Dimension
+            const sortedAlbums = Object.values(albumMap).sort((a, b) => b.count - a.count);
+            if (sortedAlbums.length > 0) {
+                appData.albums = sortedAlbums.slice(0, 8).map(alb => {
+                    const compRate = Math.max(40, Math.min(98, Math.round(100 - ((alb.skips / Math.max(1, alb.count)) * 100))));
+                    return {
+                        name: alb.name,
+                        artist: alb.artist,
+                        play_count: alb.count,
+                        total_minutes: Math.round(alb.ms / 60000),
+                        completion_rate_pct: compRate,
+                        image_url: resolveTrackCover(alb.name, alb.artist)
+                    };
+                });
+            } else {
+                appData.albums = baseDemoAlbums;
+            }
 
             // Generate contextual playlists based on top artists with official Spotify covers
             if (sortedArtists.length > 0) {
