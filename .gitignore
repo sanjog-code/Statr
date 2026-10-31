@@ -1,0 +1,21 @@
+# Environment & Secrets
+.env
+.token_cache.json
+
+# Local Databases
+*.db
+*.sqlite3
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
