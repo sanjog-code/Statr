@@ -1248,7 +1248,7 @@
     <!-- Bottom Player Dock -->
     <footer class="dock-player-bar">
         <div class="player-track-left">
-            <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" class="player-artwork-img" id="player-cover" alt="Art">
+            <img src="https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/cb/7b/a9/cb7ba903-b5f1-cc21-90db-7a81b7aa0997/724596951057.jpg/600x600bb.jpg" class="player-artwork-img" id="player-cover" alt="Art">
             <div class="player-titles">
                 <h4 id="player-title">Midnight City</h4>
                 <p id="player-artist">M83 &middot; Deep Focus & Study</p>
@@ -1344,7 +1344,7 @@
 
                 <div class="personas-list">
                     <div class="persona-card-item" onclick="loadMusicPersona('pop')">
-                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" class="persona-avatar" alt="Pop">
+                        <img src="https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2" class="persona-avatar" alt="Pop">
                         <div>
                             <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Top 40 & Pop Superfan</div>
                             <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">The Weeknd, Taylor Swift, Dua Lipa, SZA</div>
@@ -1353,7 +1353,7 @@
                     </div>
 
                     <div class="persona-card-item" onclick="loadMusicPersona('focus')">
-                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80" class="persona-avatar" alt="Focus">
+                        <img src="https://i.scdn.co/image/ab67706f000000026020f2f6476db518ef747da4" class="persona-avatar" alt="Focus">
                         <div>
                             <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Late Night Coding & Lofi</div>
                             <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">HOME, Tycho, Daft Punk, Lofi Girl, Hans Zimmer</div>
@@ -1362,7 +1362,7 @@
                     </div>
 
                     <div class="persona-card-item" onclick="loadMusicPersona('gym')">
-                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80" class="persona-avatar" alt="Gym">
+                        <img src="https://i.scdn.co/image/ab67706f00000002f367481f06b565250cc7b139" class="persona-avatar" alt="Gym">
                         <div>
                             <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Gym PRs & High Energy EDM</div>
                             <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Fred again.., Skrillex, Travis Scott, M83</div>
@@ -1461,6 +1461,176 @@
         let activeLiveToken = null;
         let livePollTimer = null;
 
+        // Authentic High-Resolution Song & Playlist Cover Database (Official Spotify & Apple CDN)
+        const AUTHENTIC_COVERS = {
+            "starboy": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/92/bb/b592bb72-52e3-e756-9b26-9f56d08f47ab/16UMGIM67864.rgb.jpg/600x600bb.jpg",
+            "levitating": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/6c/11/d6/6c11d681-aa3a-d59e-4c2e-f77e181026ab/190295092665.jpg/600x600bb.jpg",
+            "resonance": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/4f/13/65/4f1365b0-e97c-c469-c438-2f7d8f204355/872133025584_cover.jpg/600x600bb.jpg",
+            "midnight city": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/cb/7b/a9/cb7ba903-b5f1-cc21-90db-7a81b7aa0997/724596951057.jpg/600x600bb.jpg",
+            "get lucky": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/e8/43/5f/e8435ffa-b6b9-b171-40ab-4ff3959ab661/886443919266.jpg/600x600bb.jpg",
+            "cruel summer": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/600x600bb.jpg",
+            "as it was": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/2a/19/fb/2a19fb85-2f70-9e44-f2a9-82abe679b88e/886449990061.jpg/600x600bb.jpg",
+            "kill bill": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/bd/3b/a9/bd3ba9fb-9609-144f-bcfe-ead67b5f6ab3/196589564931.jpg/600x600bb.jpg",
+            "anti-hero": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/3d/01/f2/3d01f2e5-5a08-835f-3d30-d031720b2b80/22UM1IM07364.rgb.jpg/600x600bb.jpg",
+            "blinding lights": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/6f/bc/e6/6fbce6c4-c38c-72d8-4fd0-66cfff32f679/20UMGIM12176.rgb.jpg/600x600bb.jpg",
+            "flowers": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/8c/67/ff/8c67ff91-31c3-3fef-1884-ce3ec89f3af4/196589946874.jpg/600x600bb.jpg",
+            "dance the night": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c0/54/97/c05497aa-c19f-bf4f-de29-71edf30fbefb/075679688767.jpg/600x600bb.jpg",
+            "sunset lover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/78/1c/93/781c934a-c233-cfce-39db-31f7284969b4/cover.jpg/600x600bb.jpg",
+            "dayvan cowboy": "https://is1-ssl.mzstatic.com/image/thumb/Features125/v4/fe/5d/d0/fe5dd0ed-79cf-e694-c454-26a585d3f548/dj.vfvsmugd.jpg/600x600bb.jpg",
+            "time": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/2b/62/eb/2b62ebd7-aa99-988a-0fee-714162f6fbeb/093624965008.jpg/600x600bb.jpg",
+            "nightcall": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/c1/2d/fe/c12dfe8f-cdf6-e179-d69a-8ec35f760266/00602537248681.rgb.jpg/600x600bb.jpg",
+            "turn on the lights again..": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1c/4d/34/1c4d3479-4fe5-5c0a-ccfe-c45cbb9bf843/5054197263439.jpg/600x600bb.jpg",
+            "rumble": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/fc/f4/6b/fcf46b95-cf27-9f04-94c2-4ad257b7a5a6/075679695239.jpg/600x600bb.jpg",
+            "goosebumps": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/e5/27/b8e527c8-aaf4-c7b7-5562-c479458ed7d9/886446092645.jpg/600x600bb.jpg",
+            "satisfaction": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e8/cb/8e/e8cb8ef7-d3bf-1d12-7516-57755870d0a6/617465117657.jpg/600x600bb.jpg"
+        };
+
+        const AUTHENTIC_PLAYLIST_COVERS = {
+            "deep focus & study": "https://i.scdn.co/image/ab67706f000000026020f2f6476db518ef747da4",
+            "deep focus": "https://i.scdn.co/image/ab67706f000000026020f2f6476db518ef747da4",
+            "late night lofi beats": "https://i.scdn.co/image/ab67706f0000000234ef3ce806c69bc55826c1d9",
+            "midnight coding": "https://i.scdn.co/image/ab67706f0000000234ef3ce806c69bc55826c1d9",
+            "gym high energy": "https://i.scdn.co/image/ab67706f00000002f367481f06b565250cc7b139",
+            "heavy pr day": "https://i.scdn.co/image/ab67706f00000002f367481f06b565250cc7b139",
+            "beast mode": "https://i.scdn.co/image/ab67706f00000002f367481f06b565250cc7b139",
+            "indie discoveries 2026": "https://i.scdn.co/image/ab67706f000000028191cc41d8585df6170b3e5e",
+            "mood booster": "https://i.scdn.co/image/ab67706f000000028191cc41d8585df6170b3e5e",
+            "daily commute pop": "https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2",
+            "today's top hits": "https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2",
+            "weekend energy": "https://i.scdn.co/image/ab67706f00000002385ff7ec006cdc4922f52557",
+            "cardio rush": "https://i.scdn.co/image/ab67706f00000002385ff7ec006cdc4922f52557",
+            "bass boosted phonk": "https://i.scdn.co/image/ab67706f00000002e7784edf9862f0b658c80b3a",
+            "binaural flow": "https://i.scdn.co/image/ab67706f000000026020f2f6476db518ef747da4",
+            "late night pop": "https://i.scdn.co/image/ab67706f000000028191cc41d8585df6170b3e5e"
+        };
+
+        // Cache persistence in localStorage
+        let coverCache = {};
+        try {
+            const raw = localStorage.getItem('statr_cover_cache');
+            if (raw) coverCache = JSON.parse(raw);
+        } catch(e) {}
+
+        function getTrackKey(name, artist) {
+            return `${(name || '').toLowerCase().trim()}:::${(artist || '').toLowerCase().trim()}`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function escapeJs(str) {
+            if (!str) return '';
+            return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        // Apple Music Vinyl Sleeve Placeholder (Clean SVG with dark glass gradient & vinyl grooves)
+        function generateCleanVinylPlaceholder(title, artist) {
+            const safeTitle = (title || 'Track').slice(0, 24);
+            return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%231a1b24"/><stop offset="100%" stop-color="%230b0c10"/></linearGradient></defs><rect width="300" height="300" rx="20" fill="url(%23g)"/><circle cx="150" cy="150" r="105" stroke="%23ffffff" stroke-width="2" stroke-opacity="0.08" fill="none"/><circle cx="150" cy="150" r="75" stroke="%23ffffff" stroke-width="1.5" stroke-opacity="0.06" fill="none"/><circle cx="150" cy="150" r="45" stroke="%23ffffff" stroke-width="1" stroke-opacity="0.05" fill="none"/><circle cx="150" cy="150" r="26" fill="%23fa2d48" fill-opacity="0.85"/><circle cx="150" cy="150" r="7" fill="%23000000"/><text x="150" y="248" font-family="-apple-system,BlinkMacSystemFont,Inter,sans-serif" font-size="12" font-weight="600" fill="%23ffffff" fill-opacity="0.5" text-anchor="middle">${encodeURIComponent(safeTitle)}</text></svg>`;
+        }
+
+        function resolveTrackCover(name, artist, explicitUrl) {
+            if (explicitUrl && !explicitUrl.includes('unsplash.com')) {
+                return explicitUrl;
+            }
+            const cleanName = (name || '').toLowerCase().trim();
+            if (AUTHENTIC_COVERS[cleanName]) {
+                return AUTHENTIC_COVERS[cleanName];
+            }
+            const key = getTrackKey(name, artist);
+            if (coverCache[key]) {
+                return coverCache[key];
+            }
+            return generateCleanVinylPlaceholder(name, artist);
+        }
+
+        function resolvePlaylistCover(name, explicitUrl) {
+            if (explicitUrl && !explicitUrl.includes('unsplash.com')) {
+                return explicitUrl;
+            }
+            const cleanName = (name || '').toLowerCase().trim();
+            if (AUTHENTIC_PLAYLIST_COVERS[cleanName]) {
+                return AUTHENTIC_PLAYLIST_COVERS[cleanName];
+            }
+            return "https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2";
+        }
+
+        async function syncSongCovers(tracks) {
+            if (!tracks || !tracks.length) return;
+            const toFetch = [];
+            tracks.slice(0, 20).forEach(t => {
+                const key = getTrackKey(t.name, t.artists);
+                const cleanName = (t.name || '').toLowerCase().trim();
+                if (AUTHENTIC_COVERS[cleanName]) {
+                    t.image_url = AUTHENTIC_COVERS[cleanName];
+                    return;
+                }
+                if (coverCache[key]) {
+                    t.image_url = coverCache[key];
+                    return;
+                }
+                toFetch.push(t);
+            });
+
+            if (toFetch.length === 0) return;
+
+            const statusPill = document.getElementById('header-user-status');
+            const prevText = statusPill ? statusPill.innerText : '';
+            if (statusPill) statusPill.innerText = `Syncing Song Covers (${toFetch.length})...`;
+
+            for (let i = 0; i < toFetch.length; i += 3) {
+                const batch = toFetch.slice(i, i + 3);
+                await Promise.all(batch.map(async (t) => {
+                    try {
+                        const q = encodeURIComponent(`${t.name} ${t.artists || ''}`.trim());
+                        const res = await fetch(`https://itunes.apple.com/search?media=music&entity=song&term=${q}&limit=3`);
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (data.results && data.results.length > 0) {
+                                const hit = data.results[0];
+                                if (hit.artworkUrl100) {
+                                    const highRes = hit.artworkUrl100.replace('100x100bb.jpg', '600x600bb.jpg');
+                                    const key = getTrackKey(t.name, t.artists);
+                                    coverCache[key] = highRes;
+                                    t.image_url = highRes;
+                                    const imgs = document.querySelectorAll(`img[data-song-title="${CSS.escape(t.name)}"]`);
+                                    imgs.forEach(img => {
+                                        img.src = highRes;
+                                    });
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        console.warn('Cover sync error for track:', t.name, err);
+                    }
+                }));
+                await new Promise(r => setTimeout(r, 60));
+            }
+
+            try {
+                localStorage.setItem('statr_cover_cache', JSON.stringify(coverCache));
+            } catch(e) {}
+
+            if (statusPill && prevText) {
+                statusPill.innerText = prevText;
+            }
+        }
+
+        function selectTrackForPlayer(name, artist, cover) {
+            const titleEl = document.getElementById('player-title');
+            const artistEl = document.getElementById('player-artist');
+            const coverEl = document.getElementById('player-cover');
+            if (titleEl) titleEl.innerText = name;
+            if (artistEl) artistEl.innerText = artist;
+            if (coverEl) coverEl.src = cover;
+            const scrubber = document.getElementById('scrubber-fill');
+            if (scrubber) scrubber.style.width = '28%';
+            const current = document.getElementById('time-current');
+            if (current) current.innerText = '0:58';
+        }
+
         // Clean Human-Readable Timeframe Datasets (1D, 7D, 10D, 30D, All-Time)
         const demoDatasets = {
             1: {
@@ -1477,7 +1647,7 @@
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
-                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["deep focus & study"],
                         total_plays: 18,
                         total_skips: 2,
                         skip_rate_pct: 11.1,
@@ -1487,7 +1657,7 @@
                     },
                     {
                         playlist_name: "Late Night Lofi Beats",
-                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["late night lofi beats"],
                         total_plays: 14,
                         total_skips: 3,
                         skip_rate_pct: 21.4,
@@ -1497,7 +1667,7 @@
                     },
                     {
                         playlist_name: "Gym High Energy",
-                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["gym high energy"],
                         total_plays: 10,
                         total_skips: 3,
                         skip_rate_pct: 30.0,
@@ -1507,11 +1677,11 @@
                     }
                 ],
                 tracks: [
-                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 8, skip_count: 1, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
-                    { name: "Levitating", artists: "Dua Lipa", play_count: 6, skip_count: 1, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
-                    { name: "Resonance", artists: "HOME", play_count: 5, skip_count: 0, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Midnight City", artists: "M83", play_count: 5, skip_count: 1, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" },
-                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 4, skip_count: 1, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" }
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 8, skip_count: 1, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 6, skip_count: 1, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Resonance", artists: "HOME", play_count: 5, skip_count: 0, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Midnight City", artists: "M83", play_count: 5, skip_count: 1, image_url: AUTHENTIC_COVERS["midnight city"] },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 4, skip_count: 1, image_url: AUTHENTIC_COVERS["get lucky"] }
                 ],
                 hourly: [
                     { hour: "08", count: 4, skips: 0 },
@@ -1539,7 +1709,7 @@
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
-                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["deep focus & study"],
                         total_plays: 87,
                         total_skips: 15,
                         skip_rate_pct: 14.7,
@@ -1549,7 +1719,7 @@
                     },
                     {
                         playlist_name: "Gym High Energy",
-                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["gym high energy"],
                         total_plays: 62,
                         total_skips: 38,
                         skip_rate_pct: 38.0,
@@ -1559,7 +1729,7 @@
                     },
                     {
                         playlist_name: "Indie Discoveries 2026",
-                        image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["indie discoveries 2026"],
                         total_plays: 75,
                         total_skips: 16,
                         skip_rate_pct: 17.6,
@@ -1569,7 +1739,7 @@
                     },
                     {
                         playlist_name: "Late Night Lofi Beats",
-                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["late night lofi beats"],
                         total_plays: 71,
                         total_skips: 16,
                         skip_rate_pct: 18.4,
@@ -1579,11 +1749,11 @@
                     }
                 ],
                 tracks: [
-                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 53, skip_count: 11, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
-                    { name: "Resonance", artists: "HOME", play_count: 41, skip_count: 11, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 40, skip_count: 7, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Levitating", artists: "Dua Lipa", play_count: 40, skip_count: 7, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
-                    { name: "Midnight City", artists: "M83", play_count: 38, skip_count: 6, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 53, skip_count: 11, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "Resonance", artists: "HOME", play_count: 41, skip_count: 11, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 40, skip_count: 7, image_url: AUTHENTIC_COVERS["get lucky"] },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 40, skip_count: 7, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Midnight City", artists: "M83", play_count: 38, skip_count: 6, image_url: AUTHENTIC_COVERS["midnight city"] }
                 ],
                 hourly: [
                     { hour: "08", count: 24, skips: 4 },
@@ -1613,7 +1783,7 @@
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
-                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["deep focus & study"],
                         total_plays: 124,
                         total_skips: 21,
                         skip_rate_pct: 16.9,
@@ -1623,7 +1793,7 @@
                     },
                     {
                         playlist_name: "Indie Discoveries 2026",
-                        image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["indie discoveries 2026"],
                         total_plays: 108,
                         total_skips: 22,
                         skip_rate_pct: 20.3,
@@ -1633,7 +1803,7 @@
                     },
                     {
                         playlist_name: "Late Night Lofi Beats",
-                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["late night lofi beats"],
                         total_plays: 102,
                         total_skips: 24,
                         skip_rate_pct: 23.5,
@@ -1643,7 +1813,7 @@
                     },
                     {
                         playlist_name: "Gym High Energy",
-                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["gym high energy"],
                         total_plays: 94,
                         total_skips: 35,
                         skip_rate_pct: 37.2,
@@ -1653,11 +1823,11 @@
                     }
                 ],
                 tracks: [
-                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 74, skip_count: 15, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
-                    { name: "Levitating", artists: "Dua Lipa", play_count: 62, skip_count: 11, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
-                    { name: "Resonance", artists: "HOME", play_count: 59, skip_count: 14, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 56, skip_count: 9, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Midnight City", artists: "M83", play_count: 52, skip_count: 8, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 74, skip_count: 15, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 62, skip_count: 11, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Resonance", artists: "HOME", play_count: 59, skip_count: 14, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 56, skip_count: 9, image_url: AUTHENTIC_COVERS["get lucky"] },
+                    { name: "Midnight City", artists: "M83", play_count: 52, skip_count: 8, image_url: AUTHENTIC_COVERS["midnight city"] }
                 ],
                 hourly: [
                     { hour: "08", count: 35, skips: 6 },
@@ -1687,7 +1857,7 @@
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
-                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["deep focus & study"],
                         total_plays: 395,
                         total_skips: 68,
                         skip_rate_pct: 17.2,
@@ -1697,7 +1867,7 @@
                     },
                     {
                         playlist_name: "Indie Discoveries 2026",
-                        image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["indie discoveries 2026"],
                         total_plays: 340,
                         total_skips: 72,
                         skip_rate_pct: 21.1,
@@ -1707,7 +1877,7 @@
                     },
                     {
                         playlist_name: "Late Night Lofi Beats",
-                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["late night lofi beats"],
                         total_plays: 310,
                         total_skips: 70,
                         skip_rate_pct: 22.5,
@@ -1717,7 +1887,7 @@
                     },
                     {
                         playlist_name: "Gym High Energy",
-                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["gym high energy"],
                         total_plays: 275,
                         total_skips: 88,
                         skip_rate_pct: 32.0,
@@ -1727,11 +1897,11 @@
                     }
                 ],
                 tracks: [
-                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 210, skip_count: 39, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
-                    { name: "Levitating", artists: "Dua Lipa", play_count: 185, skip_count: 32, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
-                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 178, skip_count: 27, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Resonance", artists: "HOME", play_count: 165, skip_count: 38, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Midnight City", artists: "M83", play_count: 154, skip_count: 24, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 210, skip_count: 39, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 185, skip_count: 32, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 178, skip_count: 27, image_url: AUTHENTIC_COVERS["get lucky"] },
+                    { name: "Resonance", artists: "HOME", play_count: 165, skip_count: 38, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Midnight City", artists: "M83", play_count: 154, skip_count: 24, image_url: AUTHENTIC_COVERS["midnight city"] }
                 ],
                 hourly: [
                     { hour: "08", count: 110, skips: 22 },
@@ -1761,7 +1931,7 @@
                 playlists: [
                     {
                         playlist_name: "Deep Focus & Study",
-                        image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["deep focus & study"],
                         total_plays: 2450,
                         total_skips: 390,
                         skip_rate_pct: 15.9,
@@ -1771,7 +1941,7 @@
                     },
                     {
                         playlist_name: "Indie Discoveries 2026",
-                        image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["indie discoveries 2026"],
                         total_plays: 2180,
                         total_skips: 440,
                         skip_rate_pct: 20.1,
@@ -1781,7 +1951,7 @@
                     },
                     {
                         playlist_name: "Late Night Lofi Beats",
-                        image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["late night lofi beats"],
                         total_plays: 1980,
                         total_skips: 430,
                         skip_rate_pct: 21.7,
@@ -1791,7 +1961,7 @@
                     },
                     {
                         playlist_name: "Gym High Energy",
-                        image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
+                        image_url: AUTHENTIC_PLAYLIST_COVERS["gym high energy"],
                         total_plays: 1810,
                         total_skips: 590,
                         skip_rate_pct: 32.6,
@@ -1801,11 +1971,11 @@
                     }
                 ],
                 tracks: [
-                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 1240, skip_count: 210, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
-                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 1150, skip_count: 160, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Levitating", artists: "Dua Lipa", play_count: 1080, skip_count: 175, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
-                    { name: "Resonance", artists: "HOME", play_count: 990, skip_count: 215, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Midnight City", artists: "M83", play_count: 940, skip_count: 140, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 1240, skip_count: 210, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 1150, skip_count: 160, image_url: AUTHENTIC_COVERS["get lucky"] },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 1080, skip_count: 175, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Resonance", artists: "HOME", play_count: 990, skip_count: 215, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Midnight City", artists: "M83", play_count: 940, skip_count: 140, image_url: AUTHENTIC_COVERS["midnight city"] }
                 ],
                 hourly: [
                     { hour: "08", count: 680, skips: 120 },
@@ -1964,18 +2134,19 @@
             // Render Playlists
             const shelf = document.getElementById('playlists-shelf');
             shelf.innerHTML = appData.playlists.map(p => {
+                const cover = resolvePlaylistCover(p.playlist_name, p.image_url);
                 const healthTag = p.health_score > 75 ? 'Great Flow' : (p.health_score > 50 ? 'Moderate Skips' : 'Skip Hotspot');
                 const healthColor = p.health_score > 75 ? 'var(--status-green)' : (p.health_score > 50 ? 'var(--status-amber)' : 'var(--status-red)');
                 return `
                     <div class="glass-card playlist-tile">
                         <div class="playlist-cover-wrap">
-                            <img src="${p.image_url || 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80'}" class="playlist-img" alt="${p.playlist_name}">
+                            <img src="${cover}" class="playlist-img" alt="${escapeHtml(p.playlist_name)}" onerror="this.onerror=null; this.src='https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2';">
                             <div class="playlist-floating-health" style="color: ${healthColor};">
                                 ${healthTag} (${p.health_score}%)
                             </div>
                         </div>
                         <div>
-                            <div class="playlist-title">${p.playlist_name}</div>
+                            <div class="playlist-title">${escapeHtml(p.playlist_name)}</div>
                             <div class="playlist-meta">${(p.total_minutes / 60).toFixed(1)} hours listened &middot; ${p.skip_rate_pct}% skipped</div>
                         </div>
                         <div class="playlist-stats-row">
@@ -1988,23 +2159,27 @@
 
             // Render Songs
             const songsContainer = document.getElementById('songs-container');
-            songsContainer.innerHTML = appData.tracks.slice(0, 15).map((t, i) => `
-                <div class="song-item-row">
+            songsContainer.innerHTML = appData.tracks.slice(0, 15).map((t, i) => {
+                const cover = resolveTrackCover(t.name, t.artists, t.image_url);
+                return `
+                <div class="song-item-row" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}')" title="Click to play in dock" style="cursor: pointer;">
                     <div class="song-rank">${i + 1}</div>
-                    <img src="${t.image_url || 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80'}" class="song-thumbnail" alt="${t.name}">
+                    <img src="${cover}" data-song-title="${escapeHtml(t.name)}" class="song-thumbnail" alt="${escapeHtml(t.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(t.name)}', '${escapeJs(t.artists)}');">
                     <div>
-                        <div class="song-primary-title">${t.name}</div>
-                        <div class="song-artist-name">${t.artists}</div>
+                        <div class="song-primary-title">${escapeHtml(t.name)}</div>
+                        <div class="song-artist-name">${escapeHtml(t.artists)}</div>
                     </div>
                     <div class="song-plays-right">
                         <div class="song-play-count">${t.play_count} plays</div>
                         <div class="song-skip-count">${t.skip_count} skips</div>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             renderChart();
             bindCardSpotlights();
+            syncSongCovers(appData.tracks);
         }
 
         function renderChart() {
@@ -2110,17 +2285,17 @@
                 subtitle: "The Weeknd, Taylor Swift, Dua Lipa, SZA",
                 summary: { total_played_hours: 48.2, total_played_minutes: 2892, total_listens: 1180, total_skips: 218, skip_rate_pct: 18.5, unique_tracks: 142, unique_artists: 38 },
                 playlists: [
-                    { playlist_name: "Daily Commute Pop", image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=260&q=80", total_plays: 420, total_skips: 65, skip_rate_pct: 15.5, total_minutes: 1040, health_score: 87, unique_tracks_heard: 35 },
-                    { playlist_name: "Weekend Energy", image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80", total_plays: 350, total_skips: 78, skip_rate_pct: 22.3, total_minutes: 890, health_score: 79, unique_tracks_heard: 30 },
-                    { playlist_name: "Late Night Pop", image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80", total_plays: 280, total_skips: 45, skip_rate_pct: 16.1, total_minutes: 710, health_score: 84, unique_tracks_heard: 28 }
+                    { playlist_name: "Daily Commute Pop", image_url: AUTHENTIC_PLAYLIST_COVERS["daily commute pop"], total_plays: 420, total_skips: 65, skip_rate_pct: 15.5, total_minutes: 1040, health_score: 87, unique_tracks_heard: 35 },
+                    { playlist_name: "Weekend Energy", image_url: AUTHENTIC_PLAYLIST_COVERS["weekend energy"], total_plays: 350, total_skips: 78, skip_rate_pct: 22.3, total_minutes: 890, health_score: 79, unique_tracks_heard: 30 },
+                    { playlist_name: "Late Night Pop", image_url: AUTHENTIC_PLAYLIST_COVERS["late night pop"], total_plays: 280, total_skips: 45, skip_rate_pct: 16.1, total_minutes: 710, health_score: 84, unique_tracks_heard: 28 }
                 ],
                 tracks: [
-                    { name: "Cruel Summer", artists: "Taylor Swift", play_count: 84, skip_count: 9, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
-                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 78, skip_count: 12, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "As It Was", artists: "Harry Styles", play_count: 72, skip_count: 10, image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=160&q=80" },
-                    { name: "Levitating", artists: "Dua Lipa", play_count: 68, skip_count: 8, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
-                    { name: "Kill Bill", artists: "SZA", play_count: 64, skip_count: 11, image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=160&q=80" },
-                    { name: "Anti-Hero", artists: "Taylor Swift", play_count: 59, skip_count: 7, image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=160&q=80" }
+                    { name: "Cruel Summer", artists: "Taylor Swift", play_count: 84, skip_count: 9, image_url: AUTHENTIC_COVERS["cruel summer"] },
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 78, skip_count: 12, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "As It Was", artists: "Harry Styles", play_count: 72, skip_count: 10, image_url: AUTHENTIC_COVERS["as it was"] },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 68, skip_count: 8, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Kill Bill", artists: "SZA", play_count: 64, skip_count: 11, image_url: AUTHENTIC_COVERS["kill bill"] },
+                    { name: "Anti-Hero", artists: "Taylor Swift", play_count: 59, skip_count: 7, image_url: AUTHENTIC_COVERS["anti-hero"] }
                 ],
                 hourly: [
                     { hour: "08", count: 48, skips: 8 }, { hour: "09", count: 62, skips: 10 }, { hour: "12", count: 70, skips: 12 }, { hour: "17", count: 85, skips: 16 }, { hour: "18", count: 95, skips: 18 }, { hour: "21", count: 80, skips: 15 }
@@ -2131,16 +2306,16 @@
                 subtitle: "HOME, Tycho, Daft Punk, Lofi Girl, Hans Zimmer",
                 summary: { total_played_hours: 62.4, total_played_minutes: 3744, total_listens: 1420, total_skips: 139, skip_rate_pct: 9.8, unique_tracks: 196, unique_artists: 42 },
                 playlists: [
-                    { playlist_name: "Deep Focus & Study", image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80", total_plays: 580, total_skips: 42, skip_rate_pct: 7.2, total_minutes: 1520, health_score: 94, unique_tracks_heard: 50 },
-                    { playlist_name: "Midnight Coding", image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80", total_plays: 460, total_skips: 51, skip_rate_pct: 11.1, total_minutes: 1210, health_score: 90, unique_tracks_heard: 42 },
-                    { playlist_name: "Binaural Flow", image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=260&q=80", total_plays: 380, total_skips: 32, skip_rate_pct: 8.4, total_minutes: 1010, health_score: 92, unique_tracks_heard: 35 }
+                    { playlist_name: "Deep Focus & Study", image_url: AUTHENTIC_PLAYLIST_COVERS["deep focus & study"], total_plays: 580, total_skips: 42, skip_rate_pct: 7.2, total_minutes: 1520, health_score: 94, unique_tracks_heard: 50 },
+                    { playlist_name: "Midnight Coding", image_url: AUTHENTIC_PLAYLIST_COVERS["midnight coding"], total_plays: 460, total_skips: 51, skip_rate_pct: 11.1, total_minutes: 1210, health_score: 90, unique_tracks_heard: 42 },
+                    { playlist_name: "Binaural Flow", image_url: AUTHENTIC_PLAYLIST_COVERS["binaural flow"], total_plays: 380, total_skips: 32, skip_rate_pct: 8.4, total_minutes: 1010, health_score: 92, unique_tracks_heard: 35 }
                 ],
                 tracks: [
-                    { name: "Resonance", artists: "HOME", play_count: 112, skip_count: 5, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Sunset Lover", artists: "Petit Biscuit", play_count: 94, skip_count: 6, image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=160&q=80" },
-                    { name: "Dayvan Cowboy", artists: "Boards of Canada", play_count: 86, skip_count: 7, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" },
-                    { name: "Time", artists: "Hans Zimmer", play_count: 82, skip_count: 4, image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=160&q=80" },
-                    { name: "Nightcall", artists: "Kavinsky", play_count: 79, skip_count: 8, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" }
+                    { name: "Resonance", artists: "HOME", play_count: 112, skip_count: 5, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Sunset Lover", artists: "Petit Biscuit", play_count: 94, skip_count: 6, image_url: AUTHENTIC_COVERS["sunset lover"] },
+                    { name: "Dayvan Cowboy", artists: "Boards of Canada", play_count: 86, skip_count: 7, image_url: AUTHENTIC_COVERS["dayvan cowboy"] },
+                    { name: "Time", artists: "Hans Zimmer", play_count: 82, skip_count: 4, image_url: AUTHENTIC_COVERS["time"] },
+                    { name: "Nightcall", artists: "Kavinsky", play_count: 79, skip_count: 8, image_url: AUTHENTIC_COVERS["nightcall"] }
                 ],
                 hourly: [
                     { hour: "14", count: 75, skips: 6 }, { hour: "15", count: 90, skips: 8 }, { hour: "21", count: 110, skips: 10 }, { hour: "22", count: 140, skips: 12 }, { hour: "23", count: 160, skips: 14 }, { hour: "00", count: 120, skips: 11 }
@@ -2151,16 +2326,16 @@
                 subtitle: "Fred again.., Skrillex, Travis Scott, M83",
                 summary: { total_played_hours: 35.6, total_played_minutes: 2136, total_listens: 890, total_skips: 304, skip_rate_pct: 34.2, unique_tracks: 110, unique_artists: 32 },
                 playlists: [
-                    { playlist_name: "Heavy PR Day", image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80", total_plays: 380, total_skips: 140, skip_rate_pct: 36.8, total_minutes: 890, health_score: 64, unique_tracks_heard: 30 },
-                    { playlist_name: "Cardio Rush", image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80", total_plays: 310, total_skips: 98, skip_rate_pct: 31.6, total_minutes: 740, health_score: 70, unique_tracks_heard: 28 },
-                    { playlist_name: "Bass Boosted Phonk", image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=260&q=80", total_plays: 200, total_skips: 66, skip_rate_pct: 33.0, total_minutes: 506, health_score: 68, unique_tracks_heard: 25 }
+                    { playlist_name: "Heavy PR Day", image_url: AUTHENTIC_PLAYLIST_COVERS["heavy pr day"], total_plays: 380, total_skips: 140, skip_rate_pct: 36.8, total_minutes: 890, health_score: 64, unique_tracks_heard: 30 },
+                    { playlist_name: "Cardio Rush", image_url: AUTHENTIC_PLAYLIST_COVERS["cardio rush"], total_plays: 310, total_skips: 98, skip_rate_pct: 31.6, total_minutes: 740, health_score: 70, unique_tracks_heard: 28 },
+                    { playlist_name: "Bass Boosted Phonk", image_url: AUTHENTIC_PLAYLIST_COVERS["bass boosted phonk"], total_plays: 200, total_skips: 66, skip_rate_pct: 33.0, total_minutes: 506, health_score: 68, unique_tracks_heard: 25 }
                 ],
                 tracks: [
-                    { name: "Turn On The Lights again..", artists: "Fred again.., Swedish House Mafia", play_count: 72, skip_count: 18, image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=160&q=80" },
-                    { name: "Rumble", artists: "Skrillex, Fred again.., Flowdan", play_count: 68, skip_count: 14, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
-                    { name: "Goosebumps", artists: "Travis Scott", play_count: 65, skip_count: 24, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
-                    { name: "Satisfaction", artists: "David Guetta, Benny Benassi", play_count: 58, skip_count: 16, image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=160&q=80" },
-                    { name: "Midnight City", artists: "M83", play_count: 55, skip_count: 12, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                    { name: "Turn On The Lights again..", artists: "Fred again.., Swedish House Mafia", play_count: 72, skip_count: 18, image_url: AUTHENTIC_COVERS["turn on the lights again.."] },
+                    { name: "Rumble", artists: "Skrillex, Fred again.., Flowdan", play_count: 68, skip_count: 14, image_url: AUTHENTIC_COVERS["rumble"] },
+                    { name: "Goosebumps", artists: "Travis Scott", play_count: 65, skip_count: 24, image_url: AUTHENTIC_COVERS["goosebumps"] },
+                    { name: "Satisfaction", artists: "David Guetta, Benny Benassi", play_count: 58, skip_count: 16, image_url: AUTHENTIC_COVERS["satisfaction"] },
+                    { name: "Midnight City", artists: "M83", play_count: 55, skip_count: 12, image_url: AUTHENTIC_COVERS["midnight city"] }
                 ],
                 hourly: [
                     { hour: "06", count: 65, skips: 22 }, { hour: "07", count: 90, skips: 30 }, { hour: "17", count: 110, skips: 38 }, { hour: "18", count: 130, skips: 44 }, { hour: "19", count: 85, skips: 28 }
@@ -2230,7 +2405,7 @@
                 // Query Spotify oEmbed API (Public & CORS-friendly)
                 const oembedUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(cleanUrl)}`;
                 let playlistTitle = "My Spotify Playlist";
-                let coverImg = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80";
+                let coverImg = "https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2";
 
                 try {
                     const res = await fetch(oembedUrl);
@@ -2245,15 +2420,15 @@
 
                 statusMsg.innerText = `Analyzing "${playlistTitle}" tracks and skip likelihood...`;
 
-                // Synthesize playlist tracks and telemetry
+                // Synthesize playlist tracks and telemetry with authentic song artwork
                 const playlistTracks = [
-                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 58, skip_count: 8, image_url: coverImg },
-                    { name: "Levitating", artists: "Dua Lipa", play_count: 51, skip_count: 7, image_url: coverImg },
-                    { name: "Resonance", artists: "HOME", play_count: 47, skip_count: 5, image_url: coverImg },
-                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 44, skip_count: 6, image_url: coverImg },
-                    { name: "Midnight City", artists: "M83", play_count: 42, skip_count: 4, image_url: coverImg },
-                    { name: "As It Was", artists: "Harry Styles", play_count: 39, skip_count: 5, image_url: coverImg },
-                    { name: "Blinding Lights", artists: "The Weeknd", play_count: 36, skip_count: 4, image_url: coverImg }
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 58, skip_count: 8, image_url: AUTHENTIC_COVERS["starboy"] },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 51, skip_count: 7, image_url: AUTHENTIC_COVERS["levitating"] },
+                    { name: "Resonance", artists: "HOME", play_count: 47, skip_count: 5, image_url: AUTHENTIC_COVERS["resonance"] },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 44, skip_count: 6, image_url: AUTHENTIC_COVERS["get lucky"] },
+                    { name: "Midnight City", artists: "M83", play_count: 42, skip_count: 4, image_url: AUTHENTIC_COVERS["midnight city"] },
+                    { name: "As It Was", artists: "Harry Styles", play_count: 39, skip_count: 5, image_url: AUTHENTIC_COVERS["as it was"] },
+                    { name: "Blinding Lights", artists: "The Weeknd", play_count: 36, skip_count: 4, image_url: AUTHENTIC_COVERS["blinding lights"] }
                 ];
 
                 const totalPlays = playlistTracks.reduce((acc, t) => acc + t.play_count, 0);
@@ -2733,7 +2908,7 @@
                 totalMs += ms;
                 if (isSkip) skips++;
 
-                if (!trackMap[track]) trackMap[track] = { name: track, artists: artist, play_count: 0, skip_count: 0, image_url: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80' };
+                if (!trackMap[track]) trackMap[track] = { name: track, artists: artist, play_count: 0, skip_count: 0, image_url: resolveTrackCover(track, artist) };
                 trackMap[track].play_count++;
                 if (isSkip) trackMap[track].skip_count++;
 
@@ -2774,13 +2949,13 @@
             appData.tracks = sortedTracks.slice(0, 20);
             appData.hourly = hourlyCounts;
 
-            // Generate contextual playlists based on top artists
+            // Generate contextual playlists based on top artists with official Spotify covers
             if (sortedArtists.length > 0) {
                 const sampleImages = [
-                    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80",
-                    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80",
-                    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80",
-                    "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80"
+                    AUTHENTIC_PLAYLIST_COVERS["today's top hits"],
+                    AUTHENTIC_PLAYLIST_COVERS["deep focus"],
+                    AUTHENTIC_PLAYLIST_COVERS["gym high energy"],
+                    AUTHENTIC_PLAYLIST_COVERS["weekend energy"]
                 ];
                 appData.playlists = sortedArtists.slice(0, 4).map((art, idx) => {
                     const skipPct = art.count > 0 ? ((art.skips / art.count) * 100).toFixed(1) : 16;
