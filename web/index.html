@@ -11,11 +11,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <style>
-        :root {
+        :root, html[data-theme="dark"] {
             --bg-canvas: #040507;
             --bg-sidebar: rgba(14, 16, 22, 0.75);
             --bg-card: rgba(20, 23, 31, 0.65);
             --bg-card-hover: rgba(30, 34, 46, 0.8);
+            --bg-card-subtle: rgba(255, 255, 255, 0.04);
+            --bg-control: rgba(255, 255, 255, 0.06);
+            --bg-control-active: rgba(255, 255, 255, 0.2);
             --border-subtle: rgba(255, 255, 255, 0.08);
             --border-focus: rgba(255, 255, 255, 0.2);
             
@@ -32,7 +35,136 @@
             --text-secondary: #94A3B8;
             --text-muted: #64748B;
 
+            --shadow-card: 0 20px 50px -15px rgba(0, 0, 0, 0.6);
+            --shadow-float: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --spotlight-color: rgba(255, 255, 255, 0.3);
+            --bg-dock: rgba(10, 12, 18, 0.85);
+            --bg-modal: #0f1118;
+            --bg-modal-tabs: rgba(0, 0, 0, 0.25);
+            --bg-input: rgba(255, 255, 255, 0.05);
+            --timeline-track: rgba(255, 255, 255, 0.12);
+            --timeline-fill: #FFFFFF;
+            --halo-opacity: 1;
+            --halo-blend: screen;
+            --hero-primary-bg: #FFFFFF;
+            --hero-primary-text: #000000;
+            --hero-secondary-bg: rgba(255, 255, 255, 0.08);
+            --hero-secondary-text: #FFFFFF;
+            --ctrl-play-bg: #FFFFFF;
+            --ctrl-play-text: #000000;
+            --fan-box-bg: linear-gradient(135deg, rgba(255, 215, 0, 0.09) 0%, rgba(22, 22, 28, 0.8) 100%);
+            --fan-chip-bg: rgba(255, 255, 255, 0.08);
+            --fan-chip-border: rgba(255, 255, 255, 0.12);
+            --fan-chip-text: #FFFFFF;
+            --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+            --scrollbar-hover: rgba(255, 255, 255, 0.3);
+            --obscurity-capsule-bg: rgba(255, 255, 255, 0.04);
+            --obscurity-capsule-border: rgba(255, 255, 255, 0.07);
+
             --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+        }
+
+        html[data-theme="light"] {
+            --bg-canvas: #F8FAFC;
+            --bg-sidebar: rgba(255, 255, 255, 0.84);
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(255, 255, 255, 0.98);
+            --bg-card-subtle: rgba(15, 23, 42, 0.03);
+            --bg-control: rgba(15, 23, 42, 0.05);
+            --bg-control-active: #FFFFFF;
+            --border-subtle: rgba(15, 23, 42, 0.08);
+            --border-focus: rgba(15, 23, 42, 0.22);
+
+            --apple-red: #E11D48;
+            --apple-pink: #F43F5E;
+            --apple-purple: #7C3AED;
+            --apple-blue: #0284C7;
+            --status-green: #16A34A;
+            --status-amber: #D97706;
+            --status-red: #DC2626;
+
+            --text-heading: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #64748B;
+
+            --shadow-card: 0 10px 30px -4px rgba(15, 23, 42, 0.07), 0 2px 8px -1px rgba(15, 23, 42, 0.04);
+            --shadow-float: 0 2px 12px rgba(15, 23, 42, 0.08);
+            --spotlight-color: rgba(225, 29, 72, 0.08);
+            --bg-dock: rgba(255, 255, 255, 0.92);
+            --bg-modal: #FFFFFF;
+            --bg-modal-tabs: rgba(15, 23, 42, 0.03);
+            --bg-input: rgba(15, 23, 42, 0.04);
+            --timeline-track: rgba(15, 23, 42, 0.1);
+            --timeline-fill: #0F172A;
+            --halo-opacity: 0.5;
+            --halo-blend: multiply;
+            --hero-primary-bg: #0F172A;
+            --hero-primary-text: #FFFFFF;
+            --hero-secondary-bg: rgba(15, 23, 42, 0.06);
+            --hero-secondary-text: #0F172A;
+            --ctrl-play-bg: #0F172A;
+            --ctrl-play-text: #FFFFFF;
+            --fan-box-bg: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 255, 255, 0.95) 100%);
+            --fan-chip-bg: rgba(15, 23, 42, 0.04);
+            --fan-chip-border: rgba(15, 23, 42, 0.08);
+            --fan-chip-text: #0F172A;
+            --scrollbar-thumb: rgba(15, 23, 42, 0.14);
+            --scrollbar-hover: rgba(15, 23, 42, 0.28);
+            --obscurity-capsule-bg: rgba(15, 23, 42, 0.03);
+            --obscurity-capsule-border: rgba(15, 23, 42, 0.06);
+        }
+
+        @media (prefers-color-scheme: light) {
+            html:not([data-theme="dark"]):not([data-theme="light"]),
+            html[data-theme="system"][data-effective-theme="light"] {
+                --bg-canvas: #F8FAFC;
+                --bg-sidebar: rgba(255, 255, 255, 0.84);
+                --bg-card: rgba(255, 255, 255, 0.85);
+                --bg-card-hover: rgba(255, 255, 255, 0.98);
+                --bg-card-subtle: rgba(15, 23, 42, 0.03);
+                --bg-control: rgba(15, 23, 42, 0.05);
+                --bg-control-active: #FFFFFF;
+                --border-subtle: rgba(15, 23, 42, 0.08);
+                --border-focus: rgba(15, 23, 42, 0.22);
+
+                --apple-red: #E11D48;
+                --apple-pink: #F43F5E;
+                --apple-purple: #7C3AED;
+                --apple-blue: #0284C7;
+                --status-green: #16A34A;
+                --status-amber: #D97706;
+                --status-red: #DC2626;
+
+                --text-heading: #0F172A;
+                --text-secondary: #475569;
+                --text-muted: #64748B;
+
+                --shadow-card: 0 10px 30px -4px rgba(15, 23, 42, 0.07), 0 2px 8px -1px rgba(15, 23, 42, 0.04);
+                --shadow-float: 0 2px 12px rgba(15, 23, 42, 0.08);
+                --spotlight-color: rgba(225, 29, 72, 0.08);
+                --bg-dock: rgba(255, 255, 255, 0.92);
+                --bg-modal: #FFFFFF;
+                --bg-modal-tabs: rgba(15, 23, 42, 0.03);
+                --bg-input: rgba(15, 23, 42, 0.04);
+                --timeline-track: rgba(15, 23, 42, 0.1);
+                --timeline-fill: #0F172A;
+                --halo-opacity: 0.5;
+                --halo-blend: multiply;
+                --hero-primary-bg: #0F172A;
+                --hero-primary-text: #FFFFFF;
+                --hero-secondary-bg: rgba(15, 23, 42, 0.06);
+                --hero-secondary-text: #0F172A;
+                --ctrl-play-bg: #0F172A;
+                --ctrl-play-text: #FFFFFF;
+                --fan-box-bg: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 255, 255, 0.95) 100%);
+                --fan-chip-bg: rgba(15, 23, 42, 0.04);
+                --fan-chip-border: rgba(15, 23, 42, 0.08);
+                --fan-chip-text: #0F172A;
+                --scrollbar-thumb: rgba(15, 23, 42, 0.14);
+                --scrollbar-hover: rgba(15, 23, 42, 0.28);
+                --obscurity-capsule-bg: rgba(15, 23, 42, 0.03);
+                --obscurity-capsule-border: rgba(15, 23, 42, 0.06);
+            }
         }
 
         ::selection {
@@ -126,7 +258,7 @@
             font-size: 20px;
             font-weight: 800;
             letter-spacing: -0.03em;
-            color: #FFFFFF;
+            color: var(--text-heading);
         }
 
         .nav-group-title {
@@ -163,16 +295,17 @@
         }
 
         .nav-btn:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-heading);
+            background: var(--bg-card-subtle);
             transform: translateX(2px);
         }
 
         .nav-btn.active {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-heading);
+            background: var(--bg-control-active);
             font-weight: 600;
-            border-color: rgba(255, 255, 255, 0.15);
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-float);
         }
 
         .nav-icon {
@@ -182,10 +315,45 @@
             flex-shrink: 0;
         }
 
+        /* Sidebar Theme Switcher Row */
+        .sidebar-theme-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            background: var(--bg-card-subtle);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .sidebar-theme-row:hover {
+            background: var(--bg-control);
+            border-color: var(--border-focus);
+        }
+
+        .sidebar-theme-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-theme-val {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--apple-red);
+        }
+
         /* Sidebar Connect Card */
         .sidebar-sync-card {
-            background: linear-gradient(135deg, rgba(250, 45, 72, 0.12) 0%, rgba(139, 92, 246, 0.12) 100%);
-            border: 1px solid rgba(250, 45, 72, 0.25);
+            background: linear-gradient(135deg, rgba(250, 45, 72, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px solid var(--border-subtle);
             border-radius: 14px;
             padding: 16px;
             text-align: center;
@@ -194,7 +362,7 @@
         .sidebar-sync-card h4 {
             font-size: 13px;
             font-weight: 700;
-            color: #FFFFFF;
+            color: var(--text-heading);
             margin-bottom: 4px;
         }
 
@@ -242,10 +410,10 @@
 
         main.main-viewport::-webkit-scrollbar { width: 6px; }
         main.main-viewport::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--scrollbar-thumb);
             border-radius: 4px;
         }
-        main.main-viewport::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+        main.main-viewport::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
 
         /* Top Bar */
         .stage-top-bar {
@@ -253,19 +421,22 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 32px;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
         .status-pill-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--bg-control);
             border: 1px solid var(--border-subtle);
             border-radius: 20px;
             padding: 6px 14px;
             font-size: 12px;
             font-weight: 500;
-            color: #FFFFFF;
+            color: var(--text-heading);
+            box-shadow: var(--shadow-float);
         }
 
         .live-dot {
@@ -276,16 +447,67 @@
             box-shadow: 0 0 8px var(--status-green);
         }
 
-        .timeframe-segmented-control {
+        .top-controls-right-strip {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.06);
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* Theme Segmented Control (System / Light / Dark) */
+        .theme-segmented-control {
+            display: flex;
+            align-items: center;
+            background: var(--bg-control);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border-subtle);
             border-radius: 12px;
             padding: 3px;
             gap: 2px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-float);
+        }
+
+        .theme-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 11px;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-tab:hover {
+            color: var(--text-heading);
+            background: var(--bg-card-subtle);
+        }
+
+        .theme-tab:active {
+            transform: scale(0.96);
+        }
+
+        .theme-tab.active {
+            background: var(--bg-control-active);
+            color: var(--text-heading);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .timeframe-segmented-control {
+            display: flex;
+            align-items: center;
+            background: var(--bg-control);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 3px;
+            gap: 2px;
+            box-shadow: var(--shadow-float);
         }
 
         .time-tab {
@@ -302,8 +524,8 @@
         }
 
         .time-tab:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-heading);
+            background: var(--bg-card-subtle);
         }
 
         .time-tab:active {
@@ -311,9 +533,9 @@
         }
 
         .time-tab.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: #FFFFFF;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            background: var(--bg-control-active);
+            color: var(--text-heading);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
         /* Glass Spotlight Cards (Antigravity Materiality) */
@@ -325,7 +547,7 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6);
+            box-shadow: var(--shadow-card);
         }
 
         .glass-card::before {
@@ -334,7 +556,7 @@
             inset: 0;
             border-radius: inherit;
             padding: 1px;
-            background: radial-gradient(350px circle at var(--card-mouse-x, -500px) var(--card-mouse-y, -500px), rgba(255, 255, 255, 0.3), transparent 50%);
+            background: radial-gradient(350px circle at var(--card-mouse-x, -500px) var(--card-mouse-y, -500px), var(--spotlight-color), transparent 50%);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -355,7 +577,7 @@
             font-size: 38px;
             font-weight: 800;
             letter-spacing: -0.03em;
-            color: #FFFFFF;
+            color: var(--text-heading);
             line-height: 1.1;
             margin-bottom: 10px;
         }
@@ -375,8 +597,8 @@
         }
 
         .btn-hero-primary {
-            background: #FFFFFF;
-            color: #000000;
+            background: var(--hero-primary-bg);
+            color: var(--hero-primary-text);
             font-size: 13px;
             font-weight: 700;
             padding: 11px 22px;
@@ -387,17 +609,18 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            box-shadow: var(--shadow-float);
         }
 
         .btn-hero-primary:hover {
             transform: scale(1.02);
-            background: #F3F4F6;
+            opacity: 0.95;
         }
 
         .btn-hero-secondary {
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--hero-secondary-bg);
             border: 1px solid var(--border-subtle);
-            color: #FFFFFF;
+            color: var(--hero-secondary-text);
             font-size: 13px;
             font-weight: 600;
             padding: 11px 20px;
@@ -407,7 +630,7 @@
         }
 
         .btn-hero-secondary:hover {
-            background: rgba(255, 255, 255, 0.14);
+            background: var(--bg-control);
         }
 
         /* 4 Simple Human Stat Cards */
@@ -435,7 +658,7 @@
             font-size: 34px;
             font-weight: 800;
             letter-spacing: -0.03em;
-            color: #FFFFFF;
+            color: var(--text-heading);
             margin-bottom: 6px;
         }
 
@@ -470,7 +693,7 @@
             font-size: 22px;
             font-weight: 800;
             letter-spacing: -0.02em;
-            color: #FFFFFF;
+            color: var(--text-heading);
         }
 
         .section-sub {
@@ -532,7 +755,7 @@
         .playlist-title {
             font-size: 16px;
             font-weight: 700;
-            color: #FFFFFF;
+            color: var(--text-heading);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -554,7 +777,7 @@
         }
 
         .playlist-stats-row strong {
-            color: #FFFFFF;
+            color: var(--text-heading);
         }
 
         /* Split Workspace: Top Songs & Daily Activity */
@@ -585,7 +808,7 @@
         }
 
         .song-item-row:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-card-subtle);
             transform: translateX(2px);
         }
 
@@ -606,7 +829,7 @@
         .song-primary-title {
             font-size: 14px;
             font-weight: 600;
-            color: #FFFFFF;
+            color: var(--text-heading);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -627,7 +850,7 @@
         }
 
         .song-play-count {
-            color: #FFFFFF;
+            color: var(--text-heading);
             font-weight: 700;
         }
 
@@ -651,7 +874,7 @@
             left: 0;
             right: 0;
             height: 86px;
-            background: rgba(10, 12, 18, 0.85);
+            background: var(--bg-dock);
             backdrop-filter: blur(40px) saturate(200%);
             border-top: 1px solid var(--border-subtle);
             z-index: 100;
@@ -659,6 +882,7 @@
             grid-template-columns: 320px 1fr 320px;
             align-items: center;
             padding: 0 32px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
         }
 
         .player-track-left {
@@ -672,13 +896,13 @@
             height: 50px;
             border-radius: 10px;
             object-fit: cover;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
         }
 
         .player-titles h4 {
             font-size: 14px;
             font-weight: 700;
-            color: #FFFFFF;
+            color: var(--text-heading);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -720,22 +944,22 @@
         }
 
         .ctrl-btn:hover {
-            color: #FFFFFF;
+            color: var(--text-heading);
             transform: scale(1.08);
         }
 
         .ctrl-btn-play {
             width: 36px;
             height: 36px;
-            background: #FFFFFF;
-            color: #000000;
+            background: var(--ctrl-play-bg);
+            color: var(--ctrl-play-text);
             border-radius: 50%;
             transition: transform 0.15s ease;
+            box-shadow: var(--shadow-float);
         }
 
         .ctrl-btn-play:hover {
-            transform: scale(1.1);
-            color: #000000;
+            transform: scale(1.08);
         }
 
         .timeline-slider-row {
@@ -754,7 +978,7 @@
         .timeline-track {
             flex: 1;
             height: 4px;
-            background: rgba(255, 255, 255, 0.12);
+            background: var(--timeline-track);
             border-radius: 2px;
             cursor: pointer;
             position: relative;
@@ -762,7 +986,7 @@
 
         .timeline-fill {
             height: 100%;
-            background: #FFFFFF;
+            background: var(--timeline-fill);
             border-radius: 2px;
             width: 42%;
         }
@@ -813,10 +1037,10 @@
         .modal-window {
             width: 100%;
             max-width: 580px;
-            background: #0f1118;
+            background: var(--bg-modal);
             border: 1px solid var(--border-focus);
             border-radius: 24px;
-            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             position: relative;
         }
@@ -833,13 +1057,13 @@
             font-size: 20px;
             font-weight: 800;
             letter-spacing: -0.02em;
-            color: #FFFFFF;
+            color: var(--text-heading);
         }
 
         .btn-modal-close {
-            background: rgba(255, 255, 255, 0.08);
-            border: none;
-            color: #FFFFFF;
+            background: var(--bg-card-subtle);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-heading);
             width: 30px;
             height: 30px;
             border-radius: 50%;
@@ -850,12 +1074,12 @@
             justify-content: center;
         }
 
-        .btn-modal-close:hover { background: rgba(255, 255, 255, 0.16); }
+        .btn-modal-close:hover { background: var(--bg-control); }
 
         .modal-tabs {
             display: flex;
             padding: 8px 30px;
-            background: rgba(0, 0, 0, 0.25);
+            background: var(--bg-modal-tabs);
             gap: 16px;
             border-bottom: 1px solid var(--border-subtle);
         }
@@ -871,7 +1095,7 @@
             position: relative;
         }
 
-        .modal-tab-button.active { color: #FFFFFF; }
+        .modal-tab-button.active { color: var(--text-heading); }
         .modal-tab-button.active::after {
             content: '';
             position: absolute;
@@ -888,11 +1112,11 @@
 
         .friendly-input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-input);
             border: 1px solid var(--border-subtle);
             border-radius: 10px;
             padding: 12px 16px;
-            color: #FFFFFF;
+            color: var(--text-heading);
             font-size: 14px;
             outline: none;
             transition: border-color 0.2s ease;
@@ -903,11 +1127,11 @@
         }
 
         .upload-dropzone {
-            border: 2px dashed rgba(255, 255, 255, 0.16);
+            border: 2px dashed var(--border-subtle);
             border-radius: 16px;
             padding: 38px 24px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--bg-card-subtle);
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -953,7 +1177,7 @@
         }
 
         .quick-preset-chip {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-control);
             border: 1px solid var(--border-subtle);
             border-radius: 20px;
             padding: 6px 14px;
@@ -966,9 +1190,9 @@
         }
 
         .quick-preset-chip:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.25);
+            color: var(--text-heading);
+            background: var(--bg-control-active);
+            border-color: var(--border-focus);
             transform: translateY(-1px);
         }
 
@@ -983,7 +1207,7 @@
             align-items: center;
             gap: 14px;
             padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--bg-card-subtle);
             border: 1px solid var(--border-subtle);
             border-radius: 14px;
             cursor: pointer;
@@ -991,10 +1215,10 @@
         }
 
         .persona-card-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--bg-card);
             border-color: var(--border-focus);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--shadow-card);
         }
 
         .persona-avatar {
@@ -1022,7 +1246,7 @@
                 width: 72px;
                 padding: 24px 8px 120px;
             }
-            .brand-name, .nav-group-title, .sidebar-sync-card h4, .sidebar-sync-card p, .nav-text {
+            .brand-name, .nav-group-title, .sidebar-sync-card h4, .sidebar-sync-card p, .nav-text, .sidebar-theme-row {
                 display: none;
             }
             .brand-logo-row {
@@ -1084,7 +1308,7 @@
             text-transform: uppercase;
             padding: 3px 8px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--bg-control);
             color: var(--text-muted);
             margin-bottom: 8px;
             display: inline-block;
@@ -1108,7 +1332,7 @@
         }
         .artist-card-item:hover {
             transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.25);
+            border-color: var(--border-focus);
         }
         .artist-avatar-wrap {
             position: relative;
@@ -1121,8 +1345,8 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
-            border: 2px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+            border: 2px solid var(--border-subtle);
         }
         .artist-rank-pill {
             position: absolute;
@@ -1134,12 +1358,12 @@
             font-weight: 800;
             padding: 2px 7px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         .artist-name-title {
             font-size: 16px;
             font-weight: 800;
-            color: #FFFFFF;
+            color: var(--text-heading);
             margin-bottom: 4px;
         }
         .artist-fan-tier {
@@ -1172,7 +1396,7 @@
         }
         .album-tile-item:hover {
             transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.25);
+            border-color: var(--border-focus);
         }
         .album-cover-box {
             width: 100%;
@@ -1181,7 +1405,7 @@
             overflow: hidden;
             margin-bottom: 12px;
             position: relative;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
         }
         .album-cover-img {
             width: 100%;
@@ -1191,7 +1415,7 @@
         .album-title-name {
             font-size: 15px;
             font-weight: 800;
-            color: #FFFFFF;
+            color: var(--text-heading);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1229,7 +1453,7 @@
         .obscurity-gauge-wrap {
             width: 100%;
             height: 14px;
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--bg-control);
             border-radius: 10px;
             overflow: hidden;
             display: flex;
@@ -1254,8 +1478,8 @@
             font-weight: 700;
         }
         .obscurity-stat-capsule {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            background: var(--obscurity-capsule-bg);
+            border: 1px solid var(--obscurity-capsule-border);
             border-radius: 14px;
             padding: 16px 20px;
         }
@@ -1264,7 +1488,7 @@
         .fan-rating-box {
             padding: 26px 28px;
             margin-bottom: 40px;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.09) 0%, rgba(22, 22, 28, 0.8) 100%);
+            background: var(--fan-box-bg);
             border: 1px solid rgba(255, 215, 0, 0.28);
         }
         .fan-rating-split {
@@ -1281,9 +1505,9 @@
             margin-top: 14px;
         }
         .fan-badge-chip {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #FFFFFF;
+            background: var(--fan-chip-bg);
+            border: 1px solid var(--fan-chip-border);
+            color: var(--fan-chip-text);
             font-size: 12px;
             font-weight: 700;
             padding: 6px 14px;
@@ -1299,6 +1523,18 @@
     </style>
 </head>
 <body>
+    <!-- Instant Anti-FOUT Theme Initializer -->
+    <script>
+        (function() {
+            try {
+                var saved = localStorage.getItem('statr_theme') || 'system';
+                var isLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+                var effective = saved === 'system' ? (isLight ? 'light' : 'dark') : saved;
+                document.documentElement.setAttribute('data-theme', saved);
+                document.documentElement.setAttribute('data-effective-theme', effective);
+            } catch(e) {}
+        })();
+    </script>
 
     <!-- Ambient Living Canvas Background -->
     <canvas id="ambient-canvas"></canvas>
@@ -1384,6 +1620,15 @@
         </div>
 
         <div>
+            <!-- Sidebar Quick Theme Row -->
+            <div class="sidebar-theme-row" onclick="cycleTheme()" title="Click to cycle appearance mode (Auto / Light / Dark)">
+                <span class="sidebar-theme-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    Appearance
+                </span>
+                <span class="sidebar-theme-val" id="sidebar-theme-indicator">Auto</span>
+            </div>
+
             <div class="sidebar-sync-card">
                 <h4>Instant Data Ingestion</h4>
                 <p>Paste a public playlist link or try 1-click sample profiles.</p>
@@ -1407,12 +1652,31 @@
                 <span id="timeframe-current-display" style="color: var(--apple-red); font-weight: 700;">Past 7 Days</span>
             </div>
 
-            <div class="timeframe-segmented-control" role="tablist" aria-label="Timeframe Selection">
-                <button class="time-tab" data-days="1" title="Last 24 Hours / Today">1D</button>
-                <button class="time-tab active" data-days="7" title="Past 7 Days">7D</button>
-                <button class="time-tab" data-days="10" title="Past 10 Days">10D</button>
-                <button class="time-tab" data-days="30" title="Past 30 Days (Month)">30D</button>
-                <button class="time-tab" data-days="0" title="All-Time Lifetime History">All</button>
+            <div class="top-controls-right-strip">
+                <!-- Theme Segmented Control (System / Light / Dark) -->
+                <div class="theme-segmented-control" role="group" aria-label="Theme Mode Selection">
+                    <button class="theme-tab active" id="theme-btn-system" onclick="setTheme('system')" title="Sync with Device Settings (System)">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        <span>Auto</span>
+                    </button>
+                    <button class="theme-tab" id="theme-btn-light" onclick="setTheme('light')" title="Light Mode">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                        <span>Light</span>
+                    </button>
+                    <button class="theme-tab" id="theme-btn-dark" onclick="setTheme('dark')" title="Dark Mode">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        <span>Dark</span>
+                    </button>
+                </div>
+
+                <!-- Timeframe Segmented Control -->
+                <div class="timeframe-segmented-control" role="tablist" aria-label="Timeframe Selection">
+                    <button class="time-tab" data-days="1" title="Last 24 Hours / Today">1D</button>
+                    <button class="time-tab active" data-days="7" title="Past 7 Days">7D</button>
+                    <button class="time-tab" data-days="10" title="Past 10 Days">10D</button>
+                    <button class="time-tab" data-days="30" title="Past 30 Days (Month)">30D</button>
+                    <button class="time-tab" data-days="0" title="All-Time Lifetime History">All</button>
+                </div>
             </div>
         </div>
 
@@ -1511,7 +1775,7 @@
                 <div class="obscurity-split">
                     <div>
                         <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Obscurity Meter</div>
-                        <div style="font-size: 28px; font-weight: 800; color: #FFFFFF; margin: 4px 0 10px;" id="obscurity-archetype-title">Underground Explorer</div>
+                        <div style="font-size: 28px; font-weight: 800; color: var(--text-heading); margin: 4px 0 10px;" id="obscurity-archetype-title">Underground Explorer</div>
                         <div class="obscurity-gauge-wrap">
                             <div class="gauge-fill-underground" id="gauge-underground-bar" style="width: 68%;"></div>
                             <div class="gauge-fill-mainstream" id="gauge-mainstream-bar" style="width: 32%;"></div>
@@ -1524,7 +1788,7 @@
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <div class="obscurity-stat-capsule">
                             <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">DEEP CUTS FOUND (&lt; 5M Streams)</div>
-                            <div style="font-size: 20px; font-weight: 800; color: #FFFFFF; margin-top: 2px;" id="obscurity-deep-cuts">24 Tracks</div>
+                            <div style="font-size: 20px; font-weight: 800; color: var(--text-heading); margin-top: 2px;" id="obscurity-deep-cuts">24 Tracks</div>
                         </div>
                         <div class="obscurity-stat-capsule">
                             <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">TOP NICHE GENRE</div>
@@ -1596,8 +1860,8 @@
                 <div class="fan-rating-split">
                     <div>
                         <span class="dimension-badge" style="background: rgba(255,215,0,0.15); color: #FFD700; border: 1px solid rgba(255,215,0,0.3);">GLOBAL RANKING</span>
-                        <div style="font-size: 32px; font-weight: 800; color: #FFFFFF; margin: 4px 0;" id="fan-hero-tier">Top 0.5% Superfan</div>
-                        <div style="font-size: 14px; color: var(--text-secondary);" id="fan-hero-sub">You listen more intensely to <strong style="color: #FFF;" id="fan-primary-artist">The Weeknd</strong> than 99.5% of listeners worldwide.</div>
+                        <div style="font-size: 32px; font-weight: 800; color: var(--text-heading); margin: 4px 0;" id="fan-hero-tier">Top 0.5% Superfan</div>
+                        <div style="font-size: 14px; color: var(--text-secondary);" id="fan-hero-sub">You listen more intensely to <strong style="color: var(--text-heading);" id="fan-primary-artist">The Weeknd</strong> than 99.5% of listeners worldwide.</div>
                         <div class="fan-badge-list" id="fan-badges-shelf">
                             <span class="fan-badge-chip">🏆 Discography Explorer</span>
                             <span class="fan-badge-chip">⚡ Zero-Skip Devotee</span>
@@ -1716,7 +1980,7 @@
                     <div class="persona-card-item" onclick="loadMusicPersona('pop')">
                         <img src="https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2" class="persona-avatar" alt="Pop">
                         <div>
-                            <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Top 40 & Pop Superfan</div>
+                            <div style="font-size: 15px; font-weight: 800; color: var(--text-heading);">Top 40 & Pop Superfan</div>
                             <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">The Weeknd, Taylor Swift, Dua Lipa, SZA</div>
                         </div>
                         <span class="persona-badge">48.2 hrs &middot; 18% skips</span>
@@ -1725,7 +1989,7 @@
                     <div class="persona-card-item" onclick="loadMusicPersona('focus')">
                         <img src="https://i.scdn.co/image/ab67706f000000026020f2f6476db518ef747da4" class="persona-avatar" alt="Focus">
                         <div>
-                            <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Late Night Coding & Lofi</div>
+                            <div style="font-size: 15px; font-weight: 800; color: var(--text-heading);">Late Night Coding & Lofi</div>
                             <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">HOME, Tycho, Daft Punk, Lofi Girl, Hans Zimmer</div>
                         </div>
                         <span class="persona-badge">62.4 hrs &middot; 9.8% skips</span>
@@ -1734,7 +1998,7 @@
                     <div class="persona-card-item" onclick="loadMusicPersona('gym')">
                         <img src="https://i.scdn.co/image/ab67706f00000002f367481f06b565250cc7b139" class="persona-avatar" alt="Gym">
                         <div>
-                            <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Gym PRs & High Energy EDM</div>
+                            <div style="font-size: 15px; font-weight: 800; color: var(--text-heading);">Gym PRs & High Energy EDM</div>
                             <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Fred again.., Skrillex, Travis Scott, M83</div>
                         </div>
                         <span class="persona-badge">35.6 hrs &middot; 34% skips</span>
@@ -1750,7 +2014,7 @@
 
                 <div class="upload-dropzone" onclick="document.getElementById('json-file-input').click()">
                     <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 10px; color: var(--apple-red);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <div style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 4px;">Choose file or drag & drop</div>
+                    <div style="font-size: 15px; font-weight: 800; color: var(--text-heading); margin-bottom: 4px;">Choose file or drag & drop</div>
                     <div style="font-size: 12px; color: var(--text-muted);">Accepts .zip, .json, and .csv files (or press Ctrl + V anywhere to paste)</div>
                     <input type="file" id="json-file-input" style="display: none;" multiple accept=".json,.zip,.csv" onchange="handleFileInput(event)">
                 </div>
@@ -1760,7 +2024,7 @@
                         <span id="import-progress-label">Analyzing songs...</span>
                         <span id="import-progress-percent">0%</span>
                     </div>
-                    <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                    <div style="height: 6px; background: var(--border-subtle); border-radius: 3px; overflow: hidden;">
                         <div id="import-progress-fill" style="height: 100%; width: 0%; background: var(--apple-red); transition: width 0.2s ease;"></div>
                     </div>
                 </div>
@@ -1779,7 +2043,7 @@
                     <div class="user-connected-badge">
                         <img src="" id="connected-user-avatar" class="user-avatar-circle" alt="User Avatar">
                         <div>
-                            <div style="font-size: 16px; font-weight: 800; color: #fff;" id="connected-user-name">User</div>
+                            <div style="font-size: 16px; font-weight: 800; color: var(--text-heading);" id="connected-user-name">User</div>
                             <div style="font-size: 12px; color: var(--status-green);" id="connected-user-meta">Spotify Connected</div>
                         </div>
                     </div>
@@ -1799,12 +2063,12 @@
                         Connect via Spotify's secure browser PKCE flow to track live playback and skips.
                     </p>
 
-                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px; margin-bottom: 18px;">
+                    <div style="background: var(--bg-card-subtle); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px; margin-bottom: 18px;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                             <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Step 1: Your Redirect URI</span>
                             <button class="quick-preset-chip" style="font-size: 10px; padding: 3px 8px;" onclick="copyRedirectUri()">Copy URL</button>
                         </div>
-                        <code id="current-redirect-uri" style="font-size: 12px; color: #fff; word-break: break-all;"></code>
+                        <code id="current-redirect-uri" style="font-size: 12px; color: var(--apple-red); font-weight: 600; word-break: break-all;"></code>
                         <div id="copy-feedback-msg" style="display: none; font-size: 11px; color: var(--status-green); margin-top: 6px;">✓ Copied to clipboard!</div>
                     </div>
 
@@ -2423,6 +2687,88 @@
             if (songsDesc) songsDesc.innerText = `${label} total`;
         }
 
+        // ==========================================
+        // STATR THEME ENGINE (Auto / Light / Dark)
+        // High-Contrast Anti-Vibecoding System
+        // ==========================================
+        let currentThemeMode = localStorage.getItem('statr_theme') || 'system';
+
+        function getSystemPreferredTheme() {
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+
+        function resolveEffectiveTheme(mode = currentThemeMode) {
+            return mode === 'system' ? getSystemPreferredTheme() : mode;
+        }
+
+        function applyTheme(mode) {
+            currentThemeMode = mode;
+            try {
+                localStorage.setItem('statr_theme', mode);
+            } catch (e) {}
+
+            const effective = resolveEffectiveTheme(mode);
+            document.documentElement.setAttribute('data-theme', mode);
+            document.documentElement.setAttribute('data-effective-theme', effective);
+
+            // Update segmented control buttons
+            ['system', 'light', 'dark'].forEach(m => {
+                const btn = document.getElementById(`theme-btn-${m}`);
+                if (btn) btn.classList.toggle('active', m === mode);
+            });
+
+            // Update sidebar indicator
+            const sideIndicator = document.getElementById('sidebar-theme-indicator');
+            if (sideIndicator) {
+                if (mode === 'system') {
+                    sideIndicator.innerText = `Auto (${effective === 'light' ? 'Light' : 'Dark'})`;
+                } else if (mode === 'light') {
+                    sideIndicator.innerText = 'Light';
+                } else {
+                    sideIndicator.innerText = 'Dark';
+                }
+            }
+
+            // Sync browser meta theme-color for mobile chrome & desktop status bars
+            let themeMeta = document.querySelector('meta[name="theme-color"]');
+            if (!themeMeta) {
+                themeMeta = document.createElement('meta');
+                themeMeta.name = 'theme-color';
+                document.head.appendChild(themeMeta);
+            }
+            themeMeta.content = effective === 'light' ? '#F8FAFC' : '#040507';
+
+            // Repaint chart with crisp theme palette if initialized
+            if (chartInstance && typeof renderChart === 'function') {
+                renderChart();
+            }
+        }
+
+        function setTheme(mode) {
+            applyTheme(mode);
+        }
+
+        function cycleTheme() {
+            if (currentThemeMode === 'system') setTheme('light');
+            else if (currentThemeMode === 'light') setTheme('dark');
+            else setTheme('system');
+        }
+
+        // Real-time device settings listener (Zero page reload needed)
+        if (window.matchMedia) {
+            const mq = window.matchMedia('(prefers-color-scheme: dark)');
+            const onPrefChange = () => {
+                if (currentThemeMode === 'system') {
+                    applyTheme('system');
+                }
+            };
+            if (mq.addEventListener) {
+                mq.addEventListener('change', onPrefChange);
+            } else if (mq.addListener) {
+                mq.addListener(onPrefChange);
+            }
+        }
+
         let appData = JSON.parse(JSON.stringify(demoDatasets[7]));
 
         // Canvas Particle Physics & Pointer Reactive Halo
@@ -2459,6 +2805,11 @@
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            const isLight = document.documentElement.getAttribute('data-effective-theme') === 'light';
+            const particleFill = isLight ? 'rgba(225, 29, 72,' : 'rgba(250, 45, 72,';
+            const lineStroke = isLight ? 'rgba(99, 102, 241,' : 'rgba(139, 92, 246,';
+            const particleAlphaMult = isLight ? 0.75 : 1;
+
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
                 p.x += p.vx;
@@ -2478,7 +2829,7 @@
 
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(250, 45, 72, ${p.baseAlpha})`;
+                ctx.fillStyle = `${particleFill} ${p.baseAlpha * particleAlphaMult})`;
                 ctx.fill();
 
                 for (let j = i + 1; j < particles.length; j++) {
@@ -2488,7 +2839,7 @@
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(139, 92, 246, ${0.1 * (1 - d / 110)})`;
+                        ctx.strokeStyle = `${lineStroke} ${(isLight ? 0.08 : 0.1) * (1 - d / 110)})`;
                         ctx.lineWidth = 0.8;
                         ctx.stroke();
                     }
@@ -2750,7 +3101,7 @@
             if (heroSubEl) {
                 const numericPercent = parseFloat(String(fan.tier).replace(/[^0-9.]/g, '') || '0.5');
                 const percentileBeaten = (100 - numericPercent).toFixed(1);
-                heroSubEl.innerHTML = `You listen more intensely to <strong style="color: #FFF;">${escapeHtml(fan.primary_artist)}</strong> than ${percentileBeaten}% of listeners worldwide.`;
+                heroSubEl.innerHTML = `You listen more intensely to <strong style="color: var(--text-heading);">${escapeHtml(fan.primary_artist)}</strong> than ${percentileBeaten}% of listeners worldwide.`;
             }
 
             const affinityEl = document.getElementById('fan-affinity-score');
@@ -2771,19 +3122,28 @@
 
         function renderChart() {
             const canvas = document.getElementById('rhythmCanvas');
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             const completed = Array(24).fill(0);
             const skips = Array(24).fill(0);
 
-            appData.hourly.forEach(h => {
-                const idx = parseInt(h.hour, 10);
-                if (idx >= 0 && idx < 24) {
-                    completed[idx] = Math.max(0, h.count - h.skips);
-                    skips[idx] = h.skips;
-                }
-            });
+            if (appData && appData.hourly) {
+                appData.hourly.forEach(h => {
+                    const idx = parseInt(h.hour, 10);
+                    if (idx >= 0 && idx < 24) {
+                        completed[idx] = Math.max(0, h.count - h.skips);
+                        skips[idx] = h.skips;
+                    }
+                });
+            }
 
             if (chartInstance) chartInstance.destroy();
+
+            const isLight = document.documentElement.getAttribute('data-effective-theme') === 'light';
+            const legendColor = isLight ? '#334155' : '#94A3B8';
+            const tickColor = isLight ? '#475569' : '#64748B';
+            const gridColor = isLight ? 'rgba(15, 23, 42, 0.06)' : 'rgba(255, 255, 255, 0.04)';
+            const skippedBarColor = isLight ? 'rgba(15, 23, 42, 0.16)' : 'rgba(255, 255, 255, 0.2)';
 
             chartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -2799,7 +3159,7 @@
                         {
                             label: 'Skipped',
                             data: skips,
-                            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                            backgroundColor: skippedBarColor,
                             borderRadius: 4
                         }
                     ]
@@ -2809,17 +3169,17 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            labels: { color: '#94A3B8', font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' } }
+                            labels: { color: legendColor, font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' } }
                         }
                     },
                     scales: {
                         x: {
-                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-                            ticks: { color: '#64748B', font: { size: 10 } }
+                            grid: { color: gridColor },
+                            ticks: { color: tickColor, font: { size: 10 } }
                         },
                         y: {
-                            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-                            ticks: { color: '#64748B', precision: 0 }
+                            grid: { color: gridColor },
+                            ticks: { color: tickColor, precision: 0 }
                         }
                     }
                 }
@@ -3907,6 +4267,9 @@
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
+            // Apply theme on load to sync controls & indicators
+            applyTheme(currentThemeMode);
+
             resizeCanvas();
             renderCanvas();
 
