@@ -2771,34 +2771,160 @@
 
         let appData = JSON.parse(JSON.stringify(demoDatasets[7]));
 
-        // Canvas Particle Physics & Pointer Reactive Halo
+        // ==========================================
+        // Reactive Fluid Geometry Engine
+        // Prismatic Floating Triangles & Forcefield Dynamics
+        // ==========================================
         const canvas = document.getElementById('ambient-canvas');
         const ctx = canvas.getContext('2d');
         const cursorHalo = document.getElementById('cursor-halo');
 
         let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2, targetX: window.innerWidth / 2, targetY: window.innerHeight / 2 };
         let particles = [];
+        let bonds = [];
+        let forcefieldExcitement = 0;
+        let bondTicker = 0;
+
+        const FORCEFIELD_RADIUS = 44; // Miniature forcefield: circle just big enough so whole cursor stays completely clear & visible
+        const ATTRACT_RADIUS = 250;   // Attraction reach
+        const INTENSITY_PLATEAU_RADIUS = 90; // Reaches peak intensity here, and stays constant down to forcefield boundary!
+        const MAX_BONDS_TOTAL = 18;   // Anti-clutter cap across the screen
+
+        function drawTriangle(ctx, x, y, size, angle, fillStyle, strokeStyle, strokeWidth) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            // Sleek aerodynamic prism triangle
+            const apexX = size * 1.15;
+            const backX = -size * 0.65;
+            const halfW = size * 0.62;
+            ctx.moveTo(apexX, 0);
+            ctx.lineTo(backX, -halfW);
+            ctx.lineTo(backX, halfW);
+            ctx.closePath();
+            if (fillStyle) {
+                ctx.fillStyle = fillStyle;
+                ctx.fill();
+            }
+            if (strokeStyle) {
+                ctx.strokeStyle = strokeStyle;
+                ctx.lineWidth = strokeWidth || 0.8;
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            const count = Math.min(50, Math.floor((canvas.width * canvas.height) / 30000));
+            bonds = [];
+            // Calibrated density: clean, uncluttered Apple-grade distribution
+            const count = Math.min(48, Math.max(20, Math.floor((canvas.width * canvas.height) / 32000)));
             for (let i = 0; i < count; i++) {
                 particles.push({
+                    id: i,
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    radius: Math.random() * 2 + 1,
-                    baseAlpha: Math.random() * 0.25 + 0.08
+                    vx: (Math.random() - 0.5) * 0.45,
+                    vy: (Math.random() - 0.5) * 0.45,
+                    size: Math.random() * 3.5 + 3.8, // 3.8px to 7.3px
+                    angle: Math.random() * Math.PI * 2,
+                    rotSpeed: (Math.random() - 0.5) * 0.016,
+                    baseAlpha: Math.random() * 0.14 + 0.12,
+                    intensity: 0,
+                    targetIntensity: 0,
+                    bondsCount: 0
                 });
             }
         }
 
+        function updateAndRenderBonds(isLight) {
+            bondTicker++;
+            // Stochastic bond formation: every ~8 frames, create a bond between nearby triangles if caps allow
+            if (bondTicker % 8 === 0 && bonds.length < MAX_BONDS_TOTAL && particles.length > 2) {
+                const p1 = particles[Math.floor(Math.random() * particles.length)];
+                if (p1 && p1.bondsCount < 2) {
+                    let bestP2 = null;
+                    let bestDist = 80;
+                    for (let i = 0; i < particles.length; i++) {
+                        const p2 = particles[i];
+                        if (p2 === p1 || p2.bondsCount >= 2) continue;
+                        const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                        if (d < bestDist) {
+                            // Check not already bonded
+                            const alreadyBonded = bonds.some(b => (b.p1 === p1 && b.p2 === p2) || (b.p1 === p2 && b.p2 === p1));
+                            if (!alreadyBonded) {
+                                bestDist = d;
+                                bestP2 = p2;
+                            }
+                        }
+                    }
+                    if (bestP2) {
+                        bonds.push({
+                            p1: p1,
+                            p2: bestP2,
+                            life: 0,
+                            maxLife: Math.floor(130 + Math.random() * 140), // 2 to 4.5 seconds
+                            fadeFrames: 28,
+                            alpha: 0
+                        });
+                        p1.bondsCount++;
+                        bestP2.bondsCount++;
+                    }
+                }
+            }
+
+            // Update and draw existing bonds
+            for (let b = bonds.length - 1; b >= 0; b--) {
+                const bond = bonds[b];
+                bond.life++;
+                const d = Math.hypot(bond.p1.x - bond.p2.x, bond.p1.y - bond.p2.y);
+
+                // Smooth fade-in and fade-out envelope
+                let targetAlpha = 1;
+                if (bond.life < bond.fadeFrames) {
+                    targetAlpha = bond.life / bond.fadeFrames;
+                } else if (bond.life > bond.maxLife - bond.fadeFrames) {
+                    targetAlpha = Math.max(0, (bond.maxLife - bond.life) / bond.fadeFrames);
+                }
+
+                // If triangles drift apart beyond threshold, break bond smoothly
+                if (d > 95) {
+                    targetAlpha *= Math.max(0, 1 - (d - 95) / 25);
+                }
+
+                bond.alpha += (targetAlpha - bond.alpha) * 0.18;
+
+                // Remove dead or broken bonds
+                if (bond.life >= bond.maxLife || (d > 120 && bond.alpha < 0.02)) {
+                    bond.p1.bondsCount = Math.max(0, bond.p1.bondsCount - 1);
+                    bond.p2.bondsCount = Math.max(0, bond.p2.bondsCount - 1);
+                    bonds.splice(b, 1);
+                    continue;
+                }
+
+                // Calculate intensity boost from cursor proximity
+                const maxInt = Math.max(bond.p1.intensity, bond.p2.intensity);
+                const baseLineAlpha = isLight ? 0.1 : 0.14;
+                const lineAlpha = baseLineAlpha * bond.alpha * (1 + maxInt * 2.4) * Math.max(0.2, 1 - d / 120);
+
+                ctx.beginPath();
+                ctx.moveTo(bond.p1.x, bond.p1.y);
+                ctx.lineTo(bond.p2.x, bond.p2.y);
+                ctx.strokeStyle = isLight 
+                    ? `rgba(225, 29, 72, ${lineAlpha})` 
+                    : `rgba(250, 45, 72, ${lineAlpha})`;
+                ctx.lineWidth = 0.75 + maxInt * 0.45;
+                ctx.stroke();
+            }
+        }
+
         function renderCanvas() {
-            mouse.x += (mouse.targetX - mouse.x) * 0.08;
-            mouse.y += (mouse.targetY - mouse.y) * 0.08;
+            // Eased mouse follower
+            mouse.x += (mouse.targetX - mouse.x) * 0.085;
+            mouse.y += (mouse.targetY - mouse.y) * 0.085;
 
             cursorHalo.style.left = `${mouse.x}px`;
             cursorHalo.style.top = `${mouse.y}px`;
@@ -2806,45 +2932,117 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             const isLight = document.documentElement.getAttribute('data-effective-theme') === 'light';
-            const particleFill = isLight ? 'rgba(225, 29, 72,' : 'rgba(250, 45, 72,';
-            const lineStroke = isLight ? 'rgba(99, 102, 241,' : 'rgba(139, 92, 246,';
-            const particleAlphaMult = isLight ? 0.75 : 1;
 
+            // 1. Render Dynamic Bonds (making & breaking at random without clutter)
+            updateAndRenderBonds(isLight);
+
+            // 2. Render & Update Floating Triangles with Forcefield & Intensity
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
                 p.x += p.vx;
                 p.y += p.vy;
 
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                // Screen boundaries bounce
+                if (p.x < 10) { p.x = 10; p.vx = Math.abs(p.vx); }
+                else if (p.x > canvas.width - 10) { p.x = canvas.width - 10; p.vx = -Math.abs(p.vx); }
+                if (p.y < 10) { p.y = 10; p.vy = Math.abs(p.vy); }
+                else if (p.y > canvas.height - 10) { p.y = canvas.height - 10; p.vy = -Math.abs(p.vy); }
 
-                // Subtle attraction toward pointer
+                // Distance to cursor
                 const dx = mouse.x - p.x;
                 const dy = mouse.y - p.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 200) {
-                    p.x += (dx / dist) * 0.3;
-                    p.y += (dy / dist) * 0.3;
+                const dist = Math.hypot(dx, dy) || 0.001;
+
+                // Intensity calculation:
+                // As drawn towards cursor, intensity rises to highpoint and then becomes constant!
+                if (dist <= INTENSITY_PLATEAU_RADIUS) {
+                    p.targetIntensity = 1.0; // Highpoint reached and stays constant!
+                } else if (dist < ATTRACT_RADIUS) {
+                    const t = (ATTRACT_RADIUS - dist) / (ATTRACT_RADIUS - INTENSITY_PLATEAU_RADIUS);
+                    p.targetIntensity = t * t * (3 - 2 * t); // Smoothstep curve
+                } else {
+                    p.targetIntensity = 0.0;
                 }
+                p.intensity += (p.targetIntensity - p.intensity) * 0.12;
 
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `${particleFill} ${p.baseAlpha * particleAlphaMult})`;
-                ctx.fill();
+                // Forcefield & Attraction Physics
+                if (dist < ATTRACT_RADIUS) {
+                    if (dist > FORCEFIELD_RADIUS) {
+                        // Inward attraction towards cursor (strengthens as it approaches plateau)
+                        const pullFactor = (0.2 + p.intensity * 0.35) * (1 - (dist - FORCEFIELD_RADIUS) / (ATTRACT_RADIUS - FORCEFIELD_RADIUS));
+                        p.vx += (dx / dist) * pullFactor * 0.16;
+                        p.vy += (dy / dist) * pullFactor * 0.16;
 
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const d = Math.hypot(p.x - p2.x, p.y - p2.y);
-                    if (d < 110) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `${lineStroke} ${(isLight ? 0.08 : 0.1) * (1 - d / 110)})`;
-                        ctx.lineWidth = 0.8;
-                        ctx.stroke();
+                        // Subtle orbital drift component so triangles sweep gracefully around the forcefield
+                        const tx = -dy / dist;
+                        const ty = dx / dist;
+                        p.vx += tx * 0.04;
+                        p.vy += ty * 0.04;
+                    } else {
+                        // MINIATURE FORCEFIELD: WONT LET TRIANGLES COME ANY NEARER
+                        // Firm, smooth repulsion boundary keeping whole cursor perfectly visible
+                        const overlap = FORCEFIELD_RADIUS - dist;
+                        const nx = dx / dist;
+                        const ny = dy / dist;
+
+                        // Push immediately back outside the forcefield boundary
+                        p.x -= nx * (overlap + 1.2);
+                        p.y -= ny * (overlap + 1.2);
+
+                        // Tangential orbital deflection around the circular forcefield
+                        const tx = -ny;
+                        const ty = nx;
+                        const tangSpeed = (p.vx * tx + p.vy * ty);
+                        p.vx = tx * tangSpeed * 0.95 - nx * 0.8;
+                        p.vy = ty * tangSpeed * 0.95 - ny * 0.8;
+
+                        // Shield glow excitation
+                        forcefieldExcitement = Math.min(1.0, forcefieldExcitement + 0.08);
                     }
                 }
+
+                // Smooth velocity damping to maintain ultra-fluid, non-chaotic motion
+                p.vx *= 0.982;
+                p.vy *= 0.982;
+
+                // Dynamic rotation: natural spin + banking towards movement
+                p.angle += p.rotSpeed + (p.intensity * 0.015);
+
+                // Dynamic rendering parameters based on intensity
+                const currentSize = p.size * (1.0 + p.intensity * 0.3);
+                const currentFillAlpha = Math.min(0.9, p.baseAlpha + p.intensity * (isLight ? 0.65 : 0.72));
+                const currentStrokeAlpha = Math.min(0.85, 0.12 + p.intensity * 0.65);
+
+                let fillStyle, strokeStyle;
+                if (isLight) {
+                    fillStyle = `rgba(225, 29, 72, ${currentFillAlpha})`;
+                    strokeStyle = `rgba(15, 23, 42, ${currentStrokeAlpha})`;
+                } else {
+                    fillStyle = `rgba(250, 45, 72, ${currentFillAlpha})`;
+                    strokeStyle = `rgba(255, 255, 255, ${currentStrokeAlpha})`;
+                }
+
+                drawTriangle(ctx, p.x, p.y, currentSize, p.angle, fillStyle, strokeStyle, 0.8 + p.intensity * 0.4);
             }
+
+            // 3. Render Miniature Forcefield Ring Boundary (Tactile Apple-grade shield)
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(mouse.x, mouse.y, FORCEFIELD_RADIUS, 0, Math.PI * 2);
+            const shieldAlpha = isLight 
+                ? (0.05 + forcefieldExcitement * 0.16) 
+                : (0.08 + forcefieldExcitement * 0.22);
+            ctx.strokeStyle = isLight 
+                ? `rgba(225, 29, 72, ${shieldAlpha})` 
+                : `rgba(250, 45, 72, ${shieldAlpha})`;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 4]); // Clean tactical boundary
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+
+            forcefieldExcitement *= 0.93;
+
             requestAnimationFrame(renderCanvas);
         }
 
