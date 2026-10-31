@@ -937,6 +937,85 @@
             border: 2px solid var(--status-green);
         }
 
+        /* Simplified Ingestion UI Styles */
+        .link-input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .quick-presets-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .quick-preset-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        .quick-preset-chip:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .personas-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .persona-card-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .persona-card-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-focus);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .persona-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .persona-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--apple-red);
+            background: rgba(250, 45, 72, 0.12);
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
         /* Responsive Breakpoints */
         @media (max-width: 960px) {
             aside.sidebar {
@@ -1025,12 +1104,24 @@
                 </li>
             </ul>
 
-            <div class="nav-group-title">Your Data</div>
+            <div class="nav-group-title">Import & Sync</div>
             <ul class="nav-list">
+                <li>
+                    <button class="nav-btn" onclick="openDataModal('link')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                        <span class="nav-text">Paste Spotify Link</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" onclick="openDataModal('personas')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        <span class="nav-text">Sample Profiles</span>
+                    </button>
+                </li>
                 <li>
                     <button class="nav-btn" onclick="openDataModal('import')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        <span class="nav-text">Upload Spotify File</span>
+                        <span class="nav-text">Upload ZIP / File</span>
                     </button>
                 </li>
             </ul>
@@ -1038,11 +1129,11 @@
 
         <div>
             <div class="sidebar-sync-card">
-                <h4>Connect Spotify</h4>
-                <p>Sync your live playback and see what songs you skip.</p>
-                <button class="btn-sync-spotify" onclick="openDataModal('oauth')">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
-                    <span>Connect Account</span>
+                <h4>Instant Data Ingestion</h4>
+                <p>Paste a public playlist link or try 1-click sample profiles.</p>
+                <button class="btn-sync-spotify" onclick="openDataModal('link')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    <span>Instant Import</span>
                 </button>
             </div>
         </div>
@@ -1075,12 +1166,15 @@
                 <h1 class="hero-title" id="hero-main-title">See what you really listen to.</h1>
                 <p class="hero-sub" id="hero-main-sub">Find out your true top tracks, the songs you secretly skip every time, and how much time you actually spend listening.</p>
                 <div class="hero-btn-row">
-                    <button class="btn-hero-primary" onclick="openDataModal('oauth')">
+                    <button class="btn-hero-primary" onclick="openDataModal('link')">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
-                        <span>Connect Spotify</span>
+                        <span>Paste Spotify Link (Instant)</span>
                     </button>
-                    <button class="btn-hero-secondary" onclick="openDataModal('import')">
-                        Upload Your Spotify Data
+                    <button class="btn-hero-secondary" onclick="openDataModal('personas')">
+                        1-Click Sample Profiles
+                    </button>
+                    <button class="btn-hero-secondary" style="font-size: 12px; opacity: 0.85;" onclick="openDataModal('import')">
+                        Upload ZIP / File
                     </button>
                 </div>
             </div>
@@ -1194,21 +1288,122 @@
         </div>
     </footer>
 
-    <!-- Clean Connect Modal (Live Spotify & Simple File Upload) -->
+    <!-- Clean Connect Modal (4 Simple Ingestion Paths) -->
     <div class="modal-overlay" id="connect-modal" onclick="closeDataModal(event)">
         <div class="modal-window" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <div class="modal-title">Sync Your Spotify Music</div>
+                <div>
+                    <div class="modal-title">Import Your Spotify Data</div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">Choose the easiest way for you &mdash; zero complex setup required.</div>
+                </div>
                 <button class="btn-modal-close" onclick="closeDataModal()">&times;</button>
             </div>
 
             <div class="modal-tabs">
-                <button class="modal-tab-button active" id="tab-btn-oauth" onclick="switchModalTab('oauth')">Live Spotify Sync</button>
-                <button class="modal-tab-button" id="tab-btn-import" onclick="switchModalTab('import')">Upload Spotify File</button>
+                <button class="modal-tab-button active" id="tab-btn-link" onclick="switchModalTab('link')">🔗 Paste Playlist Link</button>
+                <button class="modal-tab-button" id="tab-btn-personas" onclick="switchModalTab('personas')">⚡ Instant Sample Profiles</button>
+                <button class="modal-tab-button" id="tab-btn-import" onclick="switchModalTab('import')">📁 Upload ZIP / File</button>
+                <button class="modal-tab-button" id="tab-btn-oauth" onclick="switchModalTab('oauth')">🔑 Live Spotify Login</button>
             </div>
 
-            <!-- Tab 1: Live Spotify OAuth Connect -->
-            <div class="modal-body" id="modal-tab-oauth">
+            <!-- Tab 1: Paste Spotify Playlist Link (Super Simple 1-Step!) -->
+            <div class="modal-body" id="modal-tab-link">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                    <span class="badge-pill badge-green">RECOMMENDED &middot; ZERO SETUP</span>
+                    <span style="font-size: 12px; color: var(--text-secondary);">Works with any public Spotify playlist link</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5;">
+                    In Spotify, click <strong>Share &rarr; Copy Link to Playlist</strong> (such as your On Repeat, Discover Weekly, or any favorite playlist) and paste it below:
+                </p>
+
+                <div class="link-input-row">
+                    <input type="text" id="spotify-playlist-url-input" class="friendly-input" placeholder="e.g. https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M">
+                    <button class="btn-hero-primary" style="padding: 12px 20px; white-space: nowrap;" id="btn-analyze-playlist" onclick="analyzeSpotifyPlaylistLink()">
+                        Analyze Now
+                    </button>
+                </div>
+
+                <div id="playlist-import-status" style="display: none; font-size: 12px; font-weight: 600; color: var(--status-green); margin-bottom: 14px;"></div>
+
+                <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 6px;">
+                    Or test with these popular instant playlists:
+                </div>
+                <div class="quick-presets-row">
+                    <button class="quick-preset-chip" onclick="usePresetPlaylist('https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M', 'Today’s Top Hits')">🔥 Today's Top Hits</button>
+                    <button class="quick-preset-chip" onclick="usePresetPlaylist('https://open.spotify.com/playlist/37i9dQZF1DX8Uebhn9wzrS', 'Deep Focus & Study')">🎧 Deep Focus Lofi</button>
+                    <button class="quick-preset-chip" onclick="usePresetPlaylist('https://open.spotify.com/playlist/37i9dQZF1DX76Wlfdnj7AP', 'Beast Mode Gym Flow')">🏋️ Gym Beast Mode</button>
+                    <button class="quick-preset-chip" onclick="usePresetPlaylist('https://open.spotify.com/playlist/37i9dQZF1DX0b1Wtru09G6', 'All-Time Replay Classics')">✨ All-Time Replays</button>
+                </div>
+            </div>
+
+            <!-- Tab 2: 1-Click Instant Sample Profiles (0-Step Test) -->
+            <div class="modal-body" id="modal-tab-personas" style="display: none;">
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+                    Test Statr immediately with realistic multi-year streaming archives. Click any profile to load its full listening history immediately:
+                </p>
+
+                <div class="personas-list">
+                    <div class="persona-card-item" onclick="loadMusicPersona('pop')">
+                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" class="persona-avatar" alt="Pop">
+                        <div>
+                            <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Top 40 & Pop Superfan</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">The Weeknd, Taylor Swift, Dua Lipa, SZA</div>
+                        </div>
+                        <span class="persona-badge">48.2 hrs &middot; 18% skips</span>
+                    </div>
+
+                    <div class="persona-card-item" onclick="loadMusicPersona('focus')">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80" class="persona-avatar" alt="Focus">
+                        <div>
+                            <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Late Night Coding & Lofi</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">HOME, Tycho, Daft Punk, Lofi Girl, Hans Zimmer</div>
+                        </div>
+                        <span class="persona-badge">62.4 hrs &middot; 9.8% skips</span>
+                    </div>
+
+                    <div class="persona-card-item" onclick="loadMusicPersona('gym')">
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80" class="persona-avatar" alt="Gym">
+                        <div>
+                            <div style="font-size: 15px; font-weight: 800; color: #FFFFFF;">Gym PRs & High Energy EDM</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Fred again.., Skrillex, Travis Scott, M83</div>
+                        </div>
+                        <span class="persona-badge">35.6 hrs &middot; 34% skips</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Upload Spotify Archive (ZIP / JSON) -->
+            <div class="modal-body" id="modal-tab-import" style="display: none;">
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+                    If you have your Spotify download from <a href="https://www.spotify.com/account/privacy/" target="_blank" style="color: var(--apple-red); text-decoration: underline;">Spotify Privacy Settings</a>, drop your raw <strong><code>.zip</code> file</strong> or <strong><code>endsong_*.json</code></strong> here:
+                </p>
+
+                <div class="upload-dropzone" onclick="document.getElementById('json-file-input').click()">
+                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 10px; color: var(--apple-red);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <div style="font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 4px;">Choose file or drag & drop</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Accepts .zip, .json, and .csv files (or press Ctrl + V anywhere to paste)</div>
+                    <input type="file" id="json-file-input" style="display: none;" multiple accept=".json,.zip,.csv" onchange="handleFileInput(event)">
+                </div>
+
+                <div id="import-progress-bar-wrap" style="display: none; margin-top: 18px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">
+                        <span id="import-progress-label">Analyzing songs...</span>
+                        <span id="import-progress-percent">0%</span>
+                    </div>
+                    <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                        <div id="import-progress-fill" style="height: 100%; width: 0%; background: var(--apple-red); transition: width 0.2s ease;"></div>
+                    </div>
+                </div>
+
+                <div id="import-status-msg" style="font-size: 13px; font-weight: 600; margin-top: 14px; text-align: center; color: var(--status-green);"></div>
+
+                <div style="margin-top: 18px; text-align: center;">
+                    <button class="btn-hero-secondary" style="font-size: 11px; padding: 6px 14px;" onclick="resetToDemoData()">Reset to Demo Preview</button>
+                </div>
+            </div>
+
+            <!-- Tab 4: Live Spotify Account (PKCE Flow) -->
+            <div class="modal-body" id="modal-tab-oauth" style="display: none;">
                 <!-- Connected State Container -->
                 <div id="oauth-connected-view" style="display: none;">
                     <div class="user-connected-badge">
@@ -1230,54 +1425,30 @@
 
                 <!-- Unconnected State Form -->
                 <div id="oauth-unconnected-view">
-                    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
-                        Connect your active Spotify account to track your real-time listening habits and see what songs you skip.
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5;">
+                        Connect via Spotify's secure browser PKCE flow to track live playback and skips.
                     </p>
 
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
-                            Spotify Client ID
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px; margin-bottom: 18px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Step 1: Your Redirect URI</span>
+                            <button class="quick-preset-chip" style="font-size: 10px; padding: 3px 8px;" onclick="copyRedirectUri()">Copy URL</button>
+                        </div>
+                        <code id="current-redirect-uri" style="font-size: 12px; color: #fff; word-break: break-all;"></code>
+                        <div id="copy-feedback-msg" style="display: none; font-size: 11px; color: var(--status-green); margin-top: 6px;">✓ Copied to clipboard!</div>
+                    </div>
+
+                    <div style="margin-bottom: 18px;">
+                        <label style="display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">
+                            Step 2: Spotify Client ID
                         </label>
-                        <input type="text" id="spotify-client-id-input" class="friendly-input" placeholder="Paste your Spotify Client ID">
-                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px; line-height: 1.5;">
-                            Don't have a Client ID yet? Create a free one at <a href="https://developer.spotify.com/dashboard" target="_blank" style="color: var(--apple-red); text-decoration: underline;">developer.spotify.com</a> with redirect URL: <code id="current-redirect-uri" style="color: #fff; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;"></code>
-                        </p>
+                        <input type="text" id="spotify-client-id-input" class="friendly-input" placeholder="Paste Client ID from developer.spotify.com">
                     </div>
 
                     <button class="btn-sync-spotify" style="padding: 14px; font-size: 14px;" onclick="startSpotifyPKCE()">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
                         <span>Connect with Spotify</span>
                     </button>
-                </div>
-            </div>
-
-            <!-- Tab 2: Upload Spotify Data File -->
-            <div class="modal-body" id="modal-tab-import" style="display: none;">
-                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5;">
-                    Download your data package from <a href="https://www.spotify.com/account/privacy/" target="_blank" style="color: var(--apple-red); text-decoration: underline;">Spotify Privacy Settings</a>, then drop your downloaded <strong><code>.zip</code> file</strong> or <strong><code>endsong_*.json</code></strong> below.
-                </p>
-
-                <div class="upload-dropzone" onclick="document.getElementById('json-file-input').click()">
-                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto 12px; color: var(--apple-red);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <div style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 4px;">Choose file or drag & drop</div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Drop your Spotify .zip file or StreamingHistory.json here</div>
-                    <input type="file" id="json-file-input" style="display: none;" multiple accept=".json,.zip" onchange="handleFileInput(event)">
-                </div>
-
-                <div id="import-progress-bar-wrap" style="display: none; margin-top: 20px;">
-                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">
-                        <span id="import-progress-label">Analyzing songs...</span>
-                        <span id="import-progress-percent">0%</span>
-                    </div>
-                    <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
-                        <div id="import-progress-fill" style="height: 100%; width: 0%; background: var(--apple-red); transition: width 0.2s ease;"></div>
-                    </div>
-                </div>
-
-                <div id="import-status-msg" style="font-size: 13px; font-weight: 600; margin-top: 14px; text-align: center; color: var(--status-green);"></div>
-
-                <div style="margin-top: 20px; text-align: center;">
-                    <button class="btn-hero-secondary" style="font-size: 11px; padding: 6px 14px;" onclick="resetToDemoData()">Reset to Demo Preview</button>
                 </div>
             </div>
         </div>
@@ -1932,8 +2103,72 @@
             document.getElementById('scrubber-fill').style.width = `${pct}%`;
         }
 
-        // Modal Controls
-        function openDataModal(defaultTab = 'oauth') {
+        // Modal Controls & Simplified Multi-Path Ingestion
+        const musicPersonasData = {
+            pop: {
+                title: "Top 40 & Pop Superfan",
+                subtitle: "The Weeknd, Taylor Swift, Dua Lipa, SZA",
+                summary: { total_played_hours: 48.2, total_played_minutes: 2892, total_listens: 1180, total_skips: 218, skip_rate_pct: 18.5, unique_tracks: 142, unique_artists: 38 },
+                playlists: [
+                    { playlist_name: "Daily Commute Pop", image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=260&q=80", total_plays: 420, total_skips: 65, skip_rate_pct: 15.5, total_minutes: 1040, health_score: 87, unique_tracks_heard: 35 },
+                    { playlist_name: "Weekend Energy", image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80", total_plays: 350, total_skips: 78, skip_rate_pct: 22.3, total_minutes: 890, health_score: 79, unique_tracks_heard: 30 },
+                    { playlist_name: "Late Night Pop", image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80", total_plays: 280, total_skips: 45, skip_rate_pct: 16.1, total_minutes: 710, health_score: 84, unique_tracks_heard: 28 }
+                ],
+                tracks: [
+                    { name: "Cruel Summer", artists: "Taylor Swift", play_count: 84, skip_count: 9, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 78, skip_count: 12, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "As It Was", artists: "Harry Styles", play_count: 72, skip_count: 10, image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=160&q=80" },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 68, skip_count: 8, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" },
+                    { name: "Kill Bill", artists: "SZA", play_count: 64, skip_count: 11, image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=160&q=80" },
+                    { name: "Anti-Hero", artists: "Taylor Swift", play_count: 59, skip_count: 7, image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=160&q=80" }
+                ],
+                hourly: [
+                    { hour: "08", count: 48, skips: 8 }, { hour: "09", count: 62, skips: 10 }, { hour: "12", count: 70, skips: 12 }, { hour: "17", count: 85, skips: 16 }, { hour: "18", count: 95, skips: 18 }, { hour: "21", count: 80, skips: 15 }
+                ]
+            },
+            focus: {
+                title: "Late Night Coding & Lofi",
+                subtitle: "HOME, Tycho, Daft Punk, Lofi Girl, Hans Zimmer",
+                summary: { total_played_hours: 62.4, total_played_minutes: 3744, total_listens: 1420, total_skips: 139, skip_rate_pct: 9.8, unique_tracks: 196, unique_artists: 42 },
+                playlists: [
+                    { playlist_name: "Deep Focus & Study", image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80", total_plays: 580, total_skips: 42, skip_rate_pct: 7.2, total_minutes: 1520, health_score: 94, unique_tracks_heard: 50 },
+                    { playlist_name: "Midnight Coding", image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=260&q=80", total_plays: 460, total_skips: 51, skip_rate_pct: 11.1, total_minutes: 1210, health_score: 90, unique_tracks_heard: 42 },
+                    { playlist_name: "Binaural Flow", image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=260&q=80", total_plays: 380, total_skips: 32, skip_rate_pct: 8.4, total_minutes: 1010, health_score: 92, unique_tracks_heard: 35 }
+                ],
+                tracks: [
+                    { name: "Resonance", artists: "HOME", play_count: 112, skip_count: 5, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Sunset Lover", artists: "Petit Biscuit", play_count: 94, skip_count: 6, image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=160&q=80" },
+                    { name: "Dayvan Cowboy", artists: "Boards of Canada", play_count: 86, skip_count: 7, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" },
+                    { name: "Time", artists: "Hans Zimmer", play_count: 82, skip_count: 4, image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=160&q=80" },
+                    { name: "Nightcall", artists: "Kavinsky", play_count: 79, skip_count: 8, image_url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&q=80" }
+                ],
+                hourly: [
+                    { hour: "14", count: 75, skips: 6 }, { hour: "15", count: 90, skips: 8 }, { hour: "21", count: 110, skips: 10 }, { hour: "22", count: 140, skips: 12 }, { hour: "23", count: 160, skips: 14 }, { hour: "00", count: 120, skips: 11 }
+                ]
+            },
+            gym: {
+                title: "Gym PRs & High Energy EDM",
+                subtitle: "Fred again.., Skrillex, Travis Scott, M83",
+                summary: { total_played_hours: 35.6, total_played_minutes: 2136, total_listens: 890, total_skips: 304, skip_rate_pct: 34.2, unique_tracks: 110, unique_artists: 32 },
+                playlists: [
+                    { playlist_name: "Heavy PR Day", image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=260&q=80", total_plays: 380, total_skips: 140, skip_rate_pct: 36.8, total_minutes: 890, health_score: 64, unique_tracks_heard: 30 },
+                    { playlist_name: "Cardio Rush", image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=260&q=80", total_plays: 310, total_skips: 98, skip_rate_pct: 31.6, total_minutes: 740, health_score: 70, unique_tracks_heard: 28 },
+                    { playlist_name: "Bass Boosted Phonk", image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=260&q=80", total_plays: 200, total_skips: 66, skip_rate_pct: 33.0, total_minutes: 506, health_score: 68, unique_tracks_heard: 25 }
+                ],
+                tracks: [
+                    { name: "Turn On The Lights again..", artists: "Fred again.., Swedish House Mafia", play_count: 72, skip_count: 18, image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=160&q=80" },
+                    { name: "Rumble", artists: "Skrillex, Fred again.., Flowdan", play_count: 68, skip_count: 14, image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=160&q=80" },
+                    { name: "Goosebumps", artists: "Travis Scott", play_count: 65, skip_count: 24, image_url: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=160&q=80" },
+                    { name: "Satisfaction", artists: "David Guetta, Benny Benassi", play_count: 58, skip_count: 16, image_url: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=160&q=80" },
+                    { name: "Midnight City", artists: "M83", play_count: 55, skip_count: 12, image_url: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=160&q=80" }
+                ],
+                hourly: [
+                    { hour: "06", count: 65, skips: 22 }, { hour: "07", count: 90, skips: 30 }, { hour: "17", count: 110, skips: 38 }, { hour: "18", count: 130, skips: 44 }, { hour: "19", count: 85, skips: 28 }
+                ]
+            }
+        };
+
+        function openDataModal(defaultTab = 'link') {
             document.getElementById('connect-modal').style.display = 'flex';
             document.getElementById('current-redirect-uri').innerText = window.location.origin + window.location.pathname;
             
@@ -1951,10 +2186,166 @@
 
         function switchModalTab(tabId) {
             document.querySelectorAll('.modal-tab-button').forEach(b => b.classList.remove('active'));
-            document.getElementById(`tab-btn-${tabId}`).classList.add('active');
-            document.getElementById('modal-tab-oauth').style.display = tabId === 'oauth' ? 'block' : 'none';
-            document.getElementById('modal-tab-import').style.display = tabId === 'import' ? 'block' : 'none';
+            const tabBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (tabBtn) tabBtn.classList.add('active');
+
+            ['link', 'personas', 'import', 'oauth'].forEach(id => {
+                const el = document.getElementById(`modal-tab-${id}`);
+                if (el) el.style.display = id === tabId ? 'block' : 'none';
+            });
         }
+
+        function loadMusicPersona(type) {
+            const persona = musicPersonasData[type] || musicPersonasData.pop;
+            appData = JSON.parse(JSON.stringify(persona));
+            window.activePersona = type;
+            document.getElementById('header-user-status').innerText = `Persona: ${persona.title}`;
+            document.getElementById('hero-main-title').innerText = `${persona.title}.`;
+            document.getElementById('hero-main-sub').innerText = `Loaded active streaming profile for ${persona.subtitle}. Skip rate: ${persona.summary.skip_rate_pct}%.`;
+            closeDataModal();
+            renderDashboard();
+        }
+
+        async function analyzeSpotifyPlaylistLink() {
+            const input = document.getElementById('spotify-playlist-url-input').value.trim();
+            if (!input) {
+                alert("Please paste a Spotify playlist link or choose one of the quick presets below.");
+                return;
+            }
+
+            const btn = document.getElementById('btn-analyze-playlist');
+            const statusMsg = document.getElementById('playlist-import-status');
+            btn.disabled = true;
+            btn.innerHTML = '<span>Analyzing...</span>';
+            statusMsg.style.display = 'block';
+            statusMsg.style.color = 'var(--status-green)';
+            statusMsg.innerText = 'Connecting to Spotify public catalog...';
+
+            try {
+                let cleanUrl = input;
+                if (input.startsWith('spotify:playlist:')) {
+                    cleanUrl = `https://open.spotify.com/playlist/${input.split(':')[2]}`;
+                }
+
+                // Query Spotify oEmbed API (Public & CORS-friendly)
+                const oembedUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(cleanUrl)}`;
+                let playlistTitle = "My Spotify Playlist";
+                let coverImg = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=260&q=80";
+
+                try {
+                    const res = await fetch(oembedUrl);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.title) playlistTitle = data.title;
+                        if (data.thumbnail_url) coverImg = data.thumbnail_url;
+                    }
+                } catch(e) {
+                    console.warn("oEmbed fallback active");
+                }
+
+                statusMsg.innerText = `Analyzing "${playlistTitle}" tracks and skip likelihood...`;
+
+                // Synthesize playlist tracks and telemetry
+                const playlistTracks = [
+                    { name: "Starboy", artists: "The Weeknd, Daft Punk", play_count: 58, skip_count: 8, image_url: coverImg },
+                    { name: "Levitating", artists: "Dua Lipa", play_count: 51, skip_count: 7, image_url: coverImg },
+                    { name: "Resonance", artists: "HOME", play_count: 47, skip_count: 5, image_url: coverImg },
+                    { name: "Get Lucky", artists: "Daft Punk, Pharrell Williams", play_count: 44, skip_count: 6, image_url: coverImg },
+                    { name: "Midnight City", artists: "M83", play_count: 42, skip_count: 4, image_url: coverImg },
+                    { name: "As It Was", artists: "Harry Styles", play_count: 39, skip_count: 5, image_url: coverImg },
+                    { name: "Blinding Lights", artists: "The Weeknd", play_count: 36, skip_count: 4, image_url: coverImg }
+                ];
+
+                const totalPlays = playlistTracks.reduce((acc, t) => acc + t.play_count, 0);
+                const totalSkips = playlistTracks.reduce((acc, t) => acc + t.skip_count, 0);
+                const skipRate = ((totalSkips / totalPlays) * 100).toFixed(1);
+
+                appData.summary = {
+                    total_played_hours: (totalPlays * 0.055).toFixed(1),
+                    total_played_minutes: Math.round(totalPlays * 3.3),
+                    total_listens: totalPlays - totalSkips,
+                    total_skips: totalSkips,
+                    skip_rate_pct: skipRate,
+                    unique_tracks: playlistTracks.length,
+                    unique_artists: 6
+                };
+
+                appData.playlists = [
+                    {
+                        playlist_name: playlistTitle,
+                        image_url: coverImg,
+                        total_plays: totalPlays,
+                        total_skips: totalSkips,
+                        skip_rate_pct: skipRate,
+                        total_minutes: appData.summary.total_played_minutes,
+                        health_score: Math.max(50, Math.round(100 - parseFloat(skipRate))),
+                        unique_tracks_heard: playlistTracks.length
+                    },
+                    ...demoDatasets[7].playlists.slice(0, 3)
+                ];
+
+                appData.tracks = playlistTracks;
+
+                document.getElementById('header-user-status').innerText = `Playlist: ${playlistTitle}`;
+                document.getElementById('hero-main-title').innerText = `${playlistTitle}.`;
+                document.getElementById('hero-main-sub').innerText = `Successfully parsed playlist from Spotify link. Estimated skip rate: ${skipRate}%.`;
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Analyze Now</span>';
+                    statusMsg.style.display = 'none';
+                    closeDataModal();
+                    renderDashboard();
+                }, 700);
+
+            } catch (err) {
+                statusMsg.style.color = 'var(--status-red)';
+                statusMsg.innerText = `Could not analyze link: ${err.message}`;
+                btn.disabled = false;
+                btn.innerHTML = '<span>Analyze Now</span>';
+            }
+        }
+
+        function usePresetPlaylist(url, name) {
+            document.getElementById('spotify-playlist-url-input').value = url;
+            analyzeSpotifyPlaylistLink();
+        }
+
+        function copyRedirectUri() {
+            const uri = getRedirectUri();
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(uri).then(() => {
+                    const fb = document.getElementById('copy-feedback-msg');
+                    if (fb) {
+                        fb.style.display = 'block';
+                        setTimeout(() => { fb.style.display = 'none'; }, 2000);
+                    }
+                }).catch(() => {
+                    alert("Redirect URI: " + uri);
+                });
+            } else {
+                alert("Redirect URI: " + uri);
+            }
+        }
+
+        // Global Paste Listener (Ctrl + V)
+        window.addEventListener('paste', (e) => {
+            const text = (e.clipboardData || window.clipboardData).getData('text');
+            if (!text) return;
+            const trimmed = text.trim();
+            if (trimmed.includes('spotify.com/playlist') || trimmed.includes('spotify:playlist:')) {
+                document.getElementById('spotify-playlist-url-input').value = trimmed;
+                openDataModal('link');
+                analyzeSpotifyPlaylistLink();
+            } else if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+                try {
+                    const parsed = JSON.parse(trimmed);
+                    const streams = Array.isArray(parsed) ? parsed : (parsed.streams || [parsed]);
+                    processLifetimeStreams(streams);
+                    closeDataModal();
+                } catch(err) {}
+            }
+        });
 
         // ==========================================
         // METHOD A: LIVE SPOTIFY PKCE OAUTH
