@@ -1,5 +1,5 @@
 """
-PulseBeat Authentication Module
+Statr Authentication Module
 Handles Spotify OAuth 2.0 with offline access, automatic token refresh,
 and a self-contained local callback server. Zero external dependencies.
 """
@@ -22,7 +22,8 @@ SCOPES = [
     "user-read-currently-playing",
     "user-read-recently-played",
     "playlist-read-private",
-    "playlist-read-collaborative"
+    "playlist-read-collaborative",
+    "user-top-read"
 ]
 
 
@@ -59,7 +60,7 @@ class CallbackServer(BaseHTTPRequestHandler):
             <!DOCTYPE html>
             <html>
             <head>
-                <title>PulseBeat Connected</title>
+                <title>Statr Connected</title>
                 <style>
                     body {
                         background: #121212;
@@ -96,7 +97,7 @@ class CallbackServer(BaseHTTPRequestHandler):
             </head>
             <body>
                 <div class="card">
-                    <h1>PulseBeat Connected</h1>
+                    <h1>Statr Connected</h1>
                     <p>Authorization code received. Token exchange complete.</p>
                     <p>You can close this tab and return to your terminal.</p>
                     <span class="badge">Active Tracking Ready</span>
@@ -183,7 +184,7 @@ def authenticate_interactive():
         print("  SPOTIFY SETUP REQUIRED")
         print("="*60)
         print("1. Go to https://developer.spotify.com/dashboard")
-        print("2. Create an App (name it 'PulseBeat Analytics')")
+        print("2. Create an App (name it 'Statr Analytics')")
         print(f"3. In App Settings, add Redirect URI: {redirect_uri}")
         print("4. Copy Client ID and Client Secret into your .env file or enter them now:")
         print("="*60 + "\n")
@@ -227,7 +228,7 @@ DASHBOARD_PORT=8888
     }
     auth_url = f"https://accounts.spotify.com/authorize?{urllib.parse.urlencode(auth_params)}"
     
-    print("\nOpening your browser to authorize PulseBeat with Spotify...")
+    print("\nOpening your browser to authorize Statr with Spotify...")
     print(f"If browser does not open, visit this URL:\n{auth_url}\n")
     webbrowser.open(auth_url)
     
@@ -266,3 +267,13 @@ DASHBOARD_PORT=8888
     except Exception as e:
         print(f"Error exchanging tokens: {e}")
         return False
+
+
+def clear_cached_tokens() -> bool:
+    if os.path.exists(TOKEN_FILE):
+        try:
+            os.remove(TOKEN_FILE)
+            return True
+        except Exception:
+            return False
+    return False

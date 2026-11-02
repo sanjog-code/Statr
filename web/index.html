@@ -1881,6 +1881,442 @@
             color: #FFFFFF;
             border-color: var(--status-green);
         }
+    
+        /* GPU-Accelerated Apple Music Ambient Mesh */
+        .ambient-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0.14;
+            transition: opacity 0.5s ease;
+        }
+        .ambient-mesh-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.7;
+        }
+        .ambient-blob-1 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #FA2D48 0%, rgba(250, 45, 72, 0) 70%);
+            top: -180px;
+            right: -120px;
+            animation: meshFloat1 24s ease-in-out infinite alternate;
+        }
+        .ambient-blob-2 {
+            width: 650px;
+            height: 650px;
+            background: radial-gradient(circle, #8B5CF6 0%, rgba(139, 92, 246, 0) 70%);
+            bottom: -120px;
+            left: -120px;
+            animation: meshFloat2 28s ease-in-out infinite alternate;
+        }
+        @keyframes meshFloat1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-60px, 80px) scale(1.1); }
+        }
+        @keyframes meshFloat2 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, -60px) scale(0.95); }
+        }
+
+        /* Tabular Numbers for Data Stability */
+        .kpi-num, .stat-value, .song-play-count, .song-skip-count, .time-label, 
+        .artist-meta-row span strong, .album-meter-row span, .playlist-stats-row span strong {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Song Search & Stream Filters */
+        .search-input-pill {
+            background: var(--bg-card-subtle);
+            border: 1px solid var(--border-subtle);
+            border-radius: 980px;
+            color: var(--text-heading);
+            font-size: 13px;
+            padding: 7px 16px;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 220px;
+        }
+        .search-input-pill:focus {
+            border-color: var(--border-focus);
+            background: var(--bg-card);
+            box-shadow: 0 0 0 3px rgba(250, 45, 72, 0.12);
+        }
+        .view-pill-selector {
+            display: inline-flex;
+            background: var(--bg-control);
+            padding: 3px;
+            border-radius: 980px;
+            border: 1px solid var(--border-subtle);
+            gap: 2px;
+        }
+        .mini-pill {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 980px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .mini-pill.active {
+            background: var(--bg-control-active);
+            color: var(--text-heading);
+        }
+
+        /* Live Scrobbles Log Item */
+        .scrobble-log-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: background 0.15s ease;
+        }
+        .scrobble-log-row:hover {
+            background: var(--bg-card-hover);
+        }
+        .scrobble-log-row:last-child {
+            border-bottom: none;
+        }
+        .scrobble-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .scrobble-thumb {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .scrobble-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+        .scrobble-sub {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .scrobble-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        .scrobble-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Empty State */
+        .statr-empty-card {
+            background: var(--bg-card);
+            border: 1px dashed var(--border-focus);
+            border-radius: 20px;
+            padding: 48px 32px;
+            text-align: center;
+            max-width: 540px;
+            margin: 32px auto;
+        }
+        .empty-card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: rgba(250, 45, 72, 0.1);
+            color: var(--apple-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+        }
+
+    
+        /* ==========================================
+           EDITORIAL DESIGN & VIEW PANEL ARCHITECTURE
+           ========================================== */
+        .statr-view-panel {
+            display: none;
+            opacity: 0;
+            animation: viewFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .statr-view-panel.active-view {
+            display: block;
+        }
+        @keyframes viewFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Editorial Header (Linear / Apple style) */
+        .editorial-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .editorial-eyebrow {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--apple-red);
+            display: block;
+            margin-bottom: 8px;
+        }
+        .editorial-h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            color: var(--text-heading);
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+        .editorial-sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            max-width: 640px;
+        }
+        .editorial-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .view-title {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-heading);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        /* Metric Tiles Row (Zero-Carditis Elegance) */
+        .metric-tiles-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 1024px) {
+            .metric-tiles-row { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .metric-tiles-row { grid-template-columns: 1fr; }
+        }
+        .metric-tile {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 22px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .metric-tile:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-focus);
+        }
+        .metric-eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .metric-big-num {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            color: var(--text-heading);
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+        .metric-unit {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: normal;
+        }
+        .metric-detail {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Formula Banner */
+        .formula-banner {
+            background: linear-gradient(135deg, rgba(250, 45, 72, 0.08) 0%, rgba(20, 23, 31, 0.7) 100%);
+            border: 1px solid rgba(250, 45, 72, 0.2);
+            border-radius: 16px;
+            padding: 20px 24px;
+        }
+        .formula-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(250, 45, 72, 0.15);
+            color: var(--apple-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+    
+        .song-table-header {
+            display: grid;
+            grid-template-columns: 32px 44px 1.6fr 1.2fr 80px 100px 50px;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .song-item-row {
+            display: grid;
+            grid-template-columns: 32px 44px 1.6fr 1.2fr 80px 100px 50px;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.15s ease;
+        }
+        .song-item-row:hover {
+            background: var(--bg-card-hover);
+        }
+        .mini-play-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-control);
+            color: var(--text-heading);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+        .mini-play-btn:hover {
+            background: var(--apple-red);
+            border-color: var(--apple-red);
+            color: #FFFFFF;
+            transform: scale(1.08);
+        }
+        @media (max-width: 900px) {
+            .song-table-header, .song-item-row {
+                grid-template-columns: 28px 40px 1fr 70px 40px;
+            }
+            .song-col-album, .song-col-skips { display: none; }
+        }
+
+    
+        /* Volt.fm Style 1-Click Spotify Integration */
+        .spotify-volt-card {
+            background: linear-gradient(135deg, rgba(30, 215, 96, 0.08) 0%, rgba(20, 23, 31, 0.8) 100%);
+            border: 1px solid rgba(30, 215, 96, 0.2);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
+        }
+        .spotify-volt-card:hover {
+            border-color: rgba(30, 215, 96, 0.35);
+        }
+        .spotify-volt-card.connected {
+            background: linear-gradient(135deg, rgba(48, 209, 88, 0.06) 0%, rgba(20, 23, 31, 0.7) 100%);
+            border-color: rgba(48, 209, 88, 0.18);
+        }
+        .volt-card-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .volt-spotify-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(30, 215, 96, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .volt-user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(48, 209, 88, 0.4);
+        }
+        .volt-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-heading);
+            margin-bottom: 3px;
+        }
+        .volt-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin: 0;
+        }
+        .btn-volt-connect {
+            background: #1DB954;
+            color: #000000;
+            border: none;
+            border-radius: 980px;
+            padding: 12px 22px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(29, 185, 84, 0.3);
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+        .btn-volt-connect:hover {
+            background: #1ed760;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(29, 185, 84, 0.45);
+        }
+        .btn-volt-connect:active {
+            transform: scale(0.97);
+        }
+
     </style>
 </head>
 <body>
@@ -1898,6 +2334,12 @@
     </script>
 
     <!-- Ambient Living Canvas Background -->
+    <!-- GPU-accelerated Apple Music Style Ambient Mesh -->
+    <div class="ambient-mesh" id="ambient-mesh">
+        <div class="ambient-mesh-blob ambient-blob-1"></div>
+        <div class="ambient-mesh-blob ambient-blob-2"></div>
+    </div>
+    <audio id="dock-audio-player" preload="none"></audio>
     <canvas id="ambient-canvas"></canvas>
     <div class="cursor-halo" id="cursor-halo"></div>
 
@@ -1911,48 +2353,36 @@
                 <div class="brand-name">Statr</div>
             </div>
 
-            <div class="nav-group-title">Analytics Dimensions</div>
+            <div class="nav-group-title">Analytics</div>
             <ul class="nav-list">
                 <li>
-                    <button class="nav-btn active" onclick="switchMainView('overview')">
+                    <button class="nav-btn active" data-view="overview" onclick="switchMainView('overview')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                         <span class="nav-text">Overview</span>
                     </button>
                 </li>
                 <li>
-                    <button class="nav-btn" onclick="switchMainView('artists')">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        <span class="nav-text">Artist Data</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-btn" onclick="switchMainView('obscurity')">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-                        <span class="nav-text">Obscurity Data</span>
-                    </button>
-                </li>
-                <li>
-                    <button class="nav-btn" onclick="switchMainView('listening')">
+                    <button class="nav-btn" data-view="tracks" onclick="switchMainView('tracks')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        <span class="nav-text">Listening Stats</span>
+                        <span class="nav-text">Songs & Scrobbles</span>
                     </button>
                 </li>
                 <li>
-                    <button class="nav-btn" onclick="switchMainView('albums')">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/></svg>
-                        <span class="nav-text">Album Data</span>
+                    <button class="nav-btn" data-view="artists" onclick="switchMainView('artists')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span class="nav-text">Artists & Albums</span>
                     </button>
                 </li>
                 <li>
-                    <button class="nav-btn" onclick="switchMainView('playlists')">
+                    <button class="nav-btn" data-view="playlists" onclick="switchMainView('playlists')">
                         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                        <span class="nav-text">Playlist Data</span>
+                        <span class="nav-text">Playlist Health</span>
                     </button>
                 </li>
                 <li>
-                    <button class="nav-btn" onclick="switchMainView('fanrating')">
-                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        <span class="nav-text">Fan Rating</span>
+                    <button class="nav-btn" data-view="taste" onclick="switchMainView('taste')">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                        <span class="nav-text">Taste & Rhythm</span>
                     </button>
                 </li>
             </ul>
@@ -1991,21 +2421,24 @@
             </div>
 
             <div class="sidebar-sync-card">
-                <h4>Instant Data Ingestion</h4>
-                <p>Paste a public playlist link or try 1-click sample profiles.</p>
-                <button class="btn-sync-spotify" onclick="openDataModal('link')">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                    <span>Instant Import</span>
-                </button>
+                <h4>Spotify & SQLite</h4>
+                <p>Track real-time plays, detect skips, and preserve listening context.</p>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-sync-spotify" style="flex: 1; padding: 9px;" onclick="openDataModal('backend')">
+                        <span>Local Daemon</span>
+                    </button>
+                    <button class="btn-hero-secondary" style="padding: 9px 12px; font-size: 11px;" onclick="openDataModal('link')">
+                        Import
+                    </button>
+                </div>
             </div>
         </div>
     </aside>
 
     <!-- Main Content Viewport -->
     <main class="main-viewport">
-        
-        <!-- Top Status Bar -->
-        <div class="stage-top-bar">
+    <!-- Top Status Bar -->
+    <div class="stage-top-bar">
             <div class="status-pill-badge">
                 <span class="live-dot"></span>
                 <span id="header-user-status">Preview Library (Ready to Sync)</span>
@@ -2039,206 +2472,270 @@
                     <button class="time-tab" data-days="0" title="All-Time Lifetime History">All</button>
                 </div>
             </div>
+
+    <!-- VIEW 1: OVERVIEW -->
+    <div class="statr-view-panel active-view" id="view-overview">
+        <!-- High-Impact Editorial Header -->
+        <div class="editorial-header">
+            <div>
+                <span class="editorial-eyebrow">LISTENING EXECUTIVE SUMMARY</span>
+                <h1 class="editorial-h1" id="hero-main-title">See what you really listen to.</h1>
+                <p class="editorial-sub" id="hero-main-sub">Auditing your true completed scrobbles against early track skips to reveal your real musical preferences.</p>
+            </div>
+            <div class="editorial-actions">
+                <button class="btn-hero-primary" onclick="openDataModal('backend')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Daemon Settings</span>
+                </button>
+                <button class="btn-hero-secondary" onclick="openDataModal('link')">
+                    Paste Playlist Link
+                </button>
+            </div>
         </div>
 
-        <!-- Conversational Hero Banner -->
-        <div class="glass-card friendly-hero" id="hero-banner">
+        <!-- 4 Clean Headline Metrics (No Cheesy Numbered Cards) -->
+                <!-- Volt.fm Style 1-Click Spotify Integration Banners -->
+        <div class="spotify-volt-card" id="spotify-connect-banner">
+            <div class="volt-card-left">
+                <div class="volt-spotify-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
+                </div>
+                <div>
+                    <h3 class="volt-title">Link your Spotify once. Statr handles the rest.</h3>
+                    <p class="volt-sub">Turn Statr into a permanent background plugin that continuously records your completed scrobbles, detects skips, and audits playlist health.</p>
+                </div>
+            </div>
+            <div class="volt-card-right">
+                <button class="btn-volt-connect" onclick="triggerVoltConnect()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
+                    <span>Connect with Spotify</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="spotify-volt-card connected" id="spotify-active-banner" style="display: none;">
+            <div class="volt-card-left">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" id="user-avatar-img" class="volt-user-avatar" alt="Avatar">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="live-dot" style="background: #30D158;"></span>
+                        <strong id="user-name-text" style="color: var(--text-heading); font-size: 15px;">Connected to Spotify</strong>
+                        <span class="badge-pill badge-green">MINING ACTIVE</span>
+                    </div>
+                    <p class="volt-sub" id="user-now-playing-sub">Continuous background poller is monitoring your playback for scrobbles and skips.</p>
+                </div>
+            </div>
+            <div class="volt-card-right" style="display: flex; gap: 8px;">
+                <button class="mini-pill" onclick="refreshLiveSpotifyData()" title="Sync Latest History">
+                    Sync Now
+                </button>
+                <button class="mini-pill" onclick="disconnectSpotify()" style="color: var(--status-red); border-color: rgba(255, 69, 58, 0.2);" title="Disconnect">
+                    Disconnect
+                </button>
+            </div>
+        </div>
+
+        <div class="metric-tiles-row">
+            <div class="metric-tile">
+                <span class="metric-eyebrow">TOTAL LISTENING TIME</span>
+                <div class="metric-big-num" id="kpi-hours">13.4 <span class="metric-unit">hrs</span></div>
+                <div class="metric-detail" id="kpi-mins">About 801 minutes</div>
+            </div>
+
+            <div class="metric-tile">
+                <span class="metric-eyebrow">COMPLETED SCROBBLES</span>
+                <div class="metric-big-num" id="kpi-scrobbles">308</div>
+                <div class="metric-detail"><span class="badge-pill badge-green">VERIFIED</span> Full completions (&gt;30s)</div>
+            </div>
+
+            <div class="metric-tile">
+                <span class="metric-eyebrow">SKIP RATE FRICTION</span>
+                <div class="metric-big-num" id="kpi-skip-rate">19.4% <span class="metric-unit">skips</span></div>
+                <div class="metric-detail" id="kpi-skip-details"><span class="badge-pill badge-green">LOW SKIPS</span> 74 skips detected</div>
+            </div>
+
+            <div class="metric-tile">
+                <span class="metric-eyebrow">UNIQUE ARTISTS</span>
+                <div class="metric-big-num" id="kpi-unique-tracks">9 <span class="metric-unit">artists</span></div>
+                <div class="metric-detail" id="kpi-artist-loyalty"><span class="badge-pill badge-green">88% LOYALTY</span> Top 3 Dominant</div>
+            </div>
+        </div>
+
+        <!-- Split Grid: Top Tracks Leaderboard & 24h Rhythm -->
+        <div class="content-split-grid" style="margin-top: 28px;">
             <div>
-                <h1 class="hero-title" id="hero-main-title">See what you really listen to.</h1>
-                <p class="hero-sub" id="hero-main-sub">Find out your true top tracks, the songs you secretly skip every time, and how much time you actually spend listening.</p>
-                <div class="hero-btn-row">
-                    <button class="btn-hero-primary" onclick="openDataModal('link')">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.208-2.35-1.434-5.308-1.758-8.793-.962-.335.077-.67-.133-.746-.469-.077-.336.132-.67.468-.747 3.812-.871 7.08-.507 9.72 1.112.294.18.386.563.208.858zm1.224-2.724c-.226.368-.71.482-1.078.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.521-.124-.413.107-.85.52-975 3.633-1.102 8.147-.568 11.247 1.33.368.226.482.71.256 1.078zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.129-1.168-.623-.15-.495.129-1.019.623-1.169 3.532-1.072 9.404-.866 13.115 1.337.445.264.59.838.327 1.282-.264.443-.838.59-1.282.327z"/></svg>
-                        <span>Paste Spotify Link (Instant)</span>
-                    </button>
-                    <button class="btn-hero-secondary" onclick="openDataModal('personas')">
-                        1-Click Sample Profiles
-                    </button>
-                    <button class="btn-hero-secondary" style="font-size: 12px; opacity: 0.85;" onclick="openDataModal('import')">
-                        Upload ZIP / File
-                    </button>
+                <div class="section-header-block">
+                    <div>
+                        <h2 class="section-h2">Top Tracks Leaderboard</h2>
+                        <p class="section-sub">Highest replay frequency in your listening history</p>
+                    </div>
+                    <button class="mini-pill" onclick="switchMainView('tracks')">View All Tracks &rarr;</button>
+                </div>
+                <div class="glass-card songs-card-box" id="overview-songs-container"></div>
+            </div>
+
+            <div>
+                <div class="section-header-block">
+                    <div>
+                        <h2 class="section-h2">When You Listen</h2>
+                        <p class="section-sub" id="chart-sub">24-hour listening rhythm &middot; <strong style="color: var(--apple-red);" id="chart-range-tag">Past 7 Days</strong></p>
+                    </div>
+                </div>
+                <div class="glass-card chart-box-card" style="height: 380px;">
+                    <canvas id="rhythmCanvas"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- 4 Clean Human Stat Cards -->
-        <!-- 6 Core Dimension Summary Cards -->
-        <div class="stats-grid-6" id="stats-overview-grid">
-            <!-- 1. Listening Stats -->
-            <div class="glass-card stat-card-body" onclick="switchMainView('listening')" style="cursor: pointer;">
-                <span class="dimension-badge">1. Listening Stats</span>
-                <div class="stat-card-title">Time Listened & Scrobbles</div>
-                <div class="stat-card-number" id="kpi-hours">12.2 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">hrs</span></div>
-                <div class="stat-card-desc"><span class="badge-pill badge-green">ACTIVE</span> <span id="kpi-mins">About 732 minutes</span></div>
-            </div>
-
-            <!-- 2. Obscurity Data -->
-            <div class="glass-card stat-card-body" onclick="switchMainView('obscurity')" style="cursor: pointer;">
-                <span class="dimension-badge">2. Obscurity Data</span>
-                <div class="stat-card-title">Hipster / Obscurity Score</div>
-                <div class="stat-card-number" id="kpi-obscurity-num" style="color: #B800FF;">68% <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">Underground</span></div>
-                <div class="stat-card-desc" id="kpi-obscurity-desc"><span class="badge-pill" style="background: rgba(184, 0, 255, 0.15); color: #B800FF; border: 1px solid rgba(184, 0, 255, 0.3);">EXPLORER</span> 24 Deep Cuts</div>
-            </div>
-
-            <!-- 3. Fan Rating -->
-            <div class="glass-card stat-card-body" onclick="switchMainView('fanrating')" style="cursor: pointer;">
-                <span class="dimension-badge">3. Fan Rating</span>
-                <div class="stat-card-title">Superfan Percentile</div>
-                <div class="stat-card-number" id="kpi-fan-tier" style="color: #FFD700;">Top 0.5%</div>
-                <div class="stat-card-desc" id="kpi-fan-desc"><span class="badge-pill" style="background: rgba(255,215,0,0.15); color: #FFD700; border: 1px solid rgba(255,215,0,0.3);">STAN TIER</span> The Weeknd</div>
-            </div>
-
-            <!-- 4. Artist Data -->
-            <div class="glass-card stat-card-body" onclick="switchMainView('artists')" style="cursor: pointer;">
-                <span class="dimension-badge">4. Artist Data</span>
-                <div class="stat-card-title">Artists & Loyalty</div>
-                <div class="stat-card-number" id="kpi-unique-tracks">14 <span style="font-size: 16px; font-weight: 500; color: var(--text-muted);">artists</span></div>
-                <div class="stat-card-desc" id="kpi-artist-loyalty"><span class="badge-pill badge-green">88% LOYALTY</span> Top 3 Dominant</div>
-            </div>
-
-            <!-- 5. Album Data -->
-            <div class="glass-card stat-card-body" onclick="switchMainView('albums')" style="cursor: pointer;">
-                <span class="dimension-badge">5. Album Data</span>
-                <div class="stat-card-title">Top Album & Completion</div>
-                <div class="stat-card-number" id="kpi-top-album" style="font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Starboy</div>
-                <div class="stat-card-desc" id="kpi-album-desc"><span class="badge-pill badge-green">88% FRONT-TO-BACK</span> Full Listens</div>
-            </div>
-
-            <!-- 6. Playlist Data -->
-            <div class="glass-card stat-card-body" onclick="switchMainView('playlists')" style="cursor: pointer;">
-                <span class="dimension-badge">6. Playlist Data</span>
-                <div class="stat-card-title">Playlist Flow & Skips</div>
-                <div class="stat-card-number" id="kpi-skip-rate" style="color: var(--status-green);">22.4% <span style="font-size: 15px; font-weight: 600; color: var(--text-muted);">skips</span></div>
-                <div class="stat-card-desc" id="kpi-skip-details"><span class="badge-pill badge-green">LOW SKIPS</span> 85 skips</div>
-            </div>
-        </div>
-
-        <!-- Section 1: Artist Data -->
-        <div class="stat-section-block" id="section-artists">
+        <!-- Playlists Overview Section -->
+        <div style="margin-top: 36px;">
             <div class="section-header-block">
                 <div>
-                    <h2 class="section-h2">Artist Data & Fan Loyalty</h2>
-                    <p class="section-sub">Your heavy rotation artists, total listening hours, and affinity percentiles.</p>
+                    <h2 class="section-h2">Playlists & Flow Health</h2>
+                    <p class="section-sub">Preserved listening context &middot; health score computed from skip ratio</p>
                 </div>
+                <button class="mini-pill" onclick="switchMainView('playlists')">Full Playlist Audit &rarr;</button>
             </div>
+            <div class="playlists-grid" id="overview-playlists-shelf"></div>
+        </div>
+    </div>
+
+    <!-- VIEW 2: SONGS & SCROBBLES -->
+    <div class="statr-view-panel" id="view-tracks">
+        <div class="section-header-block" style="flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+            <div>
+                <h1 class="view-title">Songs & Real-Time Scrobbles</h1>
+                <p class="section-sub" id="top-songs-sub">Detailed listening archive &middot; <strong style="color: var(--apple-red);" id="top-songs-range-tag">Past 7 Days</strong></p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <div class="view-pill-selector">
+                    <button class="mini-pill active" id="tab-btn-songs" onclick="switchSongsTab('top')">Top Songs Table</button>
+                    <button class="mini-pill" id="tab-btn-scrobbles" onclick="switchSongsTab('recent')">Live Scrobbles Stream</button>
+                </div>
+                <input type="text" id="song-filter-input" class="search-input-pill" placeholder="Filter songs or artists..." oninput="filterSongsList(this.value)">
+            </div>
+        </div>
+
+        <div class="glass-card songs-card-box" id="songs-container"></div>
+        <div class="glass-card songs-card-box" id="scrobbles-container" style="display: none; max-height: 540px; overflow-y: auto;"></div>
+    </div>
+
+    <!-- VIEW 3: ARTISTS & ALBUMS -->
+    <div class="statr-view-panel" id="view-artists">
+        <div class="section-header-block" style="margin-bottom: 24px;">
+            <div>
+                <h1 class="view-title">Artists & Album Playthroughs</h1>
+                <p class="section-sub">Artist loyalty rankings and front-to-back album completion rates</p>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 36px;">
+            <h2 class="section-h2" style="margin-bottom: 14px;">Top Artists</h2>
             <div class="artists-grid" id="artists-shelf"></div>
         </div>
 
-        <!-- Section 2: Obscurity Data -->
-        <div class="stat-section-block" id="section-obscurity">
-            <div class="section-header-block">
-                <div>
-                    <h2 class="section-h2">Obscurity Data & Music Taste</h2>
-                    <p class="section-sub">Underground depth vs mainstream billboard chart rotation.</p>
-                </div>
-            </div>
-            <div class="glass-card obscurity-card-box" id="obscurity-card-box">
-                <div class="obscurity-split">
-                    <div>
-                        <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Obscurity Meter</div>
-                        <div style="font-size: 28px; font-weight: 800; color: var(--text-heading); margin: 4px 0 10px;" id="obscurity-archetype-title">Underground Explorer</div>
-                        <div class="obscurity-gauge-wrap">
-                            <div class="gauge-fill-underground" id="gauge-underground-bar" style="width: 68%;"></div>
-                            <div class="gauge-fill-mainstream" id="gauge-mainstream-bar" style="width: 32%;"></div>
-                        </div>
-                        <div class="obscurity-labels-row">
-                            <span style="color: #B800FF;" id="obscurity-pct-label">68% Underground / Niche</span>
-                            <span style="color: var(--apple-red);" id="mainstream-pct-label">32% Mainstream Hits</span>
-                        </div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <div class="obscurity-stat-capsule">
-                            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">DEEP CUTS FOUND (&lt; 5M Streams)</div>
-                            <div style="font-size: 20px; font-weight: 800; color: var(--text-heading); margin-top: 2px;" id="obscurity-deep-cuts">24 Tracks</div>
-                        </div>
-                        <div class="obscurity-stat-capsule">
-                            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">TOP NICHE GENRE</div>
-                            <div style="font-size: 15px; font-weight: 700; color: #B800FF; margin-top: 2px;" id="obscurity-genre">Synthwave / Chillwave</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 3: Album Data -->
-        <div class="stat-section-block" id="section-albums">
-            <div class="section-header-block">
-                <div>
-                    <h2 class="section-h2">Album Data</h2>
-                    <p class="section-sub">Records you spin front-to-back vs shuffled individual tracks.</p>
-                </div>
+        <div>
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px;">
+                <h2 class="section-h2">Top Albums & EPs</h2>
+                <span class="section-sub" id="kpi-album-desc">Front-to-back listening fidelity</span>
             </div>
             <div class="albums-grid" id="albums-shelf"></div>
         </div>
+    </div>
 
-        <!-- Section 4: Playlist Data -->
-        <div class="stat-section-block" id="section-playlists">
-            <div class="section-header-block">
-                <div>
-                    <h2 class="section-h2">Playlist Data & Health Doctor</h2>
-                    <p class="section-sub">Engagement duration, skip hotspots, and catalog rotation.</p>
-                </div>
+    <!-- VIEW 4: PLAYLIST HEALTH AUDIT -->
+    <div class="statr-view-panel" id="view-playlists">
+        <div class="section-header-block" style="margin-bottom: 20px;">
+            <div>
+                <h1 class="view-title">Playlist Flow & Health Audit</h1>
+                <p class="section-sub">Detect track fatigue, identify skip hotspots, and optimize sequencing</p>
             </div>
-            <div class="playlists-grid" id="playlists-shelf"></div>
         </div>
 
-        <!-- Section 5: Listening Stats & When You Listen -->
-        <div class="stat-section-block" id="section-listening">
-            <div class="content-split-grid">
-                <div>
-                    <div class="section-header-block">
-                        <div>
-                            <h2 class="section-h2">Your Top Songs</h2>
-                            <p class="section-sub" id="top-songs-sub">Most played tracks &middot; <strong style="color: var(--apple-red);" id="top-songs-range-tag">Past 7 Days</strong></p>
-                        </div>
-                    </div>
-                    <div class="glass-card songs-card-box" id="songs-container"></div>
+        <!-- Formula Banner -->
+        <div class="glass-card formula-banner">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <div class="formula-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                 </div>
-
                 <div>
-                    <div class="section-header-block">
-                        <div>
-                            <h2 class="section-h2">When You Listen</h2>
-                            <p class="section-sub" id="chart-sub">24-hour listening rhythm &middot; <strong style="color: var(--apple-red);" id="chart-range-tag">Past 7 Days</strong></p>
-                        </div>
-                    </div>
-                    <div class="glass-card chart-box-card" style="height: 380px;">
-                        <canvas id="rhythmCanvas"></canvas>
-                    </div>
+                    <h4 style="font-size: 14px; font-weight: 700; color: var(--text-heading); margin-bottom: 2px;">Playlist Health Score (PHS) Formula</h4>
+                    <p style="font-size: 12px; color: var(--text-secondary); margin: 0;">
+                        <code>PHS = 100 &times; (1 - Skips / Total Plays)</code> &middot; Playlists with score &ge; 75 maintain optimal focus flow.
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Section 6: Fan Rating & Badges -->
-        <div class="stat-section-block" id="section-fanrating">
-            <div class="section-header-block">
-                <div>
-                    <h2 class="section-h2">Fan Rating & Superfan Dossier</h2>
-                    <p class="section-sub">Your listener percentile worldwide and unlocked listening achievements.</p>
-                </div>
+        <div class="playlists-grid" id="playlists-shelf" style="margin-top: 24px;"></div>
+    </div>
+
+    <!-- VIEW 5: TASTE & RHYTHM -->
+    <div class="statr-view-panel" id="view-taste">
+        <div class="section-header-block" style="margin-bottom: 24px;">
+            <div>
+                <h1 class="view-title">Taste Profile & Obscurity</h1>
+                <p class="section-sub">Mainstream vs underground distribution, niche genres, and listening habits</p>
             </div>
-            <div class="glass-card fan-rating-box" id="fan-rating-box">
-                <div class="fan-rating-split">
+        </div>
+
+        <!-- Obscurity & Affinity Grid -->
+        <div class="content-split-grid">
+            <div class="glass-card" style="padding: 28px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
                     <div>
-                        <span class="dimension-badge" style="background: rgba(255,215,0,0.15); color: #FFD700; border: 1px solid rgba(255,215,0,0.3);">GLOBAL RANKING</span>
-                        <div style="font-size: 32px; font-weight: 800; color: var(--text-heading); margin: 4px 0;" id="fan-hero-tier">Top 0.5% Superfan</div>
-                        <div style="font-size: 14px; color: var(--text-secondary);" id="fan-hero-sub">You listen more intensely to <strong style="color: var(--text-heading);" id="fan-primary-artist">The Weeknd</strong> than 99.5% of listeners worldwide.</div>
-                        <div class="fan-badge-list" id="fan-badges-shelf">
-                            <span class="fan-badge-chip">🏆 Discography Explorer</span>
-                            <span class="fan-badge-chip">⚡ Zero-Skip Devotee</span>
-                            <span class="fan-badge-chip">🌙 Midnight Scrobbler</span>
-                        </div>
+                        <span class="metric-eyebrow">TASTE ARCHETYPE</span>
+                        <h3 style="font-size: 22px; font-weight: 800; color: var(--text-heading); margin-top: 4px;" id="obscurity-archetype-title">Eclectic Tastemaker</h3>
                     </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Fan Affinity Score</div>
-                        <div style="font-size: 48px; font-weight: 800; color: #FFD700; line-height: 1;" id="fan-affinity-score">96<span style="font-size: 20px; color: var(--text-muted);">/100</span></div>
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 6px;" id="fan-rank-label">Elite Superfan Status</div>
+                    <span class="badge-pill" id="kpi-obscurity-desc" style="font-size: 12px; padding: 6px 12px;">Deep Cuts</span>
+                </div>
+
+                <!-- Dual Gauge Meter -->
+                <div class="dual-gauge-wrap" style="margin: 20px 0;">
+                    <div class="dual-gauge-labels">
+                        <span id="obscurity-pct-label" style="font-size: 12px; font-weight: 700; color: var(--apple-red);">68% Underground / Niche</span>
+                        <span id="mainstream-pct-label" style="font-size: 12px; font-weight: 700; color: var(--text-muted);">32% Mainstream Hits</span>
+                    </div>
+                    <div class="gauge-track">
+                        <div class="gauge-bar-underground" id="gauge-underground-bar" style="width: 68%;"></div>
+                        <div class="gauge-bar-mainstream" id="gauge-mainstream-bar" style="width: 32%;"></div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-subtle);">
+                    <div>
+                        <span class="metric-eyebrow">DEEP CUTS RATIO</span>
+                        <div style="font-size: 16px; font-weight: 700; color: var(--text-heading); margin-top: 4px;" id="obscurity-deep-cuts">24 Tracks</div>
+                    </div>
+                    <div>
+                        <span class="metric-eyebrow">TOP NICHE GENRE</span>
+                        <div style="font-size: 16px; font-weight: 700; color: var(--text-heading); margin-top: 4px;" id="obscurity-genre">Synthwave / Chillwave</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 28px;">
+                <span class="metric-eyebrow">SUPERFAN AFFINITY</span>
+                <div style="display: flex; align-items: baseline; gap: 12px; margin-top: 6px;">
+                    <div style="font-size: 32px; font-weight: 900; color: var(--apple-red);" id="kpi-fan-tier">Top 0.5%</div>
+                    <div style="font-size: 14px; color: var(--text-secondary);" id="fan-rank-label">Superfan</div>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-top: 12px;" id="fan-hero-sub">
+                    You listen to top artists with high loyalty and completed playthroughs.
+                </p>
+
+                <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-subtle);">
+                    <span class="metric-eyebrow">EARNED LISTENING BADGES</span>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;" id="fan-badges-shelf">
+                        <span class="badge-pill" style="border: 1px solid var(--border-subtle);">Zero-Skip Connoisseur</span>
+                        <span class="badge-pill" style="border: 1px solid var(--border-subtle);">Catalog Explorer</span>
+                        <span class="badge-pill" style="border: 1px solid var(--border-subtle);">Front-to-Back Purist</span>
                     </div>
                 </div>
             </div>
         </div>
-
-    </main>
+    </div>
+</main>
 
     <!-- Bottom Player Dock -->
     <footer class="dock-player-bar">
@@ -2252,34 +2749,40 @@
 
         <div class="player-controls-center">
             <div class="controls-button-strip">
-                <button class="ctrl-btn" title="Previous">
+                <button class="ctrl-btn" title="Previous Track (←)" onclick="playPreviousTrack()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
                 </button>
-                <button class="ctrl-btn ctrl-btn-play" title="Play / Pause" id="play-pause-btn" onclick="togglePlayState()">
+                <button class="ctrl-btn ctrl-btn-play" title="Play / Pause (Space)" id="play-pause-btn" onclick="togglePlayState()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" id="play-pause-icon"><path d="M8 5v14l11-7z"/></svg>
                 </button>
-                <button class="ctrl-btn" title="Next / Skip">
+                <button class="ctrl-btn" title="Next Track (→)" onclick="playNextTrack()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                 </button>
             </div>
 
             <div class="timeline-slider-row">
-                <span class="time-label" id="time-current">1:42</span>
+                <span class="time-label" id="time-current">0:00</span>
                 <div class="timeline-track" id="scrubber-bar" onclick="scrubPosition(event)">
-                    <div class="timeline-fill" id="scrubber-fill" style="width: 42%;"></div>
+                    <div class="timeline-fill" id="scrubber-fill" style="width: 0%;"></div>
                 </div>
-                <span class="time-label" id="time-total">4:03</span>
+                <span class="time-label" id="time-total">0:30</span>
             </div>
         </div>
 
         <div class="player-right-indicator">
+            <button class="ctrl-btn" id="volume-btn" title="Toggle Mute" onclick="toggleMute()" style="margin-right: 10px;">
+                <svg id="volume-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+            </button>
             <div class="audio-wave-bars">
                 <div class="wave-bar"></div>
                 <div class="wave-bar"></div>
                 <div class="wave-bar"></div>
                 <div class="wave-bar"></div>
             </div>
-            <span style="font-size: 12px; color: var(--apple-red); font-weight: 700;" id="player-stream-badge">PLAYING</span>
+            <span style="font-size: 11px; color: var(--apple-red); font-weight: 800; letter-spacing: 0.04em;" id="player-stream-badge">READY</span>
         </div>
     </footer>
 
@@ -3704,286 +4207,14 @@
 
         // ==========================================
         // Reactive Fluid Geometry Engine
-        // Prismatic Floating Triangles & Forcefield Dynamics
-        // ==========================================
-        const canvas = document.getElementById('ambient-canvas');
-        const ctx = canvas.getContext('2d');
-        const cursorHalo = document.getElementById('cursor-halo');
-
-        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2, targetX: window.innerWidth / 2, targetY: window.innerHeight / 2 };
-        let particles = [];
-        let bonds = [];
-        let forcefieldExcitement = 0;
-        let bondTicker = 0;
-
-        const FORCEFIELD_RADIUS = 44; // Miniature forcefield: circle just big enough so whole cursor stays completely clear & visible
-        const ATTRACT_RADIUS = 250;   // Attraction reach
-        const INTENSITY_PLATEAU_RADIUS = 90; // Reaches peak intensity here, and stays constant down to forcefield boundary!
-        const MAX_BONDS_TOTAL = 18;   // Anti-clutter cap across the screen
-
-        function drawTriangle(ctx, x, y, size, angle, fillStyle, strokeStyle, strokeWidth) {
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(angle);
-            ctx.beginPath();
-            // Sleek aerodynamic prism triangle
-            const apexX = size * 1.15;
-            const backX = -size * 0.65;
-            const halfW = size * 0.62;
-            ctx.moveTo(apexX, 0);
-            ctx.lineTo(backX, -halfW);
-            ctx.lineTo(backX, halfW);
-            ctx.closePath();
-            if (fillStyle) {
-                ctx.fillStyle = fillStyle;
-                ctx.fill();
-            }
-            if (strokeStyle) {
-                ctx.strokeStyle = strokeStyle;
-                ctx.lineWidth = strokeWidth || 0.8;
-                ctx.stroke();
-            }
-            ctx.restore();
+        // Lightweight Apple Music Ambient Mesh Controller
+        function updateAmbientMood(primaryHex = '#FA2D48', secondaryHex = '#8B5CF6') {
+            const blob1 = document.querySelector('.ambient-blob-1');
+            const blob2 = document.querySelector('.ambient-blob-2');
+            if (blob1) blob1.style.background = `radial-gradient(circle, ${primaryHex} 0%, rgba(250, 45, 72, 0) 70%)`;
+            if (blob2) blob2.style.background = `radial-gradient(circle, ${secondaryHex} 0%, rgba(139, 92, 246, 0) 70%)`;
         }
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            bonds = [];
-            // Calibrated density: clean, uncluttered Apple-grade distribution
-            const count = Math.min(48, Math.max(20, Math.floor((canvas.width * canvas.height) / 32000)));
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    id: i,
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.45,
-                    vy: (Math.random() - 0.5) * 0.45,
-                    size: Math.random() * 3.5 + 3.8, // 3.8px to 7.3px
-                    angle: Math.random() * Math.PI * 2,
-                    rotSpeed: (Math.random() - 0.5) * 0.016,
-                    baseAlpha: Math.random() * 0.14 + 0.12,
-                    intensity: 0,
-                    targetIntensity: 0,
-                    bondsCount: 0
-                });
-            }
-        }
-
-        function updateAndRenderBonds(isLight) {
-            bondTicker++;
-            // Stochastic bond formation: every ~8 frames, create a bond between nearby triangles if caps allow
-            if (bondTicker % 8 === 0 && bonds.length < MAX_BONDS_TOTAL && particles.length > 2) {
-                const p1 = particles[Math.floor(Math.random() * particles.length)];
-                if (p1 && p1.bondsCount < 2) {
-                    let bestP2 = null;
-                    let bestDist = 80;
-                    for (let i = 0; i < particles.length; i++) {
-                        const p2 = particles[i];
-                        if (p2 === p1 || p2.bondsCount >= 2) continue;
-                        const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-                        if (d < bestDist) {
-                            // Check not already bonded
-                            const alreadyBonded = bonds.some(b => (b.p1 === p1 && b.p2 === p2) || (b.p1 === p2 && b.p2 === p1));
-                            if (!alreadyBonded) {
-                                bestDist = d;
-                                bestP2 = p2;
-                            }
-                        }
-                    }
-                    if (bestP2) {
-                        bonds.push({
-                            p1: p1,
-                            p2: bestP2,
-                            life: 0,
-                            maxLife: Math.floor(130 + Math.random() * 140), // 2 to 4.5 seconds
-                            fadeFrames: 28,
-                            alpha: 0
-                        });
-                        p1.bondsCount++;
-                        bestP2.bondsCount++;
-                    }
-                }
-            }
-
-            // Update and draw existing bonds
-            for (let b = bonds.length - 1; b >= 0; b--) {
-                const bond = bonds[b];
-                bond.life++;
-                const d = Math.hypot(bond.p1.x - bond.p2.x, bond.p1.y - bond.p2.y);
-
-                // Smooth fade-in and fade-out envelope
-                let targetAlpha = 1;
-                if (bond.life < bond.fadeFrames) {
-                    targetAlpha = bond.life / bond.fadeFrames;
-                } else if (bond.life > bond.maxLife - bond.fadeFrames) {
-                    targetAlpha = Math.max(0, (bond.maxLife - bond.life) / bond.fadeFrames);
-                }
-
-                // If triangles drift apart beyond threshold, break bond smoothly
-                if (d > 95) {
-                    targetAlpha *= Math.max(0, 1 - (d - 95) / 25);
-                }
-
-                bond.alpha += (targetAlpha - bond.alpha) * 0.18;
-
-                // Remove dead or broken bonds
-                if (bond.life >= bond.maxLife || (d > 120 && bond.alpha < 0.02)) {
-                    bond.p1.bondsCount = Math.max(0, bond.p1.bondsCount - 1);
-                    bond.p2.bondsCount = Math.max(0, bond.p2.bondsCount - 1);
-                    bonds.splice(b, 1);
-                    continue;
-                }
-
-                // Calculate intensity boost from cursor proximity
-                const maxInt = Math.max(bond.p1.intensity, bond.p2.intensity);
-                const baseLineAlpha = isLight ? 0.1 : 0.14;
-                const lineAlpha = baseLineAlpha * bond.alpha * (1 + maxInt * 2.4) * Math.max(0.2, 1 - d / 120);
-
-                ctx.beginPath();
-                ctx.moveTo(bond.p1.x, bond.p1.y);
-                ctx.lineTo(bond.p2.x, bond.p2.y);
-                ctx.strokeStyle = isLight 
-                    ? `rgba(225, 29, 72, ${lineAlpha})` 
-                    : `rgba(250, 45, 72, ${lineAlpha})`;
-                ctx.lineWidth = 0.75 + maxInt * 0.45;
-                ctx.stroke();
-            }
-        }
-
-        function renderCanvas() {
-            // Eased mouse follower
-            mouse.x += (mouse.targetX - mouse.x) * 0.085;
-            mouse.y += (mouse.targetY - mouse.y) * 0.085;
-
-            cursorHalo.style.left = `${mouse.x}px`;
-            cursorHalo.style.top = `${mouse.y}px`;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const isLight = document.documentElement.getAttribute('data-effective-theme') === 'light';
-
-            // 1. Render Dynamic Bonds (making & breaking at random without clutter)
-            updateAndRenderBonds(isLight);
-
-            // 2. Render & Update Floating Triangles with Forcefield & Intensity
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
-
-                // Screen boundaries bounce
-                if (p.x < 10) { p.x = 10; p.vx = Math.abs(p.vx); }
-                else if (p.x > canvas.width - 10) { p.x = canvas.width - 10; p.vx = -Math.abs(p.vx); }
-                if (p.y < 10) { p.y = 10; p.vy = Math.abs(p.vy); }
-                else if (p.y > canvas.height - 10) { p.y = canvas.height - 10; p.vy = -Math.abs(p.vy); }
-
-                // Distance to cursor
-                const dx = mouse.x - p.x;
-                const dy = mouse.y - p.y;
-                const dist = Math.hypot(dx, dy) || 0.001;
-
-                // Intensity calculation:
-                // As drawn towards cursor, intensity rises to highpoint and then becomes constant!
-                if (dist <= INTENSITY_PLATEAU_RADIUS) {
-                    p.targetIntensity = 1.0; // Highpoint reached and stays constant!
-                } else if (dist < ATTRACT_RADIUS) {
-                    const t = (ATTRACT_RADIUS - dist) / (ATTRACT_RADIUS - INTENSITY_PLATEAU_RADIUS);
-                    p.targetIntensity = t * t * (3 - 2 * t); // Smoothstep curve
-                } else {
-                    p.targetIntensity = 0.0;
-                }
-                p.intensity += (p.targetIntensity - p.intensity) * 0.12;
-
-                // Forcefield & Attraction Physics
-                if (dist < ATTRACT_RADIUS) {
-                    if (dist > FORCEFIELD_RADIUS) {
-                        // Inward attraction towards cursor (strengthens as it approaches plateau)
-                        const pullFactor = (0.2 + p.intensity * 0.35) * (1 - (dist - FORCEFIELD_RADIUS) / (ATTRACT_RADIUS - FORCEFIELD_RADIUS));
-                        p.vx += (dx / dist) * pullFactor * 0.16;
-                        p.vy += (dy / dist) * pullFactor * 0.16;
-
-                        // Subtle orbital drift component so triangles sweep gracefully around the forcefield
-                        const tx = -dy / dist;
-                        const ty = dx / dist;
-                        p.vx += tx * 0.04;
-                        p.vy += ty * 0.04;
-                    } else {
-                        // MINIATURE FORCEFIELD: WONT LET TRIANGLES COME ANY NEARER
-                        // Firm, smooth repulsion boundary keeping whole cursor perfectly visible
-                        const overlap = FORCEFIELD_RADIUS - dist;
-                        const nx = dx / dist;
-                        const ny = dy / dist;
-
-                        // Push immediately back outside the forcefield boundary
-                        p.x -= nx * (overlap + 1.2);
-                        p.y -= ny * (overlap + 1.2);
-
-                        // Tangential orbital deflection around the circular forcefield
-                        const tx = -ny;
-                        const ty = nx;
-                        const tangSpeed = (p.vx * tx + p.vy * ty);
-                        p.vx = tx * tangSpeed * 0.95 - nx * 0.8;
-                        p.vy = ty * tangSpeed * 0.95 - ny * 0.8;
-
-                        // Shield glow excitation
-                        forcefieldExcitement = Math.min(1.0, forcefieldExcitement + 0.08);
-                    }
-                }
-
-                // Smooth velocity damping to maintain ultra-fluid, non-chaotic motion
-                p.vx *= 0.982;
-                p.vy *= 0.982;
-
-                // Dynamic rotation: natural spin + banking towards movement
-                p.angle += p.rotSpeed + (p.intensity * 0.015);
-
-                // Dynamic rendering parameters based on intensity
-                const currentSize = p.size * (1.0 + p.intensity * 0.3);
-                const currentFillAlpha = Math.min(0.9, p.baseAlpha + p.intensity * (isLight ? 0.65 : 0.72));
-                const currentStrokeAlpha = Math.min(0.85, 0.12 + p.intensity * 0.65);
-
-                let fillStyle, strokeStyle;
-                if (isLight) {
-                    fillStyle = `rgba(225, 29, 72, ${currentFillAlpha})`;
-                    strokeStyle = `rgba(15, 23, 42, ${currentStrokeAlpha})`;
-                } else {
-                    fillStyle = `rgba(250, 45, 72, ${currentFillAlpha})`;
-                    strokeStyle = `rgba(255, 255, 255, ${currentStrokeAlpha})`;
-                }
-
-                drawTriangle(ctx, p.x, p.y, currentSize, p.angle, fillStyle, strokeStyle, 0.8 + p.intensity * 0.4);
-            }
-
-            // 3. Render Miniature Forcefield Ring Boundary (Tactile Apple-grade shield)
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(mouse.x, mouse.y, FORCEFIELD_RADIUS, 0, Math.PI * 2);
-            const shieldAlpha = isLight 
-                ? (0.05 + forcefieldExcitement * 0.16) 
-                : (0.08 + forcefieldExcitement * 0.22);
-            ctx.strokeStyle = isLight 
-                ? `rgba(225, 29, 72, ${shieldAlpha})` 
-                : `rgba(250, 45, 72, ${shieldAlpha})`;
-            ctx.lineWidth = 1;
-            ctx.setLineDash([3, 4]); // Clean tactical boundary
-            ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.restore();
-
-            forcefieldExcitement *= 0.93;
-
-            requestAnimationFrame(renderCanvas);
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        window.addEventListener('mousemove', (e) => {
-            mouse.targetX = e.clientX;
-            mouse.targetY = e.clientY;
-        });
-
-        // 3D Tilt & Glass Card Spotlight
         function bindCardSpotlights() {
             document.querySelectorAll('.glass-card').forEach(card => {
                 card.addEventListener('mousemove', (e) => {
@@ -4209,15 +4440,15 @@
                 }).join('');
             }
 
-            // Render Section 5: Songs
-            const songsContainer = document.getElementById('songs-container');
-            if (songsContainer && appData.tracks) {
-                songsContainer.innerHTML = appData.tracks.slice(0, 15).map((t, i) => {
+            // Render Songs in Overview & Full Tracks view
+            const overviewSongsCont = document.getElementById('overview-songs-container');
+            if (overviewSongsCont && appData.tracks) {
+                overviewSongsCont.innerHTML = appData.tracks.slice(0, 5).map((t, i) => {
                     const cover = resolveTrackCover(t.name, t.artists, t.image_url);
                     return `
-                    <div class="song-item-row" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}')" title="Click to play in dock" style="cursor: pointer;">
+                    <div class="song-item-row" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}', '${escapeJs(t.preview_url || '')}', ${i})" title="Click to play in dock" style="cursor: pointer;">
                         <div class="song-rank">${i + 1}</div>
-                        <img src="${cover}" data-song-title="${escapeHtml(t.name)}" class="song-thumbnail" alt="${escapeHtml(t.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(t.name)}', '${escapeJs(t.artists)}');">
+                        <img src="${cover}" class="song-thumbnail" alt="${escapeHtml(t.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(t.name)}', '${escapeJs(t.artists)}');">
                         <div>
                             <div class="song-primary-title">${escapeHtml(t.name)}</div>
                             <div class="song-artist-name">${escapeHtml(t.artists)}</div>
@@ -4229,6 +4460,77 @@
                     </div>
                 `;
                 }).join('');
+            }
+
+            // Overview Playlists
+            const overviewPlShelf = document.getElementById('overview-playlists-shelf');
+            if (overviewPlShelf && appData.playlists) {
+                overviewPlShelf.innerHTML = appData.playlists.slice(0, 3).map(p => {
+                    const cover = resolvePlaylistCover(p.playlist_name, p.image_url);
+                    const healthColor = p.health_score > 75 ? 'var(--status-green)' : (p.health_score > 50 ? 'var(--status-amber)' : 'var(--status-red)');
+                    return `
+                        <div class="glass-card playlist-tile" onclick="openPlaylistRecommendations('${escapeJs(p.playlist_name)}')" title="Audit playlist" style="cursor: pointer;">
+                            <div class="playlist-cover-wrap">
+                                <img src="${cover}" class="playlist-img" alt="${escapeHtml(p.playlist_name)}" onerror="this.onerror=null; this.src='https://i.scdn.co/image/ab67706f00000002960019ea66cba66a44fdd4c2';">
+                                <div class="playlist-floating-health" style="color: ${healthColor}; font-weight: 800;">
+                                    ${p.health_score}% Flow
+                                </div>
+                            </div>
+                            <div style="padding-top: 10px;">
+                                <div class="playlist-title">${escapeHtml(p.playlist_name)}</div>
+                                <div class="playlist-meta">${(p.total_minutes / 60).toFixed(1)} hrs &middot; ${p.skip_rate_pct}% skips</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Render Section 5: Songs Table
+            const songsContainer = document.getElementById('songs-container');
+            if (songsContainer && appData.tracks) {
+                const headerHtml = `
+                    <div class="song-table-header">
+                        <span>#</span>
+                        <span></span>
+                        <span>Track &amp; Artist</span>
+                        <span class="song-col-album">Album</span>
+                        <span style="text-align: right;">Plays</span>
+                        <span class="song-col-skips" style="text-align: right;">Skips</span>
+                        <span style="text-align: center;">Preview</span>
+                    </div>
+                `;
+
+                const rowsHtml = appData.tracks.map((t, i) => {
+                    const cover = resolveTrackCover(t.name, t.artists, t.image_url);
+                    const albumName = t.album || 'Single / EP';
+                    const skipRatePct = t.play_count > 0 ? Math.round((t.skip_count / t.play_count) * 100) : 0;
+                    return `
+                    <div class="song-item-row" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}', '${escapeJs(t.preview_url || '')}', ${i})" title="Click to preview track" style="cursor: pointer;">
+                        <div class="song-rank">${i + 1}</div>
+                        <img src="${cover}" class="song-thumbnail" alt="${escapeHtml(t.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(t.name)}', '${escapeJs(t.artists)}');">
+                        <div style="min-width: 0;">
+                            <div class="song-primary-title">${escapeHtml(t.name)}</div>
+                            <div class="song-artist-name">${escapeHtml(t.artists)}</div>
+                        </div>
+                        <div class="song-col-album" style="font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            ${escapeHtml(albumName)}
+                        </div>
+                        <div style="text-align: right; font-weight: 700; color: var(--text-heading); font-variant-numeric: tabular-nums;">
+                            ${t.play_count}
+                        </div>
+                        <div class="song-col-skips" style="text-align: right; font-variant-numeric: tabular-nums; color: ${t.skip_count > 0 ? 'var(--status-amber)' : 'var(--text-muted)'};">
+                            ${t.skip_count} <span style="font-size: 11px; opacity: 0.7;">(${skipRatePct}%)</span>
+                        </div>
+                        <div style="text-align: center;">
+                            <button class="mini-play-btn" title="Play Preview" onclick="event.stopPropagation(); selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}', '${escapeJs(t.preview_url || '')}', ${i})">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                }).join('');
+
+                songsContainer.innerHTML = headerHtml + rowsHtml;
             }
 
             // Render Section 6: Fan Rating
@@ -4329,66 +4631,231 @@
 
         // View Switcher with Full Dimension Support
         function switchMainView(viewName) {
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            const targetBtn = document.querySelector(`.nav-btn[onclick*="'${viewName}'"]`);
-            if (targetBtn) {
-                targetBtn.classList.add('active');
-            } else if (window.event && window.event.currentTarget && window.event.currentTarget.classList.contains('nav-btn')) {
-                window.event.currentTarget.classList.add('active');
+            // Update sidebar buttons active state
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const dv = btn.dataset.view;
+                btn.classList.toggle('active', dv === viewName);
+            });
+
+            // Toggle view panel panels
+            const panels = document.querySelectorAll('.statr-view-panel');
+            panels.forEach(p => p.classList.remove('active-view'));
+
+            const targetPanel = document.getElementById(`view-${viewName}`);
+            if (targetPanel) {
+                targetPanel.classList.add('active-view');
             }
 
-            const sectionMap = {
-                'overview': null,
-                'artists': 'section-artists',
-                'obscurity': 'section-obscurity',
-                'albums': 'section-albums',
-                'playlists': 'section-playlists',
-                'listening': 'section-listening',
-                'fanrating': 'section-fanrating',
-                'songs': 'songs-container',
-                'rhythms': 'rhythmCanvas'
-            };
+            // Scroll main viewport smoothly to top
+            const vp = document.querySelector('.main-viewport');
+            if (vp) vp.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            if (viewName === 'overview') {
-                const viewport = document.querySelector('main.main-viewport');
-                if (viewport) viewport.scrollTo({ top: 0, behavior: 'smooth' });
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Re-render charts when switching to overview or taste
+            if (viewName === 'overview' || viewName === 'taste') {
+                setTimeout(renderChart, 60);
+            }
+        }
+
+        // ==========================================
+        // DOCK AUDIO ENGINE (Real Previews & Live Navigation)
+        // ==========================================
+        let currentTrackIndex = 0;
+        let dockAudio = null;
+        let isAudioMuted = false;
+        const audioPreviewCache = {};
+
+        function getDockAudio() {
+            if (!dockAudio) {
+                dockAudio = document.getElementById('dock-audio-player');
+                if (!dockAudio) {
+                    dockAudio = document.createElement('audio');
+                    dockAudio.id = 'dock-audio-player';
+                    document.body.appendChild(dockAudio);
+                }
+                dockAudio.addEventListener('timeupdate', onAudioTimeUpdate);
+                dockAudio.addEventListener('ended', onAudioEnded);
+                dockAudio.addEventListener('play', () => setPlayerUIState(true));
+                dockAudio.addEventListener('pause', () => setPlayerUIState(false));
+            }
+            return dockAudio;
+        }
+
+        function setPlayerUIState(playing) {
+            isPlaying = playing;
+            const icon = document.getElementById('play-pause-icon');
+            const bars = document.querySelectorAll('.wave-bar');
+            const badge = document.getElementById('player-stream-badge');
+            
+            if (playing) {
+                // Show PAUSE icon (||) when playing so user can click to pause
+                if (icon) icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                bars.forEach(b => b.style.animationPlayState = 'running');
+                if (badge) badge.innerText = 'PLAYING';
             } else {
-                const targetId = sectionMap[viewName] || `section-${viewName}`;
-                const targetEl = document.getElementById(targetId);
-                if (targetEl) {
-                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    targetEl.style.transition = 'box-shadow 0.4s ease, transform 0.4s ease';
-                    targetEl.style.transform = 'scale(1.006)';
-                    setTimeout(() => {
-                        targetEl.style.transform = 'scale(1)';
-                    }, 400);
+                // Show PLAY triangle (▶) when paused
+                if (icon) icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                bars.forEach(b => b.style.animationPlayState = 'paused');
+                if (badge) badge.innerText = 'PAUSED';
+            }
+        }
+
+        function togglePlayState() {
+            const audio = getDockAudio();
+            if (audio.src && !audio.paused) {
+                audio.pause();
+            } else if (audio.src) {
+                audio.play().catch(e => {
+                    console.warn("Autoplay blocked, user interaction required:", e);
+                    setPlayerUIState(true);
+                });
+            } else {
+                const tracks = appData.tracks || [];
+                if (tracks.length > 0) {
+                    const t = tracks[currentTrackIndex] || tracks[0];
+                    const cover = resolveTrackCover(t.name, t.artists, t.image_url);
+                    selectTrackForPlayer(t.name, t.artists, cover, t.preview_url, currentTrackIndex);
                 }
             }
         }
 
-        // Dock Player Controls
-        function togglePlayState() {
-            isPlaying = !isPlaying;
-            const icon = document.getElementById('play-pause-icon');
-            const bars = document.querySelectorAll('.wave-bar');
-            if (isPlaying) {
-                icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-                bars.forEach(b => b.style.animationPlayState = 'running');
-                document.getElementById('player-stream-badge').innerText = 'PLAYING';
-            } else {
-                icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-                bars.forEach(b => b.style.animationPlayState = 'paused');
-                document.getElementById('player-stream-badge').innerText = 'PAUSED';
+        function formatSeconds(sec) {
+            if (isNaN(sec) || sec < 0) sec = 0;
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function onAudioTimeUpdate() {
+            const audio = getDockAudio();
+            const cur = audio.currentTime || 0;
+            const dur = audio.duration || 30;
+            const currentEl = document.getElementById('time-current');
+            const totalEl = document.getElementById('time-total');
+            const fillEl = document.getElementById('scrubber-fill');
+
+            if (currentEl) currentEl.innerText = formatSeconds(cur);
+            if (totalEl) totalEl.innerText = formatSeconds(dur);
+            if (fillEl && dur > 0) {
+                fillEl.style.width = `${Math.min(100, (cur / dur) * 100)}%`;
             }
+        }
+
+        function onAudioEnded() {
+            playNextTrack();
         }
 
         function scrubPosition(e) {
             const track = document.getElementById('scrubber-bar');
+            if (!track) return;
             const rect = track.getBoundingClientRect();
-            const pct = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
-            document.getElementById('scrubber-fill').style.width = `${pct}%`;
+            const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            const audio = getDockAudio();
+            if (audio && audio.duration) {
+                audio.currentTime = pct * audio.duration;
+            }
+            const fill = document.getElementById('scrubber-fill');
+            if (fill) fill.style.width = `${pct * 100}%`;
         }
+
+        function toggleMute() {
+            const audio = getDockAudio();
+            isAudioMuted = !isAudioMuted;
+            audio.muted = isAudioMuted;
+            const icon = document.getElementById('volume-icon');
+            if (icon) {
+                if (isAudioMuted) {
+                    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+                } else {
+                    icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+                }
+            }
+        }
+
+        async function selectTrackForPlayer(name, artist, cover, previewUrl, trackIdx) {
+            if (typeof trackIdx === 'number') currentTrackIndex = trackIdx;
+            
+            const titleEl = document.getElementById('player-title');
+            const artistEl = document.getElementById('player-artist');
+            const coverEl = document.getElementById('player-cover');
+            const badge = document.getElementById('player-stream-badge');
+            
+            if (titleEl) titleEl.innerText = name;
+            if (artistEl) artistEl.innerText = artist;
+            if (coverEl) coverEl.src = cover;
+            if (badge) badge.innerText = 'LOADING...';
+
+            const audio = getDockAudio();
+            const key = `${name}::${artist}`.toLowerCase();
+            
+            let audioUrl = previewUrl || audioPreviewCache[key];
+            if (!audioUrl) {
+                try {
+                    const q = encodeURIComponent(`${name} ${artist}`);
+                    const res = await fetch(`https://itunes.apple.com/search?media=music&entity=song&term=${q}&limit=1`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.results && data.results.length > 0 && data.results[0].previewUrl) {
+                            audioUrl = data.results[0].previewUrl;
+                            audioPreviewCache[key] = audioUrl;
+                        }
+                    }
+                } catch(e) {}
+            }
+
+            if (audioUrl) {
+                audio.src = audioUrl;
+                audio.currentTime = 0;
+                audio.play().then(() => {
+                    setPlayerUIState(true);
+                    if (badge) badge.innerText = 'PREVIEW (30s)';
+                }).catch(e => {
+                    console.warn("Autoplay policy prevented playback:", e);
+                    setPlayerUIState(false);
+                    if (badge) badge.innerText = 'CLICK PLAY';
+                });
+            } else {
+                setPlayerUIState(true);
+                if (badge) badge.innerText = 'AUDIO N/A';
+            }
+        }
+
+        function playNextTrack() {
+            const tracks = (window.filteredTracksList && window.filteredTracksList.length > 0) 
+                ? window.filteredTracksList 
+                : (appData.tracks || []);
+            if (!tracks || tracks.length === 0) return;
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            const t = tracks[currentTrackIndex];
+            const cover = resolveTrackCover(t.name, t.artists, t.image_url);
+            selectTrackForPlayer(t.name, t.artists, cover, t.preview_url, currentTrackIndex);
+        }
+
+        function playPreviousTrack() {
+            const tracks = (window.filteredTracksList && window.filteredTracksList.length > 0) 
+                ? window.filteredTracksList 
+                : (appData.tracks || []);
+            if (!tracks || tracks.length === 0) return;
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            const t = tracks[currentTrackIndex];
+            const cover = resolveTrackCover(t.name, t.artists, t.image_url);
+            selectTrackForPlayer(t.name, t.artists, cover, t.preview_url, currentTrackIndex);
+        }
+
+        // Spacebar and Arrow key navigation for player
+        window.addEventListener('keydown', (e) => {
+            if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+            if (e.code === 'Space') {
+                e.preventDefault();
+                togglePlayState();
+            } else if (e.code === 'ArrowRight') {
+                e.preventDefault();
+                playNextTrack();
+            } else if (e.code === 'ArrowLeft') {
+                e.preventDefault();
+                playPreviousTrack();
+            }
+        });
 
         // Modal Controls & Simplified Multi-Path Ingestion
         const musicPersonasData = {
@@ -4516,6 +4983,7 @@
         }
 
         function switchModalTab(tabId) {
+            if (tabId === 'backend') checkBackendStatus();
             document.querySelectorAll('.modal-tab-button').forEach(b => b.classList.remove('active'));
             const tabBtn = document.getElementById(`tab-btn-${tabId}`);
             if (tabBtn) tabBtn.classList.add('active');
@@ -5333,23 +5801,36 @@
             // 1. Try local server SQLite endpoint if on localhost
             if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 try {
-                    const res = await fetch(`/api/summary?days=${selectedDays}`, { signal: AbortSignal.timeout(600) });
+                    const res = await fetch(`/api/summary?days=${selectedDays}`, { signal: AbortSignal.timeout(4000) });
                     if (res.ok) {
                         const summary = await res.json();
-                        const [tracksRes, playlistsRes, hourlyRes] = await Promise.all([
-                            fetch(`/api/tracks?days=${selectedDays}&limit=15`),
+                        const [tracksRes, artistsRes, albumsRes, playlistsRes, hourlyRes, obsRes, fanRes, recentRes] = await Promise.all([
+                            fetch(`/api/tracks?days=${selectedDays}&limit=20`),
+                            fetch(`/api/artists?days=${selectedDays}&limit=12`),
+                            fetch(`/api/albums?days=${selectedDays}&limit=12`),
                             fetch(`/api/playlists?days=${selectedDays}`),
-                            fetch(`/api/hourly?days=${selectedDays}`)
+                            fetch(`/api/hourly?days=${selectedDays}`),
+                            fetch(`/api/obscurity?days=${selectedDays}`),
+                            fetch(`/api/fanrating?days=${selectedDays}`),
+                            fetch(`/api/recent?limit=30`)
                         ]);
+
                         appData.summary = summary;
                         appData.tracks = await tracksRes.json();
+                        appData.artists = await artistsRes.json();
+                        appData.albums = await albumsRes.json();
                         appData.playlists = await playlistsRes.json();
                         appData.hourly = await hourlyRes.json();
+                        appData.obscurity = await obsRes.json();
+                        appData.fanRating = await fanRes.json();
+                        appData.recent = await recentRes.json();
+
                         renderDashboard();
+                        syncSongCovers(appData.tracks);
                         return;
                     }
                 } catch (e) {
-                    // Fall through to client engine
+                    console.warn("Local API fetch failed, falling back:", e);
                 }
             }
 
@@ -5407,12 +5888,642 @@
         }
 
         // Initialize
+        
+        // ==========================================
+        // SONGS SEARCH, LIVE SCROBBLES & BACKEND DB
+        // ==========================================
+        function switchSongsTab(tab) {
+            const btnSongs = document.getElementById('tab-btn-songs');
+            const btnScrobbles = document.getElementById('tab-btn-scrobbles');
+            const songsCont = document.getElementById('songs-container');
+            const scrobblesCont = document.getElementById('scrobbles-container');
+            const sub = document.getElementById('top-songs-sub');
+
+            if (tab === 'recent') {
+                if (btnSongs) btnSongs.classList.remove('active');
+                if (btnScrobbles) btnScrobbles.classList.add('active');
+                if (songsCont) songsCont.style.display = 'none';
+                if (scrobblesCont) {
+                    scrobblesCont.style.display = 'block';
+                    renderScrobblesStream(appData.recent || []);
+                }
+                if (sub) sub.innerHTML = 'Real-time playback events &middot; <strong style="color: var(--apple-red);">Live Ingestion Stream</strong>';
+            } else {
+                if (btnSongs) btnSongs.classList.add('active');
+                if (btnScrobbles) btnScrobbles.classList.remove('active');
+                if (songsCont) songsCont.style.display = 'block';
+                if (scrobblesCont) scrobblesCont.style.display = 'none';
+                if (sub) sub.innerHTML = `Most played tracks &middot; <strong style="color: var(--apple-red);">${getTimeframeLabel(selectedDays)}</strong>`;
+            }
+        }
+
+        function renderScrobblesStream(events) {
+            const cont = document.getElementById('scrobbles-container');
+            if (!cont) return;
+            if (!events || events.length === 0) {
+                cont.innerHTML = `
+                    <div style="padding: 32px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                        No recent playback events recorded yet in statr.db.<br>
+                        Run <code style="color: var(--apple-red);">python main.py daemon</code> or seed realistic demo data.
+                    </div>
+                `;
+                return;
+            }
+
+            cont.innerHTML = events.slice(0, 30).map((ev) => {
+                const isSkip = Boolean(ev.is_skip);
+                const cover = resolveTrackCover(ev.track_name, ev.artists, ev.image_url);
+                const playedSec = Math.round((ev.played_ms || 0) / 1000);
+                const timeStr = formatEventTime(ev.played_at);
+                const tagHtml = isSkip 
+                    ? `<span class="badge-pill badge-red">⏩ SKIPPED at ${formatSeconds(playedSec)}</span>` 
+                    : `<span class="badge-pill badge-green">✓ COMPLETED (${formatSeconds(playedSec)})</span>`;
+
+                return `
+                    <div class="scrobble-log-row" onclick="selectTrackForPlayer('${escapeJs(ev.track_name)}', '${escapeJs(ev.artists)}', '${escapeJs(cover)}')" style="cursor: pointer;" title="Click to play preview">
+                        <div class="scrobble-left">
+                            <img src="${cover}" class="scrobble-thumb" alt="${escapeHtml(ev.track_name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(ev.track_name)}', '${escapeJs(ev.artists)}');">
+                            <div>
+                                <div class="scrobble-title">${escapeHtml(ev.track_name)}</div>
+                                <div class="scrobble-sub">${escapeHtml(ev.artists)} &middot; <span style="color: var(--text-muted);">${escapeHtml(ev.context_name || ev.context_type || 'Direct')}</span></div>
+                            </div>
+                        </div>
+                        <div class="scrobble-right">
+                            ${tagHtml}
+                            <div class="scrobble-time">${timeStr} &middot; ${escapeHtml(ev.device_name || 'Device')}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function formatEventTime(dateStr) {
+            if (!dateStr) return 'Just now';
+            try {
+                const d = new Date(dateStr.replace(' ', 'T') + 'Z');
+                if (isNaN(d.getTime())) return dateStr;
+                return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } catch(e) {
+                return dateStr;
+            }
+        }
+
+        function filterSongsList(query) {
+            const q = (query || '').toLowerCase().trim();
+            const allTracks = appData.tracks || [];
+            const container = document.getElementById('songs-container');
+            if (!container) return;
+
+            if (!q) {
+                window.filteredTracksList = null;
+                renderDashboard();
+                return;
+            }
+
+            const filtered = allTracks.filter(t => 
+                (t.name || '').toLowerCase().includes(q) || 
+                (t.artists || '').toLowerCase().includes(q)
+            );
+            window.filteredTracksList = filtered;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                        No tracks matching "<strong>${escapeHtml(query)}</strong>"
+                    </div>
+                `;
+                return;
+            }
+
+            const headerHtml = `
+                <div class="song-table-header">
+                    <span>#</span>
+                    <span></span>
+                    <span>Track &amp; Artist</span>
+                    <span class="song-col-album">Album</span>
+                    <span style="text-align: right;">Plays</span>
+                    <span class="song-col-skips" style="text-align: right;">Skips</span>
+                    <span style="text-align: center;">Preview</span>
+                </div>
+            `;
+            const rowsHtml = filtered.map((t, i) => {
+                const cover = resolveTrackCover(t.name, t.artists, t.image_url);
+                const albumName = t.album || 'Single / EP';
+                const skipRatePct = t.play_count > 0 ? Math.round((t.skip_count / t.play_count) * 100) : 0;
+                return `
+                    <div class="song-item-row" onclick="selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}', '${escapeJs(t.preview_url || '')}', ${i})" title="Click to preview track" style="cursor: pointer;">
+                        <div class="song-rank">${i + 1}</div>
+                        <img src="${cover}" class="song-thumbnail" alt="${escapeHtml(t.name)}" onerror="this.onerror=null; this.src=generateCleanVinylPlaceholder('${escapeJs(t.name)}', '${escapeJs(t.artists)}');">
+                        <div style="min-width: 0;">
+                            <div class="song-primary-title">${escapeHtml(t.name)}</div>
+                            <div class="song-artist-name">${escapeHtml(t.artists)}</div>
+                        </div>
+                        <div class="song-col-album" style="font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            ${escapeHtml(albumName)}
+                        </div>
+                        <div style="text-align: right; font-weight: 700; color: var(--text-heading); font-variant-numeric: tabular-nums;">
+                            ${t.play_count}
+                        </div>
+                        <div class="song-col-skips" style="text-align: right; font-variant-numeric: tabular-nums; color: ${t.skip_count > 0 ? 'var(--status-amber)' : 'var(--text-muted)'};">
+                            ${t.skip_count} <span style="font-size: 11px; opacity: 0.7;">(${skipRatePct}%)</span>
+                        </div>
+                        <div style="text-align: center;">
+                            <button class="mini-play-btn" title="Play Preview" onclick="event.stopPropagation(); selectTrackForPlayer('${escapeJs(t.name)}', '${escapeJs(t.artists)}', '${escapeJs(cover)}', '${escapeJs(t.preview_url || '')}', ${i})">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            container.innerHTML = headerHtml + rowsHtml;
+        }
+
+        async function seedDemoDataBackend() {
+            try {
+                const res = await fetch('/api/seed', { method: 'POST' });
+                if (res.ok) {
+                    await setTimeframe(selectedDays || 7);
+                    closeDataModal();
+                    showToast("✓ Realistic demo listening history populated in statr.db!");
+                }
+            } catch(e) {
+                alert("Could not connect to local Statr server: " + e.message);
+            }
+        }
+
+        async function resetDatabaseBackend() {
+            if (!confirm("Are you sure you want to clear your local Statr database?")) return;
+            try {
+                const res = await fetch('/api/reset', { method: 'POST' });
+                if (res.ok) {
+                    await setTimeframe(selectedDays || 7);
+                    closeDataModal();
+                    showToast("Statr database cleared successfully.");
+                }
+            } catch(e) {
+                alert("Error resetting database: " + e.message);
+            }
+        }
+
+        async function saveBackendSpotifyConfig() {
+            const clientId = document.getElementById('backend-client-id').value.trim();
+            const clientSecret = document.getElementById('backend-client-secret').value.trim();
+            if (!clientId || !clientSecret) {
+                alert("Please enter both Spotify Client ID and Client Secret.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ client_id: clientId, client_secret: clientSecret })
+                });
+                if (res.ok) {
+                    showToast("✓ Credentials saved to .env! Background tracker ready.");
+                    checkBackendStatus();
+                } else {
+                    alert("Failed to save credentials.");
+                }
+            } catch(e) {
+                alert("Error saving credentials: " + e.message);
+            }
+        }
+
+        async function checkBackendStatus() {
+            try {
+                const res = await fetch('/api/status');
+                if (res.ok) {
+                    const data = await res.json();
+                    const badge = document.getElementById('backend-db-badge');
+                    const meta = document.getElementById('backend-db-meta');
+                    const clientIdInput = document.getElementById('backend-client-id');
+                    if (badge) badge.innerText = data.database_ready ? 'CONNECTED' : 'DISCONNECTED';
+                    if (meta) meta.innerText = `${data.total_events || 0} total playback events recorded in statr.db`;
+                    if (clientIdInput && data.client_id && !clientIdInput.value) {
+                        clientIdInput.placeholder = `Configured (${data.client_id})`;
+                    }
+                }
+            } catch(e) {}
+        }
+
+        function showToast(msg) {
+            const sub = document.getElementById('hero-main-sub');
+            if (sub) {
+                const old = sub.innerText;
+                sub.innerText = msg;
+                setTimeout(() => { sub.innerText = old; }, 3800);
+            }
+        }
+
+
+        
+        // ==========================================
+        // VOLT.FM STYLE SPOTIFY INTEGRATION ENGINE
+        // ==========================================
+        async function triggerVoltConnect() {
+            try {
+                const res = await fetch('/api/status');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.configured) {
+                        window.location.href = '/api/auth/login';
+                        return;
+                    }
+                }
+            } catch(e) {}
+            // If not yet configured with client ID, open the quick setup tab
+            openDataModal('backend');
+        }
+
+        async function checkLiveMiningStatus() {
+            try {
+                const res = await fetch('/api/me');
+                if (res.ok) {
+                    const data = await res.json();
+                    const connectBanner = document.getElementById('spotify-connect-banner');
+                    const activeBanner = document.getElementById('spotify-active-banner');
+                    const userNameText = document.getElementById('user-name-text');
+                    const userAvatarImg = document.getElementById('user-avatar-img');
+                    const userNowPlaying = document.getElementById('user-now-playing-sub');
+                    const statusPill = document.getElementById('header-user-status');
+
+                    if (data.authenticated) {
+                        if (connectBanner) connectBanner.style.display = 'none';
+                        if (activeBanner) activeBanner.style.display = 'flex';
+                        if (userNameText) userNameText.innerText = `Connected as ${data.display_name}`;
+                        if (userAvatarImg && data.avatar) userAvatarImg.src = data.avatar;
+                        
+                        if (data.now_playing) {
+                            if (userNowPlaying) userNowPlaying.innerHTML = `🎵 Currently listening to <strong style="color: var(--text-heading);">${escapeHtml(data.now_playing.name)}</strong> by ${escapeHtml(data.now_playing.artists)} on ${escapeHtml(data.now_playing.device)}`;
+                            if (statusPill) statusPill.innerHTML = `🎵 ${escapeHtml(data.now_playing.name)} &middot; <strong style="color: var(--status-green);">Mining Active</strong>`;
+                        } else {
+                            if (userNowPlaying) userNowPlaying.innerText = `Continuous background poller is active. Play songs on any Spotify device to auto-log scrobbles & skips.`;
+                            if (statusPill) statusPill.innerHTML = `● ${escapeHtml(data.display_name)} &middot; <strong style="color: var(--status-green);">Mining Active</strong>`;
+                        }
+                    } else {
+                        if (connectBanner) connectBanner.style.display = 'flex';
+                        if (activeBanner) activeBanner.style.display = 'none';
+                    }
+                }
+            } catch(e) {}
+        }
+
+        // Bridge disconnect to backend API
+        const origDisconnect = window.disconnectSpotify || function(){};
+        async function disconnectSpotify() {
+            if (!confirm("Are you sure you want to disconnect Spotify?")) return;
+            try {
+                await fetch('/api/auth/disconnect', { method: 'POST' });
+            } catch(e) {}
+            localStorage.removeItem('statr_access_token');
+            localStorage.removeItem('statr_refresh_token');
+            activeLiveToken = null;
+            checkLiveMiningStatus();
+            setTimeframe(selectedDays || 7);
+            showToast("Disconnected from Spotify.");
+        }
+
+
+        // =========================================================================
+        // Prismatic Floating Triangles & Tactical Cursor Forcefield Dynamics
+        // =========================================================================
+        const ambientCanvas = document.getElementById('ambient-canvas');
+        const ambientCtx = ambientCanvas ? ambientCanvas.getContext('2d') : null;
+        const cursorHalo = document.getElementById('cursor-halo');
+
+        let isMouseInside = false;
+        let mouse = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            targetX: window.innerWidth / 2,
+            targetY: window.innerHeight / 2
+        };
+        let particles = [];
+        let bonds = [];
+        let forcefieldExcitement = 0;
+        let bondTicker = 0;
+
+        const FORCEFIELD_RADIUS = 44; // Tactical clear zone: keeps the cursor readable
+        const ATTRACT_RADIUS = 250;   // Attraction reach
+        const INTENSITY_PLATEAU_RADIUS = 90; // Highpoint intensity threshold
+        const MAX_BONDS_TOTAL = 18;   // Anti-clutter cap across screen
+
+        function drawTriangle(ctx, x, y, size, angle, fillStyle, strokeStyle, strokeWidth) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            const apexX = size * 1.15;
+            const backX = -size * 0.65;
+            const halfW = size * 0.62;
+            ctx.moveTo(apexX, 0);
+            ctx.lineTo(backX, -halfW);
+            ctx.lineTo(backX, halfW);
+            ctx.closePath();
+            if (fillStyle) {
+                ctx.fillStyle = fillStyle;
+                ctx.fill();
+            }
+            if (strokeStyle) {
+                ctx.strokeStyle = strokeStyle;
+                ctx.lineWidth = strokeWidth || 0.8;
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function resizeAmbientCanvas() {
+            if (!ambientCanvas) return;
+            ambientCanvas.width = window.innerWidth;
+            ambientCanvas.height = window.innerHeight;
+            particles = [];
+            bonds = [];
+            const count = Math.min(48, Math.max(20, Math.floor((ambientCanvas.width * ambientCanvas.height) / 32000)));
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    id: i,
+                    x: Math.random() * ambientCanvas.width,
+                    y: Math.random() * ambientCanvas.height,
+                    vx: (Math.random() - 0.5) * 0.45,
+                    vy: (Math.random() - 0.5) * 0.45,
+                    size: Math.random() * 3.5 + 3.8,
+                    angle: Math.random() * Math.PI * 2,
+                    rotSpeed: (Math.random() - 0.5) * 0.016,
+                    baseAlpha: Math.random() * 0.14 + 0.12,
+                    intensity: 0,
+                    targetIntensity: 0,
+                    bondsCount: 0
+                });
+            }
+        }
+
+        function updateAndRenderBonds(ctx, isLight) {
+            bondTicker++;
+            if (bondTicker % 8 === 0 && bonds.length < MAX_BONDS_TOTAL && particles.length > 2) {
+                const p1 = particles[Math.floor(Math.random() * particles.length)];
+                if (p1 && p1.bondsCount < 2) {
+                    let bestP2 = null;
+                    let bestDist = 80;
+                    for (let i = 0; i < particles.length; i++) {
+                        const p2 = particles[i];
+                        if (p2 === p1 || p2.bondsCount >= 2) continue;
+                        const d = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                        if (d < bestDist) {
+                            const alreadyBonded = bonds.some(b => (b.p1 === p1 && b.p2 === p2) || (b.p1 === p2 && b.p2 === p1));
+                            if (!alreadyBonded) {
+                                bestDist = d;
+                                bestP2 = p2;
+                            }
+                        }
+                    }
+                    if (bestP2) {
+                        bonds.push({
+                            p1: p1,
+                            p2: bestP2,
+                            life: 0,
+                            maxLife: Math.floor(130 + Math.random() * 140),
+                            fadeFrames: 28,
+                            alpha: 0
+                        });
+                        p1.bondsCount++;
+                        bestP2.bondsCount++;
+                    }
+                }
+            }
+
+            for (let b = bonds.length - 1; b >= 0; b--) {
+                const bond = bonds[b];
+                bond.life++;
+                const d = Math.hypot(bond.p1.x - bond.p2.x, bond.p1.y - bond.p2.y);
+
+                let targetAlpha = 1;
+                if (bond.life < bond.fadeFrames) {
+                    targetAlpha = bond.life / bond.fadeFrames;
+                } else if (bond.life > bond.maxLife - bond.fadeFrames) {
+                    targetAlpha = Math.max(0, (bond.maxLife - bond.life) / bond.fadeFrames);
+                }
+
+                if (d > 95) {
+                    targetAlpha *= Math.max(0, 1 - (d - 95) / 25);
+                }
+
+                bond.alpha += (targetAlpha - bond.alpha) * 0.18;
+
+                if (bond.life >= bond.maxLife || (d > 120 && bond.alpha < 0.02)) {
+                    bond.p1.bondsCount = Math.max(0, bond.p1.bondsCount - 1);
+                    bond.p2.bondsCount = Math.max(0, bond.p2.bondsCount - 1);
+                    bonds.splice(b, 1);
+                    continue;
+                }
+
+                const maxInt = Math.max(bond.p1.intensity, bond.p2.intensity);
+                const baseLineAlpha = isLight ? 0.1 : 0.14;
+                const lineAlpha = baseLineAlpha * bond.alpha * (1 + maxInt * 2.4) * Math.max(0.2, 1 - d / 120);
+
+                ctx.beginPath();
+                ctx.moveTo(bond.p1.x, bond.p1.y);
+                ctx.lineTo(bond.p2.x, bond.p2.y);
+                ctx.strokeStyle = isLight 
+                    ? `rgba(225, 29, 72, ${lineAlpha})` 
+                    : `rgba(250, 45, 72, ${lineAlpha})`;
+                ctx.lineWidth = 0.75 + maxInt * 0.45;
+                ctx.stroke();
+            }
+        }
+
+        function renderAmbientCanvas() {
+            if (!ambientCanvas || !ambientCtx) return;
+
+            const isLight = document.documentElement.getAttribute('data-effective-theme') === 'light';
+
+            // Eased mouse follower
+            if (isMouseInside) {
+                mouse.x += (mouse.targetX - mouse.x) * 0.085;
+                mouse.y += (mouse.targetY - mouse.y) * 0.085;
+                if (cursorHalo) {
+                    cursorHalo.style.opacity = isLight ? '0.5' : '1';
+                    cursorHalo.style.left = `${mouse.x}px`;
+                    cursorHalo.style.top = `${mouse.y}px`;
+                }
+            } else {
+                if (cursorHalo) {
+                    cursorHalo.style.opacity = '0';
+                }
+            }
+
+            ambientCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+
+            // 1. Dynamic Stochastic Bonds
+            updateAndRenderBonds(ambientCtx, isLight);
+
+            // 2. Render & Update Floating Triangles with Forcefield & Viewport Boundary Awareness
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Screen boundaries bounce
+                if (p.x < 10) { p.x = 10; p.vx = Math.abs(p.vx); }
+                else if (p.x > ambientCanvas.width - 10) { p.x = ambientCanvas.width - 10; p.vx = -Math.abs(p.vx); }
+                if (p.y < 10) { p.y = 10; p.vy = Math.abs(p.vy); }
+                else if (p.y > ambientCanvas.height - 10) { p.y = ambientCanvas.height - 10; p.vy = -Math.abs(p.vy); }
+
+                // Distance to cursor (ONLY if cursor is strictly inside webpage viewport!)
+                if (isMouseInside) {
+                    const dx = mouse.x - p.x;
+                    const dy = mouse.y - p.y;
+                    const dist = Math.hypot(dx, dy) || 0.001;
+
+                    // Intensity calculation
+                    if (dist <= INTENSITY_PLATEAU_RADIUS) {
+                        p.targetIntensity = 1.0;
+                    } else if (dist < ATTRACT_RADIUS) {
+                        const t = (ATTRACT_RADIUS - dist) / (ATTRACT_RADIUS - INTENSITY_PLATEAU_RADIUS);
+                        p.targetIntensity = t * t * (3 - 2 * t);
+                    } else {
+                        p.targetIntensity = 0.0;
+                    }
+
+                    // Attraction & Forcefield Physics
+                    if (dist < ATTRACT_RADIUS) {
+                        if (dist > FORCEFIELD_RADIUS) {
+                            // Inward attraction towards cursor
+                            const pullFactor = (0.2 + p.intensity * 0.35) * (1 - (dist - FORCEFIELD_RADIUS) / (ATTRACT_RADIUS - FORCEFIELD_RADIUS));
+                            p.vx += (dx / dist) * pullFactor * 0.16;
+                            p.vy += (dy / dist) * pullFactor * 0.16;
+
+                            // Gentle orbital drift
+                            const tx = -dy / dist;
+                            const ty = dx / dist;
+                            p.vx += tx * 0.04;
+                            p.vy += ty * 0.04;
+                        } else {
+                            // Firm repulsion boundary: cursor stays fully readable
+                            const overlap = FORCEFIELD_RADIUS - dist;
+                            const nx = dx / dist;
+                            const ny = dy / dist;
+
+                            p.x -= nx * (overlap + 1.2);
+                            p.y -= ny * (overlap + 1.2);
+
+                            const tx = -ny;
+                            const ty = nx;
+                            const tangSpeed = (p.vx * tx + p.vy * ty);
+                            p.vx = tx * tangSpeed * 0.95 - nx * 0.8;
+                            p.vy = ty * tangSpeed * 0.95 - ny * 0.8;
+
+                            forcefieldExcitement = Math.min(1.0, forcefieldExcitement + 0.08);
+                        }
+                    }
+                } else {
+                    // Cursor is NOT on webpage (e.g., search/URL bar, extensions bar, or offscreen)
+                    // Zero pull, zero cursor intensity!
+                    p.targetIntensity = 0.0;
+                    // Maintain smooth natural drift
+                    if (Math.hypot(p.vx, p.vy) < 0.15) {
+                        p.vx += (Math.random() - 0.5) * 0.04;
+                        p.vy += (Math.random() - 0.5) * 0.04;
+                    }
+                }
+
+                p.intensity += (p.targetIntensity - p.intensity) * 0.12;
+
+                // Smooth velocity damping
+                p.vx *= 0.982;
+                p.vy *= 0.982;
+
+                // Natural spin + banking
+                p.angle += p.rotSpeed + (p.intensity * 0.015);
+
+                const currentSize = p.size * (1.0 + p.intensity * 0.3);
+                const currentFillAlpha = Math.min(0.9, p.baseAlpha + p.intensity * (isLight ? 0.65 : 0.72));
+                const currentStrokeAlpha = Math.min(0.85, 0.12 + p.intensity * 0.65);
+
+                let fillStyle, strokeStyle;
+                if (isLight) {
+                    fillStyle = `rgba(225, 29, 72, ${currentFillAlpha})`;
+                    strokeStyle = `rgba(15, 23, 42, ${currentStrokeAlpha})`;
+                } else {
+                    fillStyle = `rgba(250, 45, 72, ${currentFillAlpha})`;
+                    strokeStyle = `rgba(255, 255, 255, ${currentStrokeAlpha})`;
+                }
+
+                drawTriangle(ambientCtx, p.x, p.y, currentSize, p.angle, fillStyle, strokeStyle, 0.8 + p.intensity * 0.4);
+            }
+
+            // 3. Render Forcefield Ring (ONLY when cursor is inside the webpage viewport)
+            if (isMouseInside && mouse.x >= 0 && mouse.y >= 0) {
+                ambientCtx.save();
+                ambientCtx.beginPath();
+                ambientCtx.arc(mouse.x, mouse.y, FORCEFIELD_RADIUS, 0, Math.PI * 2);
+                const shieldAlpha = isLight 
+                    ? (0.05 + forcefieldExcitement * 0.16) 
+                    : (0.08 + forcefieldExcitement * 0.22);
+                ambientCtx.strokeStyle = isLight 
+                    ? `rgba(225, 29, 72, ${shieldAlpha})` 
+                    : `rgba(250, 45, 72, ${shieldAlpha})`;
+                ambientCtx.lineWidth = 1;
+                ambientCtx.setLineDash([3, 4]);
+                ambientCtx.stroke();
+                ambientCtx.setLineDash([]);
+                ambientCtx.restore();
+            }
+
+            forcefieldExcitement *= 0.93;
+            requestAnimationFrame(renderAmbientCanvas);
+        }
+
+        // Viewport & Cursor Boundary Detection (Stops pulling when on search bar, extensions bar, or off-page)
+        window.addEventListener('resize', resizeAmbientCanvas);
+
+        window.addEventListener('mousemove', (e) => {
+            // Check top boundary (search / address bar / extensions bar) & outer viewport
+            if (e.clientY <= 0 || e.clientX < 0 || e.clientX > window.innerWidth || e.clientY > window.innerHeight) {
+                isMouseInside = false;
+                return;
+            }
+            if (!isMouseInside) {
+                isMouseInside = true;
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            }
+            mouse.targetX = e.clientX;
+            mouse.targetY = e.clientY;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            isMouseInside = false;
+        });
+
+        document.addEventListener('mouseenter', (e) => {
+            if (e.clientY > 0 && e.clientX >= 0 && e.clientX <= window.innerWidth && e.clientY <= window.innerHeight) {
+                isMouseInside = true;
+                mouse.targetX = e.clientX;
+                mouse.targetY = e.clientY;
+            }
+        });
+
+        window.addEventListener('mouseout', (e) => {
+            // If pointer moves to browser chrome (URL bar, extensions, bookmarks bar, or OS window)
+            if (!e.relatedTarget || e.relatedTarget.nodeName === 'HTML' || e.clientY <= 0 || e.clientY >= window.innerHeight || e.clientX <= 0 || e.clientX >= window.innerWidth) {
+                isMouseInside = false;
+            }
+        });
+
+        window.addEventListener('blur', () => {
+            isMouseInside = false;
+        });
+
+        // Initialize Ambient Canvas
+        resizeAmbientCanvas();
+        requestAnimationFrame(renderAmbientCanvas);
+
         window.addEventListener('DOMContentLoaded', () => {
             // Apply theme on load to sync controls & indicators
             applyTheme(currentThemeMode);
 
-            resizeCanvas();
-            renderCanvas();
+            updateAmbientMood();
 
             // Check if user had uploaded streams saved in session
             const storedCompact = sessionStorage.getItem('statr_compact_streams');
@@ -5422,6 +6533,8 @@
                 } catch (e) {}
             }
 
+            checkLiveMiningStatus();
+            setInterval(checkLiveMiningStatus, 15000);
             setTimeframe(7);
             handleSpotifyCallback();
         });

@@ -12,12 +12,13 @@ Before even configuring Spotify, you can populate realistic demo data and explor
 
 ```powershell
 # Open terminal in the spotify-pulse directory:
-cd C:\Users\sanjo\.gemini\antigravity\scratch\spotify-pulse
+# Open terminal in the statr repository directory:
+cd statr
 
 # Launch the Web Dashboard:
 python main.py dashboard
 ```
-> Or simply double-click `pulse.bat dashboard`. It will open `http://localhost:8888` in your browser!
+> Or simply double-click `statr.bat dashboard`. It will open `http://localhost:8888` in your browser!
 
 ---
 
@@ -27,7 +28,7 @@ To track your live listening habits:
 
 1. Go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) and log in.
 2. Click **Create App**:
-   - **App Name:** `PulseBeat Analytics`
+   - **App Name:** `Statr Analytics`
    - **App Description:** `Personal real-time listening & playlist tracker`
    - **Redirect URI:** `http://localhost:8888/callback`
    - **Which API/SDKs are you planning to use:** Web API
@@ -53,7 +54,7 @@ Run both the continuous background tracker and the dashboard simultaneously:
 ```powershell
 python main.py run
 ```
-> Or double-click `pulse.bat`.
+> Or double-click `statr.bat`.
 
 ---
 

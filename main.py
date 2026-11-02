@@ -1,5 +1,5 @@
 """
-PulseBeat CLI — Real-Time Spotify Listening & Playlist Analytics
+Statr CLI — Real-Time Spotify Listening & Playlist Analytics
 Commands:
   run        - Runs both the active ingestion daemon & web dashboard concurrently.
   auth       - Connect and authorize your Spotify developer account.
@@ -31,7 +31,7 @@ def cmd_stats():
     top_tracks = database.get_top_tracks(limit=5)
 
     print("\n" + "="*60)
-    print("           PULSEBEAT ANALYTICS SUMMARY")
+    print("           STATR ANALYTICS SUMMARY")
     print("="*60)
     print(f"Total Listening Time : {summary['total_played_hours']} hrs ({summary['total_played_minutes']} mins)")
     print(f"Completed Scrobbles  : {summary['total_listens']}")
@@ -143,7 +143,7 @@ def cmd_run():
     port = int(env.get("DASHBOARD_PORT", 8888))
 
     print("\n" + "="*60)
-    print("  Starting PulseBeat (Daemon + Web Dashboard)")
+    print("  Starting Statr (Daemon + Web Dashboard)")
     print("="*60)
 
     # Start Web Dashboard server in background thread
@@ -183,6 +183,10 @@ def main():
         cmd_stats()
     elif command in ("demo-data", "mock", "seed"):
         cmd_demo_data()
+    elif command in ("reset", "clear"):
+        database.init_db()
+        database.clear_database()
+        print("[Statr] Database cleared successfully.")
     else:
         print(__doc__)
 

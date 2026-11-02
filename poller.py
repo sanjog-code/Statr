@@ -1,5 +1,5 @@
 """
-PulseBeat Active Ingestion Daemon
+Statr Active Ingestion Daemon
 Continuously polls Spotify playback state to capture complete playlist contexts,
 detect skips vs completions, and maintain zero-loss listening history.
 """
@@ -204,7 +204,7 @@ class SpotifyPoller:
     def start(self):
         self.running = True
         print("\n" + "="*60)
-        print("  PulseBeat Active Ingestion Daemon Running")
+        print("  Statr Active Ingestion Daemon Running")
         print(f"  Active interval: {self.active_interval}s | Idle interval: {self.idle_interval}s")
         print("  Press Ctrl+C to stop.")
         print("="*60 + "\n")
