@@ -221,12 +221,36 @@
             background: var(--bg-sidebar);
             backdrop-filter: blur(40px) saturate(190%);
             border-right: 1px solid var(--border-subtle);
-            padding: 32px 18px 120px;
+            padding: 32px 18px 130px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             z-index: 50;
             flex-shrink: 0;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: var(--apple-red) rgba(255, 255, 255, 0.03);
+        }
+
+        aside.sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        aside.sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 9999px;
+        }
+
+        aside.sidebar::-webkit-scrollbar-thumb {
+            background: rgba(250, 45, 72, 0.6);
+            border-radius: 9999px;
+            transition: background 0.2s ease;
+        }
+
+        aside.sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--apple-red);
         }
 
         .brand-logo-row {
@@ -2317,6 +2341,165 @@
             transform: scale(0.97);
         }
 
+
+        /* Welcome Experience Selection Modal */
+        .welcome-modal-window {
+            max-width: 680px;
+            background: var(--bg-modal);
+            border: 1px solid var(--border-focus);
+            border-radius: 28px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+        }
+
+        .welcome-choices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .welcome-choices-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .welcome-card {
+            background: var(--bg-card-subtle);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            text-align: left;
+        }
+
+        .welcome-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: var(--bg-control);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .welcome-card-featured {
+            border-color: rgba(48, 209, 88, 0.35);
+            background: linear-gradient(180deg, rgba(48, 209, 88, 0.06) 0%, var(--bg-card-subtle) 100%);
+        }
+
+        .welcome-card-featured:hover {
+            border-color: var(--status-green);
+            box-shadow: 0 12px 30px rgba(48, 209, 88, 0.15);
+        }
+
+        .welcome-card-badge {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            border-radius: 6px;
+            align-self: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .demo-badge {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+        }
+
+        .spotify-badge {
+            background: rgba(48, 209, 88, 0.15);
+            color: var(--status-green);
+            border: 1px solid rgba(48, 209, 88, 0.3);
+        }
+
+        .welcome-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .welcome-card-title {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-heading);
+            margin-bottom: 6px;
+        }
+
+        .welcome-card-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .welcome-feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .welcome-feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .welcome-feature-list li span {
+            color: var(--apple-red);
+            font-weight: 700;
+        }
+
+        .welcome-card-featured .welcome-feature-list li span {
+            color: var(--status-green);
+        }
+
+        .btn-welcome-action {
+            width: 100%;
+            padding: 11px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: auto;
+        }
+
+        .btn-welcome-demo {
+            background: var(--hero-secondary-bg);
+            color: var(--hero-secondary-text);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-welcome-demo:hover {
+            background: var(--bg-control-active);
+            color: #FFFFFF;
+        }
+
+        .btn-welcome-spotify {
+            background: #1DB954;
+            color: #000000;
+            font-weight: 800;
+        }
+
+        .btn-welcome-spotify:hover {
+            background: #1ed760;
+            transform: scale(1.02);
+        }
     </style>
 </head>
 <body>
@@ -2410,7 +2593,16 @@
             </ul>
         </div>
 
-        <div>
+        <div class="sidebar-bottom-section" style="margin-top: auto; padding-top: 24px; flex-shrink: 0;">
+            <!-- Sidebar Quick Experience Mode Row -->
+            <div class="sidebar-theme-row" onclick="openWelcomeModal(true)" title="Switch between Demo and Spotify Mode" style="margin-bottom: 8px;">
+                <span class="sidebar-theme-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Experience
+                </span>
+                <span class="sidebar-theme-val" id="sidebar-mode-indicator" style="color: var(--status-green);">Demo Mode</span>
+            </div>
+
             <!-- Sidebar Quick Theme Row -->
             <div class="sidebar-theme-row" onclick="cycleTheme()" title="Click to cycle appearance mode (Auto / Light / Dark)">
                 <span class="sidebar-theme-label">
@@ -2787,6 +2979,73 @@
     </footer>
 
     <!-- Clean Connect Modal (4 Simple Ingestion Paths) -->
+    
+    <!-- Welcome Experience Selection Modal -->
+    <div class="modal-overlay" id="welcome-modal" onclick="closeWelcomeModal(event)">
+        <div class="modal-window welcome-modal-window" onclick="event.stopPropagation()">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="brand-badge" style="width: 34px; height: 34px; border-radius: 9px;">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+                    </div>
+                    <div>
+                        <div class="modal-title" style="font-size: 21px;">Welcome to Statr</div>
+                        <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">How would you like to explore your listening analytics?</div>
+                    </div>
+                </div>
+                <button class="btn-modal-close" onclick="closeWelcomeModal()">&times;</button>
+            </div>
+
+            <div style="padding: 24px 30px 28px;">
+                <div class="welcome-choices-grid">
+                    <!-- Choice 1: Demo Experience -->
+                    <div class="welcome-card" onclick="selectExperience('demo')" id="choice-demo-card">
+                        <div class="welcome-card-badge demo-badge">Instant &middot; No Login</div>
+                        <div class="welcome-card-icon" style="background: rgba(255, 255, 255, 0.08); color: var(--text-heading);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                        </div>
+                        <h3 class="welcome-card-title">Explore Demo Mode</h3>
+                        <p class="welcome-card-desc">Instantly test the full dashboard with realistic listening stats, 30s song previews, skip analysis, and playlist health diagnostics.</p>
+                        <ul class="welcome-feature-list">
+                            <li><span>✓</span> Full library simulation & top albums</li>
+                            <li><span>✓</span> 24h rhythm & obscurity radar</li>
+                            <li><span>✓</span> Instant launch &mdash; no Spotify account needed</li>
+                        </ul>
+                        <button class="btn-welcome-action btn-welcome-demo" onclick="event.stopPropagation(); selectExperience('demo')">
+                            Launch Demo Experience
+                        </button>
+                    </div>
+
+                    <!-- Choice 2: Live Spotify Connection -->
+                    <div class="welcome-card welcome-card-featured" onclick="selectExperience('spotify')" id="choice-spotify-card">
+                        <div class="welcome-card-badge spotify-badge">Volt.fm Style &middot; Real-time</div>
+                        <div class="welcome-card-icon" style="background: rgba(48, 209, 88, 0.15); color: var(--status-green);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.334.077-.667-.132-.743-.466-.077-.333.132-.667.466-.743 3.811-.871 7.08-.507 9.721 1.108.294.18.386.564.206.857zm1.226-2.724c-.227.37-.714.484-1.083.258-2.69-1.653-6.79-2.133-9.972-1.168-.415.127-.858-.109-.984-.523-.127-.415.109-.858.524-.985 3.633-1.102 8.147-.568 11.257 1.336.37.226.484.714.258 1.082zm.106-2.836C14.693 8.87 9.38 8.694 6.29 9.632c-.495.15-1.022-.13-1.173-.624-.15-.494.13-1.022.624-1.173 3.553-1.078 9.428-.87 13.153 1.342.446.265.592.844.327 1.29-.265.447-.844.593-1.29.327z"/></svg>
+                        </div>
+                        <h3 class="welcome-card-title">Connect Spotify</h3>
+                        <p class="welcome-card-desc">Log in once with your Spotify account. Statr acts as a continuous background plugin, automatically logging your plays and skip rates.</p>
+                        <ul class="welcome-feature-list">
+                            <li><span>✓</span> 1-click official Spotify OAuth connection</li>
+                            <li><span>✓</span> Continuous background scrobble poller</li>
+                            <li><span>✓</span> Authentic live listening tracking</li>
+                        </ul>
+                        <button class="btn-welcome-action btn-welcome-spotify" onclick="event.stopPropagation(); selectExperience('spotify')">
+                            Connect with Spotify
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-subtle); font-size: 12px; color: var(--text-muted);">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="welcome-remember-choice" style="accent-color: var(--apple-red); cursor: pointer;" />
+                        <span>Remember my preference</span>
+                    </label>
+                    <span style="font-size: 11px;">Switch anytime via the sidebar Experience button</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="connect-modal" onclick="closeDataModal(event)">
         <div class="modal-window" onclick="event.stopPropagation()">
             <div class="modal-header">
@@ -6519,7 +6778,73 @@
         resizeAmbientCanvas();
         requestAnimationFrame(renderAmbientCanvas);
 
+        
+        // =========================================================================
+        // Welcome Experience Selection (Demo Mode vs Live Spotify)
+        // =========================================================================
+        function openWelcomeModal(force) {
+            const modal = document.getElementById('welcome-modal');
+            if (!modal) return;
+            if (!force) {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('code') || window.location.hash.includes('access_token')) {
+                    return;
+                }
+                const remembered = localStorage.getItem('statr_welcome_choice');
+                if (remembered) {
+                    updateModeIndicator(remembered);
+                    return;
+                }
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeWelcomeModal(e) {
+            if (e && e.target && !e.target.classList.contains('modal-overlay') && !e.target.classList.contains('btn-modal-close')) {
+                return;
+            }
+            const modal = document.getElementById('welcome-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function selectExperience(mode) {
+            const rememberCheckbox = document.getElementById('welcome-remember-choice');
+            if (rememberCheckbox && rememberCheckbox.checked) {
+                localStorage.setItem('statr_welcome_choice', mode);
+            }
+            const modal = document.getElementById('welcome-modal');
+            if (modal) modal.style.display = 'none';
+
+            updateModeIndicator(mode);
+
+            if (mode === 'demo') {
+                showToast("Demo Experience Loaded");
+                window.rawImportedStreams = null;
+                setTimeframe(selectedDays || 7);
+                const headerStatus = document.getElementById('header-user-status');
+                if (headerStatus) {
+                    headerStatus.innerHTML = `<span style="color: var(--apple-red); font-weight: 700;">Demo Mode</span> &middot; Full Simulation Active`;
+                }
+            } else if (mode === 'spotify') {
+                loginWithSpotify();
+            }
+        }
+
+        function updateModeIndicator(mode) {
+            const indicator = document.getElementById('sidebar-mode-indicator');
+            if (indicator) {
+                if (mode === 'demo') {
+                    indicator.innerText = 'Demo Mode';
+                    indicator.style.color = 'var(--text-secondary)';
+                } else if (mode === 'spotify') {
+                    indicator.innerText = 'Spotify';
+                    indicator.style.color = 'var(--status-green)';
+                }
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            openWelcomeModal(false);
             // Apply theme on load to sync controls & indicators
             applyTheme(currentThemeMode);
 
